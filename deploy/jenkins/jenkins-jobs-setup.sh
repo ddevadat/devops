@@ -15,8 +15,10 @@ setupJobs(){
    mkdir $JENKINS_TMP
    rsync -r jobs/* $JENKINS_TMP
    if [[ ${arr[0]} != "dev" ]]; then
+      mv $JENKINS_TMP/OpsAdministration/jobs/dev $JENKINS_TMP/OpsAdministration/jobs/${arr[0]}
       mv $JENKINS_TMP/Provision/jobs/dev $JENKINS_TMP/Provision/jobs/${arr[0]}
    fi
+
    echo -e "\e[0;33m${bold}Jobs created for ${arr[0]}${normal}"
 
    for key in "${!arr[@]}"; do
@@ -24,8 +26,11 @@ setupJobs(){
          continue
       fi
       cp -r $JENKINS_TMP/Provision/jobs/${arr[0]} $JENKINS_TMP/Provision/jobs/${arr[$key]}
+      cp -r $JENKINS_TMP/OpsAdministration/jobs/${arr[0]} $JENKINS_TMP/OpsAdministration/jobs/${arr[$key]}
       echo -e "\e[0;33m${bold}Jobs created for ${arr[$key]}${normal}"
    done
+
+
    find $JENKINS_TMP -type f -name config.xml -exec sed -i 's#<sandbox>false</sandbox>#<sandbox>true</sandbox>#g' {} \;
    diffs=$(colordiff -r --suppress-common-lines --no-dereference -x 'nextBuildNumber' -x 'builds' -x 'last*' /var/lib/jenkins/jobs $JENKINS_TMP | wc -l)
    if [[ $diffs -eq 0 ]]; then
