@@ -131,3 +131,13 @@ normal=$(tput sgr0)
 
 # echo -e "\n\e[0;32m${bold}Clean up${normal}"
 # sudo apt -y autoremove
+
+
+#Install kubectx,kubens
+# echo -e "\n\e[0;32m${bold}Installating kubectx,kubens${normal}"
+# wget https://github.com/ahmetb/kubectx/releases/download/v0.9.5/kubectx
+# chmod 755 kubectx
+# mv kubectx /usr/local/bin
+# wget https://github.com/ahmetb/kubectx/releases/download/v0.9.5/kubens
+# chmod 755 kubens
+# mv kubens /usr/local/bin
