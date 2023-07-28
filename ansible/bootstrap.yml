@@ -4,7 +4,7 @@
     - "{{inventory_dir}}/secrets.yml"
   pre_tasks:
     - name: Python predependency
-      raw: bash -c "test -e /usr/bin/python" || (sudo apt update && sudo apt install -y  python)
+      raw: bash -c "test -e /usr/bin/python" || (sudo apt update && sudo apt install -y  python3)
     - name: Installing other packages
       apt:
         state: present
