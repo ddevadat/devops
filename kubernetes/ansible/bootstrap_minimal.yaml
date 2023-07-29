@@ -5,6 +5,7 @@
   gather_facts: false
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
+    OCI_CLI_AUTH: instance_principal
   serial: 1
   vars:
     helm_vars:
