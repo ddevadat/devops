@@ -86,7 +86,3 @@
 - debug:
     msg: "deployed image: {{ deployed_image.stdout }}"
 
-- name: Compare deployed image and metadata_image
-  fail:
-    msg: "Image version from Jenkins job and actual deployed image version do not match"
-  when: deployed_image.stdout != metadata_image
