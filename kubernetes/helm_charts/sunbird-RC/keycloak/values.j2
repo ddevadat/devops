@@ -13,8 +13,8 @@ resources:
     cpu: {{keycloak_cpu_limit|default('1000m')}}
     memory: {{keycloak_memory_limit|default('1024Mi')}}
 network:
-  port: 8079
-  targetport: 8079
+  port: 8080
+  targetport: 8080
 strategy:
   type: RollingUpdate
   maxsurge: {{ keycloak_maxsurge|default('50%') }}
