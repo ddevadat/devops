@@ -25,7 +25,7 @@ node() {
             jobName = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-1].trim().toLowerCase()
             currentWs = sh(returnStdout: true, script: 'pwd').trim()            
             ansiblePlaybook = "$currentWs/kubernetes/ansible/deploy_core_service.yml"
-            ansibleExtraArgs = "--extra-vars \"chart_path=${currentWs}/kubernetes/helm_charts/sunbird-RC/$jobName release_name=$jobName image_tag=${params.image_name} image_name=${params.image_name} role_name=${params.role_name}\" --vault-password-file /var/lib/jenkins/secrets/vault-pass"
+            ansibleExtraArgs = "--extra-vars \"chart_path=${currentWs}/kubernetes/helm_charts/sunbird-RC/$jobName release_name=$jobName image_tag=${params.image_tag} image_name=${params.image_name} role_name=${params.role_name}\" --vault-password-file /var/lib/jenkins/secrets/vault-pass"
             values.put('env', envDir)
             values.put('module', module)        
             values.put('currentWs', currentWs)
