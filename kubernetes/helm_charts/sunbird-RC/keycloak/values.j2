@@ -1,0 +1,32 @@
+namespace: {{ namespace }}
+imagepullsecrets: {{ imagepullsecrets }}
+dockerhub: {{ dockerhub }}
+
+replicaCount: {{keycloak_replicacount|default(1)}}
+repository: {{keycloak_repository|default('sunbird-rc-keycloak')}}
+image_tag: {{image_tag}}
+resources:
+  requests:
+    cpu: {{keycloak_cpu_req|default('100m')}}
+    memory: {{keycloak_mem_req|default('100Mi')}}
+  limits:
+    cpu: {{keycloak_cpu_limit|default('1000m')}}
+    memory: {{keycloak_memory_limit|default('1024Mi')}}
+network:
+  port: 8079
+  targetport: 8079
+strategy:
+  type: RollingUpdate
+  maxsurge: {{ keycloak_maxsurge|default('50%') }}
+  maxunavailable: {{ keycloak_maxunavailable|default('50%') }}
+
+autoscaling:
+  enabled: {{ keycloak_autoscaling_enabled | default('false') }}
+  minReplicas: {{ keycloak_autoscaling_minReplicas|default(1) }}
+  maxReplicas: {{ keycloak_autoscaling_maxReplicas|default(3) }}
+  targetCPUUtilizationPercentage: {{ keycloak_autoscaling_targetCPUUtilizationPercentage|default(60) }}
+  targetMemoryUtilizationPercentage: {{ keycloak_autoscaling_targetMemoryUtilizationPercentage|default('') }}
+
+keycloakenv:
+  DB_PASSWORD: "{{ keycloak_db_password | default('postgres') }}"
+  KEYCLOAK_PASSWORD: "{{ keycloak_admin_password | default('admin') }}"
