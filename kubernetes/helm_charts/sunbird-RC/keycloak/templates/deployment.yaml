@@ -34,7 +34,7 @@ spec:
 {{ toYaml .Values.resources | indent 10 }}
         ports:
         - containerPort: {{ .Values.network.port }}
-         volumeMounts:
+        volumeMounts:
         - name: {{ .Chart.Name }}-conf
           mountPath: /opt/jboss/keycloak/imports/
       volumes:
