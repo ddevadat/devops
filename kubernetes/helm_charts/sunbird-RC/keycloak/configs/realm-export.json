@@ -819,7 +819,7 @@
       "secret":  "{{admin_api_secret}}",
       "redirectUris": [
         "https://localhost:4202/*",
-        "http://demo-admin-portal.sunbirdrc.oci/*",
+        "http://{{domain_name}}/*",
         "https://divoc.xiv.in",
         "https://divoc.xiv.in/keycloak/auth/realms/divoc/account/*",
         "https://localhost:4200/*",
@@ -1324,7 +1324,7 @@
       "redirectUris": [
         "https://localhost:4202/*",
         "https://ndear.xiv.in/*",
-        "http://demo-admin-portal.sunbirdrc.oci/*",
+        "http://{{domain_name}}/*",
         "http://20.198.64.128/*",
         "http://localhost:4200/*",
         "http://localhost:4202/*",
@@ -1335,7 +1335,7 @@
         "http://localhost:4202",
         "https://localhost:4200",
         "https://ndear.xiv.in",
-        "http://demo-admin-portal.sunbirdrc.oci",
+        "http://{{domain_name}}",
         "http://localhost:4200",
         "http://20.198.64.128"
       ],
