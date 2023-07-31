@@ -229,7 +229,6 @@ nginxconfig: |
       limit_conn_status 429;
       upstream keycloak {
           server keycloak-service:8080
-          keepalive 1000;
       }
       include /etc/nginx/defaults.d/*.conf;
       include /etc/nginx/conf.d/*.conf;
