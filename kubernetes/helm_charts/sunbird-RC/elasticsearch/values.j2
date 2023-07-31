@@ -6,13 +6,13 @@ es_token: {{es_token}}
 replicaCount: {{elasticsearch_replicacount|default(1)}}
 repository: {{elasticsearch_repository|default('elasticsearch')}}
 image_tag: {{image_tag}}
-resources:
-  requests:
-    cpu: {{elasticsearch_cpu_req|default('100m')}}
-    memory: {{elasticsearch_mem_req|default('1024Mi')}}
-  limits:
-    cpu: {{elasticsearch_cpu_limit|default('1000m')}}
-    memory: {{elasticsearch_memory_limit|default('1024Mi')}}
+# resources:
+#   requests:
+#     cpu: {{elasticsearch_cpu_req|default('100m')}}
+#     memory: {{elasticsearch_mem_req|default('1024Mi')}}
+#   limits:
+#     cpu: {{elasticsearch_cpu_limit|default('1000m')}}
+#     memory: {{elasticsearch_memory_limit|default('1024Mi')}}
 network:
   port_api: 9200
   targetport_api: 9200
