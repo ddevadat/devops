@@ -1,7 +1,7 @@
 namespace: {{ namespace }}
 imagepullsecrets: {{ imagepullsecrets }}
 dockerhub: {{ es_dockerhub }}
-es_token: {{es_token|default('Bearer ZWxhc3RpYzpEa0llZFBQU0Ni')}}
+es_token: {{es_token}}
 
 replicaCount: {{elasticsearch_replicacount|default(1)}}
 repository: {{elasticsearch_repository|default('elasticsearch')}}
