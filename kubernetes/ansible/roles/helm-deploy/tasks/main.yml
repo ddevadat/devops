@@ -19,7 +19,7 @@
     src: "{{ item }}"
     dest: "{{ item }}"
   with_fileglob:
-    - "{{ chart_path }}/config/*.json"
+    - "{{ chart_path }}/configs/*.json"
   when: release_name == "keycloak"
 
 - name: template schema json
