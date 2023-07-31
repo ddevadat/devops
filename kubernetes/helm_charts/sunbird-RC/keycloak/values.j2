@@ -27,10 +27,23 @@ autoscaling:
   targetCPUUtilizationPercentage: {{ keycloak_autoscaling_targetCPUUtilizationPercentage|default(60) }}
   targetMemoryUtilizationPercentage: {{ keycloak_autoscaling_targetMemoryUtilizationPercentage|default('') }}
 
+# keycloakenv:
+#   DB_PASSWORD: "{{ keycloak_db_password | default('postgres') }}"
+#   KEYCLOAK_PASSWORD: "{{ keycloak_admin_password | default('admin') }}"
+#   KEYCLOAK_LOGO: "{{ keycloak_logo | default('https://svgshare.com/i/hCs.svg') }}"
+#   KEYCLOAK_USER: "{{ keycloak_admin_user | default('admin') }}"
+#   PROXY_ADDRESS_FORWARDING: "{{ keycloak_proxy_address_forwarding | default('true') }}"
+#   KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+
 keycloakenv:
   DB_PASSWORD: "{{ keycloak_db_password | default('postgres') }}"
   KEYCLOAK_PASSWORD: "{{ keycloak_admin_password | default('admin') }}"
-  KEYCLOAK_LOGO: "{{ keycloak_logo | default('https://svgshare.com/i/hCs.svg') }}"
-  KEYCLOAK_USER: "{{ keycloak_admin_user | default('admin') }}"
-  PROXY_ADDRESS_FORWARDING: "{{ keycloak_proxy_address_forwarding | default('true') }}"
+  KEYCLOAK_LOGO="{{ keycloak_logo | default('https://svgshare.com/i/hCs.svg') }}"
+  DB_VENDOR="{{ keycloak_db_vendor | default('postgres') }}"
+  DB_ADDR="{{ keycloak_db_host | default('{{application_postgres_host}}') }}"
+  DB_PORT="{{ keycloak_db_port | default('5432') }}"
+  DB_DATABASE="{{ keycloak_db_name | default('registry') }}"
+  DB_USER="{{ keycloak_db_user | default('postgres') }}"
+  KEYCLOAK_USER="{{ keycloak_admin_user | default('admin') }}"
+  PROXY_ADDRESS_FORWARDING="{{ keycloak_proxy_address_forwarding | default('true') }}"
   KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
