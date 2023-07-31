@@ -14,7 +14,7 @@
     src: "{{ chart_path }}/values.j2"
     dest: "{{ chart_path }}/values.yaml"
 
-- name: template schema json
+- name: template realm-export json
   template:
     src: "{{ item }}"
     dest: "{{ item }}"
