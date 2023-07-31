@@ -120,7 +120,7 @@ proxyconfig: |-
     # Admin API Endpoints for sunbird realm fpr forgot password flow
     location ~ /auth/admin/realms/sunbird/users/ {
       rewrite ^/auth/(.*) /auth/$1 break;
-      proxy_set_header X-Request-ID $sb_request_id;
+      # proxy_set_header X-Request-ID $sb_request_id;
       proxy_set_header Host $host;
       proxy_set_header X-Real-IP {{ nginx_client_public_ip_header | d('$remote_addr') }};
       proxy_set_header X-Scheme $scheme;
@@ -133,7 +133,7 @@ proxyconfig: |-
     # Sunbird realm keycloak API endpoints
     location ~ /auth/realms/sunbird/(get-required-action-link|login-actions/(action-token|authenticate|required-action)|protocol/openid-connect/(auth|certs|logout|token|userinfo)|.well-known/openid-configuration) {
       rewrite ^/auth/(.*) /auth/$1 break;
-      proxy_set_header X-Request-ID $sb_request_id;
+      # proxy_set_header X-Request-ID $sb_request_id;
       proxy_set_header Host $host;
       proxy_set_header X-Real-IP {{ nginx_client_public_ip_header | d('$remote_addr') }};
       proxy_set_header X-Scheme $scheme;
@@ -211,7 +211,7 @@ nginxconfig: |
       log_format  main  '{{ nginx_client_public_ip_header | d('$remote_addr') }} - $remote_user [$time_local] '
                         '"$request" $status $request_length $body_bytes_sent'
                         ' $request_time $upstream_response_time $pipe'
-                        ' "$http_referer" "$http_user_agent" "$sb_request_id"'
+                        ' "$http_referer" "$http_user_agent"'
                         ' "$http_x_device_id" "$http_x_channel_id" "$http_x_app_id"'
                         ' "$http_x_app_ver" "$http_x_session_id" {{nginx_additional_log_fields | default("")}}';
       access_log  /var/log/nginx/access.log  main;
