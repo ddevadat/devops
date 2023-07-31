@@ -1,0 +1,37 @@
+namespace: {{ namespace }}
+imagepullsecrets: {{ imagepullsecrets }}
+dockerhub: {{ es_dockerhub }}
+es_token: {{es_token|default('Bearer ZWxhc3RpYzpEa0llZFBQU0Ni')}}
+
+replicaCount: {{elasticsearch_replicacount|default(1)}}
+repository: {{elasticsearch_repository|default('elasticsearch')}}
+image_tag: {{image_tag}}
+resources:
+  requests:
+    cpu: {{elasticsearch_cpu_req|default('100m')}}
+    memory: {{elasticsearch_mem_req|default('100Mi')}}
+  limits:
+    cpu: {{elasticsearch_cpu_limit|default('1000m')}}
+    memory: {{elasticsearch_memory_limit|default('1024Mi')}}
+network:
+  port_api: 9200
+  targetport_api: 9200
+  port_transport: 9300
+  targetport_transport: 9300
+strategy:
+  type: RollingUpdate
+  maxsurge: {{ elasticsearch_maxsurge|default('50%') }}
+  maxunavailable: {{ elasticsearch_maxunavailable|default('50%') }}
+
+autoscaling:
+  enabled: {{ elasticsearch_autoscaling_enabled | default('false') }}
+  minReplicas: {{ elasticsearch_autoscaling_minReplicas|default(1) }}
+  maxReplicas: {{ elasticsearch_autoscaling_maxReplicas|default(3) }}
+  targetCPUUtilizationPercentage: {{ elasticsearch_autoscaling_targetCPUUtilizationPercentage|default(60) }}
+  targetMemoryUtilizationPercentage: {{ elasticsearch_autoscaling_targetMemoryUtilizationPercentage|default('') }}
+
+elasticsearchenv:
+  discovery.type: {{ es_discovery_type |default('single-node') }}
+  ES_JAVA_OPTS: {{ es_java_opts|default('-Xms512m -Xmx512m') }}
+  ELASTIC_PASSWORD: {{ es_password|default('') }}
+  xpack.security.enabled: {{es_security_enabled | default('false')}}
