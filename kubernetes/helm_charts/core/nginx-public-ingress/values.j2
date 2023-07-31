@@ -60,7 +60,7 @@ resources:
     cpu: {{proxy_cpu_limit|default('1')}}
     memory: {{proxy_mem_limit|default('1024Mi')}}
 
-repository: {{proxy_repository|default('proxy')}}
+repository: {{image_name|default('sunbird-rc-nginx')}}
 image_tag: {{ image_tag }}
 
 proxyconfig: |-
