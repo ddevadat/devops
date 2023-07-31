@@ -34,16 +34,7 @@ spec:
 {{ toYaml .Values.resources | indent 10 }}
         ports:
         - containerPort: {{ .Values.network.port_api }}
-        - containerPort: {{ .Values.network.port_transport }}
-        livenessProbe:
-          httpGet:
-            path: /_cluster/health
-            port: {{ .Values.network.port_api }}
-            httpHeaders:
-            - name: Authorization
-              value: {{.Values.es_token }}
-          initialDelaySeconds: 15
-          periodSeconds: 10        
+        - containerPort: {{ .Values.network.port_transport }}    
 
 ---
 apiVersion: v1
