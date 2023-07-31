@@ -208,7 +208,6 @@ nginxconfig: |
 {% if nginx_http_config is defined and nginx_http_config %}
   {{ nginx_http_config | indent( width=7, indentfirst=True)  }}
 {% endif %}
-      lua_load_resty_core off;
       log_format  main  '{{ nginx_client_public_ip_header | d('$remote_addr') }} - $remote_user [$time_local] '
                         '"$request" $status $request_length $body_bytes_sent'
                         ' $request_time $upstream_response_time $pipe'
@@ -216,41 +215,10 @@ nginxconfig: |
                         ' "$http_x_device_id" "$http_x_channel_id" "$http_x_app_id"'
                         ' "$http_x_app_ver" "$http_x_session_id" {{nginx_additional_log_fields | default("")}}';
       access_log  /var/log/nginx/access.log  main;
-      # Shared dictionary to store metrics
-      lua_shared_dict prometheus_metrics 100M;
-      lua_package_path "/etc/nginx/lua_modules/?.lua";
-      # Defining request_id
-      # If the client send request_id it should be preffered over the default one
-      map $http_x_request_id $sb_request_id {
-        default  $http_x_request_id;
-        ''  $request_id;
-      }
-      # Defining upstream cache status for nginx metrics
-      map $upstream_cache_status $cache_status {
-        default  $upstream_cache_status;
-        ''       "NONE";
-      }
-      map $http_accept $dial_upstream_host {
-        default                player;
-        application/ld+json    kong;
-      }
-      # Defining metrics
-      init_worker_by_lua_block {
-        prometheus = require("prometheus").init("prometheus_metrics")
-        metric_requests = prometheus:counter(
-          "nginx_http_requests_total", "Number of HTTP requests", {"host", "status", "request_method", "cache_status"})
-        metric_latency = prometheus:histogram(
-          "nginx_http_request_duration_seconds", "HTTP request latency", {"host"})
-        metric_connections = prometheus:gauge(
-          "nginx_http_connections", "Number of HTTP connections", {"state"})
-      }
-      log_by_lua_block {
-        metric_requests:inc(1, {ngx.var.server_name, ngx.var.status, ngx.var.request_method, ngx.var.cache_status })
-        metric_latency:observe(tonumber(ngx.var.request_time), {ngx.var.server_name})
-      }
-      header_filter_by_lua_block {
-       ngx.header["server"] = nil
-      }
+
+
+
+
       sendfile        on;
       #tcp_nopush     on;
       client_max_body_size 60M;
