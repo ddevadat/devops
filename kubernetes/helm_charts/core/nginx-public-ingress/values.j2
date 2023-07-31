@@ -127,6 +127,9 @@ proxyconfig: |-
           proxy_set_header    X-Forwarded-Proto  $scheme;
     }
 
+    location /claim-ms/ {
+          proxy_pass          http://claim-ms:8082/;
+    }
 
     {# Including custom configuration #}
     {{ proxy_custom_config }}}
