@@ -248,17 +248,7 @@ nginxconfig: |
       proxy_cache_path {{value['path']}} levels={{value['levels']}} keys_zone={{value['keys_zone']}} max_size={{value['max_size']}} inactive={{value['inactive']}} use_temp_path=off;
       {% endfor %}
 
-     server {
-       listen 9145;
-       location /metrics {
-         content_by_lua_block {
-            metric_connections:set(ngx.var.connections_reading, {"reading"})
-            metric_connections:set(ngx.var.connections_waiting, {"waiting"})
-            metric_connections:set(ngx.var.connections_writing, {"writing"})
-            prometheus:collect()
-          }
-       }
-     }
+
   }
 
 
