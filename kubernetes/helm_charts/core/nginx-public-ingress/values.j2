@@ -228,7 +228,7 @@ nginxconfig: |
       limit_conn_zone $binary_remote_addr zone=limitbyaddr:10m;
       limit_conn_status 429;
       upstream keycloak {
-          server {{ keycloak_url.split('//')[-1] }}:8080;
+          server keycloak-service:8080
           keepalive 1000;
       }
 
