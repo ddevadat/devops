@@ -1,6 +1,7 @@
 namespace: {{ namespace }}
 imagepullsecrets: {{ imagepullsecrets }}
 dockerhub: {{ dockerhub }}
+admin_api_secret: {{ admin_api_secret }}
 
 replicaCount: {{keycloak_replicacount|default(1)}}
 repository: {{keycloak_repository|default('sunbird-rc-keycloak')}}

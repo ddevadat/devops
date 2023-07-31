@@ -816,7 +816,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "d112548e-09b8-411d-a1e0-b5870247affa",
+      "secret":  "{{ .Values.admin_api_secret }}",
       "redirectUris": [
         "https://localhost:4202/*",
         "http://demo-admin-portal.sunbirdrc.oci/*",
