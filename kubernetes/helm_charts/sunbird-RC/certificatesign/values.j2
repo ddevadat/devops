@@ -34,4 +34,3 @@ certificatesignenv:
   CERTIFICATE_PUBLIC_KEY: "{{ CERTIFICATESIGN_PUBLIC_KEY | default('') }}"
   CERTIFICATE_PRIVATE_KEY: "{{ CERTIFICATESIGN_PRIVATE_KEY | default('') }}" 
   SIGNING_KEY_TYPE: "{{ SIGNING_KEY_TYPE|default('RSA')}}"
-  CACHE_CONTEXT_URLS: "{{ cache_context_urls | default(upstream_url + '/schema/v1_context.json,' + upstream_url + '/schema/sunbird_context.json,' + upstream_url + '/schema/credential_template.json') }}"
