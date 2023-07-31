@@ -38,7 +38,7 @@ autoscaling:
 keycloakenv:
   DB_PASSWORD: "{{ keycloak_db_password | default('postgres') }}"
   KEYCLOAK_PASSWORD: "{{ keycloak_admin_password | default('admin') }}"
-  KEYCLOAK_LOGO="{{ keycloak_logo | default('https://svgshare.com/i/hCs.svg') }}"
+  KEYCLOAK_LOGO: "{{ keycloak_logo | default('https://svgshare.com/i/hCs.svg') }}"
   DB_VENDOR: "{{ keycloak_db_vendor | default('postgres') }}"
   DB_ADDR: "{{ keycloak_db_host | default('{{application_postgres_host}}') }}"
   DB_PORT: "{{ keycloak_db_port | default('5432') }}"
