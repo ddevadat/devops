@@ -35,6 +35,11 @@ rccoreenv:
   elastic_search_connection_url: {{ elastic_search_connection_url }}
   search_provider: "dev.sunbirdrc.registry.service.ElasticSearchService"
   search_providerName: "dev.sunbirdrc.registry.service.ElasticSearchService"
+  sunbird_sso_realm: {{ registry_keycloak_realm|default('sunbird-rc')}}
+  sunbird_sso_url: {{registry_sso_url}}
+  sunbird_sso_admin_client_id: {{ registry_admin_client_id|default('admin-api')}}
+  sunbird_sso_client_id: {{ registry_client_id|default('registry-frontend')}}
+  sunbird_sso_admin_client_secret: {{admin_api_secret}}
   enable_external_templates: {{ enable_external_templates|default('true') }}
   sign_url: {{ sign_url|default('http://certificatesign:8079/sign') }}
   signature_enabled: {{ signature_enabled|default('true') }}
