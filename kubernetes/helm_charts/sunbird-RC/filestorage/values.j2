@@ -34,7 +34,7 @@ filestorageenv:
   MINIO_ROOT_USER: {{ MINIO_ROOT_USER|default('admin') }}
   MINIO_ROOT_PASSWORD: {{ MINIO_ROOT_PASSWORD|default('admin') }}
   MINIO_ACCESS_KEY: {{ MINIO_ACCESS_KEY|default('admin') }}
-  MINIO_SECRET_KEY: {{ MINIO_SECRET_KEY|default('12345678') }}
+  MINIO_SECRET_KEY: {{ MINIO_SECRET_KEY|default("12345678") }}
 storage_size: {{ MINIO_STORAGE_SIZE_GB|default('50Gi') }}
 
 
