@@ -43,8 +43,8 @@ secretMounts: []
 #    secretName: elastic-certificates
 #    path: /usr/share/elasticsearch/config/certs
 
-image: "docker.io/keshavprasad/elasticsearch"
-imageTag: "7.3.2"
+image: "{{image_name}}"
+imageTag: {{image_tag}}
 imagePullPolicy: "IfNotPresent"
 
 podAnnotations: {}
