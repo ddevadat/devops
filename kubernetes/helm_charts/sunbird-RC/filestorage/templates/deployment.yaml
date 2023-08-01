@@ -1,3 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Chart.Name }}-pvc
+spec:
+  storageClassName: oci-bv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage_size }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,7 +45,7 @@ spec:
         - minio server --address 0.0.0.0:9000 --console-address 0.0.0.0:9001 /data
         volumeMounts:
         - mountPath: /data
-          name: localvolume
+          name: {{ .Chart.Name }}-pvc
         envFrom:
         - configMapRef:
             name: {{ .Chart.Name }}-config
@@ -44,10 +55,9 @@ spec:
         - containerPort: {{ .Values.network.http_port }}
         - containerPort: {{ .Values.network.console_port }}
       volumes:
-      - name: localvolume
-        hostPath: # MinIO generally recommends using locally-attached volumes
-          path: minio/data # Specify a path to a local drive or volume on the Kubernetes worker node
-          type: DirectoryOrCreate # The path to the last directory must exist        
+      - name: {{ .Chart.Name }}-pvc
+        persistentVolumeClaim:
+          claimName: {{ .Chart.Name }}-pvc
 
 ---
 apiVersion: v1
