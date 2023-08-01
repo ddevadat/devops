@@ -36,13 +36,13 @@ spec:
       - name: {{ .Values.imagepullsecrets }}
 {{- end }}
       containers:
-      - name: {{ .Chart.Name }}
+      - name: minio
         image: "{{ .Values.image_name }}:{{ .Values.image_tag }}"
         command:
         - /bin/bash
         - -c
         args:
-        - server --address 0.0.0.0:9000 --console-address 0.0.0.0:9001 /data
+        - minio server /data --console-address :9001 --address :9000
         volumeMounts:
         - mountPath: /data
           name: {{ .Chart.Name }}-pvc
