@@ -139,9 +139,6 @@ proxyconfig: |-
           proxy_pass http://filestorage:9000/;
     }
 
-    location /swagger/ {
-          proxy_pass http://registry:8081/;
-    }
     {# Including custom configuration #}
     {{ proxy_custom_config }}}
 
