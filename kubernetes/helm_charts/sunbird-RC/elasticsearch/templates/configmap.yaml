@@ -1,11 +1,17 @@
+{{- if .Values.esConfig }}
 apiVersion: v1
-data:
-  {{- range $key, $val := .Values.elasticsearch }}
-  {{ $key }}: |-
-{{ $val| indent 4 }}
-  {{- end }}
-kind: ConfigMap 
+kind: ConfigMap
 metadata:
-  creationTimestamp: null
-  name: {{ .Chart.Name }}-config
+  name: {{ template "uname" . }}-config
   namespace: {{ .Values.namespace }}
+  labels:
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}"
+    app: "{{ template "uname" . }}"
+data:
+{{- range $path, $config := .Values.esConfig }}
+  {{ $path }}: |
+{{ $config | indent 4 -}}
+{{- end -}}
+{{- end -}}
