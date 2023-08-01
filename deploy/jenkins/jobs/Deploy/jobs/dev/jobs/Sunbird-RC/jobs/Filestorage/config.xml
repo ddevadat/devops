@@ -27,12 +27,12 @@
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
           <name>image_name</name>
-          <defaultValue>docker.elastic.co/elasticsearch/elasticsearch</defaultValue>
+          <defaultValue>quay.io/minio/minio</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>image_tag</name>
-          <defaultValue>7.17.3</defaultValue>
+          <defaultValue>latest</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@2.5.6">
@@ -54,8 +54,8 @@ return """&lt;b&gt;This parameter is not used&lt;/b&gt;"""</script>
               <sandbox>true</sandbox>
             </secureFallbackScript>
           </script>
-          <projectName>ElasticSearch</projectName>
-          <projectFullName>Deploy/dev/Sunbird-RC/ElasticSearch</projectFullName>
+          <projectName>Filestorage</projectName>
+          <projectFullName>Deploy/dev/Sunbird-RC/Filestorage</projectFullName>
           <parameters class="linked-hash-map"/>
           <referencedParameters/>
           <choiceType>ET_FORMATTED_HTML</choiceType>
@@ -81,8 +81,8 @@ return """&lt;b&gt;This parameter is not used&lt;/b&gt;"""</script>
               <sandbox>true</sandbox>
             </secureFallbackScript>
           </script>
-          <projectName>ElasticSearch</projectName>
-          <projectFullName>Deploy/dev/Sunbird-RC/ElasticSearch</projectFullName>
+          <projectName>Filestorage</projectName>
+          <projectFullName>Deploy/dev/Sunbird-RC/Filestorage</projectFullName>
           <parameters class="linked-hash-map"/>
           <referencedParameters/>
           <choiceType>ET_FORMATTED_HTML</choiceType>
@@ -113,7 +113,7 @@ return """&lt;b&gt;This parameter is not used&lt;/b&gt;"""</script>
       <triggers>
         <jenkins.triggers.ReverseBuildTrigger>
           <spec/>
-          <upstreamProjects>ArtifactUpload/dev/Sunbird-RC/ElasticSearch</upstreamProjects>
+          <upstreamProjects>ArtifactUpload/dev/Sunbird-RC/Filestorage</upstreamProjects>
           <threshold>
             <name>SUCCESS</name>
             <ordinal>0</ordinal>
