@@ -48,7 +48,10 @@ rccoreenv:
   async_enabled: {{ registry_async_enabled|default('false')}}
   webhook_enabled: {{ registry_webhook_enabled|default('false')}}
   logging.level.root : {{ registry_logging_level|default('INFO')}}
-
+  filestorage_connection_url: {{ MINIO_URL|default('http://filestorage:9000') }}
+  filestorage_access_key: {{ MINIO_ROOT_USER|default('admin') }}
+  filestorage_secret_key: {{ MINIO_ROOT_PASSWORD|default('admin1234') }}
+  filestorage_bucket_key: {{ MINIO_BUCKET|default('issuance') }}
 
 
 serviceMonitor:
