@@ -42,6 +42,7 @@ rccoreenv:
   sunbird_sso_admin_client_secret: {{admin_api_secret}}
   enable_external_templates: {{ enable_external_templates|default('true') }}
   sign_url: {{ sign_url|default('http://certificatesign:8079/sign') }}
+  sign_health_check_url: {{ sign_hc_url|default('http://certificatesign:8079/health') }}
   signature_enabled: {{ signature_enabled|default('true') }}
   pdf_url: {{ pdf_url|default('http://certificateapi:8078/api/v1/certificatePDF') }}
   template_base_url: {{ template_base_url|default('http://registry:8081/api/v1/templates/') }}
