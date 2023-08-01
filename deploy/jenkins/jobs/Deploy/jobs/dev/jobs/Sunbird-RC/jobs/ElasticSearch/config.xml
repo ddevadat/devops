@@ -27,12 +27,12 @@
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
           <name>image_name</name>
-          <defaultValue>elasticsearch</defaultValue>
+          <defaultValue>docker.elastic.co/elasticsearch/elasticsearch</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>image_tag</name>
-          <defaultValue>7.10.1</defaultValue>
+          <defaultValue>7.17.3</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@2.5.6">
