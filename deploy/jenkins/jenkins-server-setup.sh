@@ -141,3 +141,13 @@ normal=$(tput sgr0)
 # wget https://github.com/ahmetb/kubectx/releases/download/v0.9.5/kubens
 # chmod 755 kubens
 # mv kubens /usr/local/bin
+
+
+#Install Istio
+# echo -e "\n\e[0;32m${bold}Installating Istio${normal}"
+# mkdir -p /var/lib/jenkins/istio
+# chmown -R jenkins:jenkins /var/lib/jenkins/istio
+# cd /var/lib/jenkins/istio
+# curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.18.2 TARGET_ARCH=x86_64 sh -
+# cp istio-1.18.2/bin/istioctl /usr/local/bin
+
