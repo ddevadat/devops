@@ -149,5 +149,6 @@ normal=$(tput sgr0)
 # chmown -R jenkins:jenkins /var/lib/jenkins/istio
 # cd /var/lib/jenkins/istio
 # curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.18.2 TARGET_ARCH=x86_64 sh -
+# chmown -R jenkins:jenkins /var/lib/jenkins/istio
 # cp istio-1.18.2/bin/istioctl /usr/local/bin
 
