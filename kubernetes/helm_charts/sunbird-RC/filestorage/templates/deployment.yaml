@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Chart.Name }}-pvc
 spec:
-  storageClassName: oci-bv
+  storageClassName: {{ .Values.storage_class_name }}
   accessModes:
     - ReadWriteOnce
   resources:
