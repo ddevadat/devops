@@ -8,11 +8,11 @@
     - istio
 
 - name: helm install istio-base
-  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} istio-base istio/base  --kube-context {{item}} -n {{namespace}} --create-namespace --wait 10
+  shell: helm install --timeout {{helm_install_timeout | d("10m")}} istio-base istio/base  --kube-context {{item}} -n {{namespace}} --create-namespace --set defaultRevision=default --wait 10
   loop: "{{ctx_clusters}}"
 
 - name: helm install istiod
-  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} istiod istio/istiod  --kube-context {{item}} -n {{namespace}} --create-namespace --wait 30
+  shell: helm install --timeout {{helm_install_timeout | d("10m")}} istiod istio/istiod  --kube-context {{item}} -n {{namespace}} --create-namespace --wait
   loop: "{{ctx_clusters}}"
 
 - name: Get the deployment rollout status
