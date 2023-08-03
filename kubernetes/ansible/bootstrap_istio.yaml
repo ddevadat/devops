@@ -28,7 +28,7 @@
           data:
             ca-cert.pem: "{{ istio_cluster1_ca_cert | b64encode }}"
             ca-key.pem: "{{ istio_cluster1_ca_key | b64encode }}"
-            cert-chain.pem: "{{ istio_cluster1_chain | b64encode }}"
+            cert-chain.pem: "{{ istio_cluster1_cert_chain | b64encode }}"
             root-cert.pem: "{{ istio_root_cert | b64encode }}"
           EOF
 
@@ -44,6 +44,6 @@
           data:
             ca-cert.pem: "{{ istio_cluster2_ca_cert | b64encode }}"
             ca-key.pem: "{{ istio_cluster2_ca_key | b64encode }}"
-            cert-chain.pem: "{{ istio_cluster2_chain | b64encode }}"
+            cert-chain.pem: "{{ istio_cluster2_cert_chain | b64encode }}"
             root-cert.pem: "{{ istio_root_cert | b64encode }}"
           EOF
