@@ -7,22 +7,22 @@
   with_items:
     - istio
 
-# - name: tempating variables
-#   template:
-#     src: "{{ item }}.j2"
-#     dest: "/tmp/{{item}}.sh"
-#   with_items:
-#     - istio-install-helm
-
-- name: "helm install istio-base - {{item}}"
-  debug: 
-    msg: "Kubecontex: {{ item }}"
+- name: helm install istio-base
+  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} istio-base istio/base  --kube-context {{item}} -n {{namespace}} --create-namespace --wait 10
   loop: "{{ctx_clusters}}"
 
-# - name: helm install istio-base
-#   shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} istio-base istio/base  --kube-context {{item}} -n {{namespace}}
-#   with_items:
-#     - istio-install-helm
+- name: helm install istiod
+  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} istiod istio/istiod  --kube-context {{item}} -n {{namespace}} --create-namespace --wait 30
+  loop: "{{ctx_clusters}}"
 
-# - name: installing istio
-#   shell: sh /tmp/istio-install-helm.sh
+- name: Get the deployment rollout status
+  shell: "kubectl get deployments -A | grep -i istiod | if [[ $(wc -l) > 0 ]]; then awk '{print $3}' | awk -F/ '{if ($1 ~ $2){exit 0} else {exit 1}}'; else exit 1; fi"
+  args:
+    executable: /bin/bash
+  register: deployment_result
+  ignore_errors: true
+
+- name: fail when deployment are not successful
+  fail:
+    msg: "Unable to get success status for any of these - deployment,"
+  when:  deployment_result.rc != 0
