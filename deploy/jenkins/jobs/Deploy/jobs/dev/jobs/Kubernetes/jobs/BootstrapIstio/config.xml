@@ -119,7 +119,7 @@ return &quot;&quot;&quot;&lt;b&gt;This parameter is not used&lt;/b&gt;&quot;&quo
         </hudson.plugins.git.extensions.impl.CloneOption>
       </extensions>
     </scm>
-    <scriptPath>kubernetes/pipelines/bootstrap_minimal/Jenkinsfile</scriptPath>
+    <scriptPath>kubernetes/pipelines/bootstrap_istio/Jenkinsfile</scriptPath>
     <lightweight>false</lightweight>
   </definition>
   <triggers/>
