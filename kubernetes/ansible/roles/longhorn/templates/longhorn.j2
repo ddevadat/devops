@@ -1,2 +1,5 @@
 ---
 # longhorn chart customization
+
+persistence:
+  defaultClassReplicaCount: {{ longhorn_default_replica_count |default('3') }}

@@ -16,7 +16,7 @@
   shell: helm repo update
 
 - name: helm install longhorn
-  shell: kubectl config use-context {{item}} &&  helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} longhorn longhorn/longhorn -n longhorn-system --create-namespace  --version {{longhorn_version}} --wait
+  shell: kubectl config use-context {{item}} &&  helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} longhorn longhorn/longhorn -n longhorn-system --create-namespace  --version {{longhorn_version}} --values /tmp/longhorn.yaml --wait
   loop: "{{ctx_clusters}}"
 
 # - name: tempating variables
