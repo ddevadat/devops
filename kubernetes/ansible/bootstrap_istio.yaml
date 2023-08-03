@@ -12,8 +12,9 @@
     - "{{inventory_dir}}/secrets.yml"
   tasks:
     - name: Creating namespace
-      shell: "kubectl create namespace istio-system "
+      shell: "kubectl create namespace istio-system --context={{item}}"
       ignore_errors: yes
+      loop: "{{ctx_clusters}}"
 
     - name: Creating istio trust plugin ca secrets in {{ctx_cluster1}}
       shell: 
