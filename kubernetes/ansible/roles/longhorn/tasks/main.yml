@@ -19,14 +19,14 @@
   shell: kubectl config use-context {{item}} &&  helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} longhorn longhorn/longhorn -n longhorn-system --create-namespace  --version {{longhorn_version}} --wait
   loop: "{{ctx_clusters}}"
 
-- name: tempating variables
-  template:
-    src: "{{ item }}.j2"
-    dest: "/tmp/{{item}}.yaml"
-  with_items:
-    - longhorn_storageclass
+# - name: tempating variables
+#   template:
+#     src: "{{ item }}.j2"
+#     dest: "/tmp/{{item}}.yaml"
+#   with_items:
+#     - longhorn_storageclass
 
-- name: create longhorn storageclass
-  shell: kubectl config use-context {{item}} &&  kubectl create -f /tmp/longhorn_storageclass.yaml -n longhorn-system 
-  loop: "{{ctx_clusters}}"
+# - name: create longhorn storageclass
+#   shell: kubectl config use-context {{item}} &&  kubectl create -f /tmp/longhorn_storageclass.yaml -n longhorn-system 
+#   loop: "{{ctx_clusters}}"
 
