@@ -16,9 +16,9 @@
   shell: helm repo update
 
 - name: helm install istio-base
-  shell: kubectl config use-context {{item}} && helm install istio-base istio/base -n istio-system --create-namespace --set defaultRevision=default --wait 10
+  shell: kubectl config use-context {{item}} &&  helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} istio-base istio/base -n istio-system --create-namespace --set defaultRevision=default --wait
   loop: "{{ctx_clusters}}"
 
 - name: helm install istiod
-  shell: kubectl config use-context {{item}} && helm install istiod istio/istiod  -n istio-system --create-namespace --wait
+  shell: kubectl config use-context {{item}} &&  helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} istiod istio/istiod  -n istio-system --create-namespace --wait
   loop: "{{ctx_clusters}}"
