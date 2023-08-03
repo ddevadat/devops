@@ -6,8 +6,6 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
     OCI_CLI_AUTH: instance_principal
-    CTX_CLUSTER1: "{{ ctx_cluster1 }}"
-    CTX_CLUSTER2: "{{ ctx_cluster2 }}"
   roles:
     - "{{ role_name }}"
 
