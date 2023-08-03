@@ -1,0 +1,4 @@
+---
+# defaults file for istio
+
+istio_chart_repo: https://istio-release.storage.googleapis.com/charts

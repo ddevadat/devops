@@ -1,0 +1,18 @@
+---
+# tasks file for istio
+- name: tempating variables
+  template:
+    src: "{{ item }}.j2"
+    dest: "/tmp/{{item}}.yaml"
+  with_items:
+    - istio-install-helm
+
+- name: tempating variables
+  template:
+    src: "{{ item }}.j2"
+    dest: "/tmp/{{item}}.sh"
+  with_items:
+    - istio-install-helm
+
+- name: installing istio
+  shell: sh /tmp/istio-install-helm.sh
