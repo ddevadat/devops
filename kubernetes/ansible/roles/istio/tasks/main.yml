@@ -5,14 +5,24 @@
     src: "{{ item }}.j2"
     dest: "/tmp/{{item}}.yaml"
   with_items:
-    - istio-install-helm
+    - istio
 
-- name: tempating variables
-  template:
-    src: "{{ item }}.j2"
-    dest: "/tmp/{{item}}.sh"
-  with_items:
-    - istio-install-helm
+# - name: tempating variables
+#   template:
+#     src: "{{ item }}.j2"
+#     dest: "/tmp/{{item}}.sh"
+#   with_items:
+#     - istio-install-helm
 
-- name: installing istio
-  shell: sh /tmp/istio-install-helm.sh
+- name: helm install istio-base
+  debug: 
+    msg: "Kubecontex: {{ item }}"
+  loop: "{{ctx_clusters}}"
+
+# - name: helm install istio-base
+#   shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} istio-base istio/base  --kube-context {{item}} -n {{namespace}}
+#   with_items:
+#     - istio-install-helm
+
+# - name: installing istio
+#   shell: sh /tmp/istio-install-helm.sh

@@ -27,10 +27,6 @@ install_istio_helm() {
       helm install istiod istio/istiod -n istio-system --wait
       helm status istiod -n istio-system
 
-      sleep 30
-      echo "Check istiod service is successfully installed and its pods are running"
-      kubectl get deployments -n istio-system --output wide
-
 }
 
 install_istio_helm {{ctx_cluster1}}
