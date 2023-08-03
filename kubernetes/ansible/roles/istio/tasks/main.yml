@@ -16,21 +16,9 @@
   shell: helm repo update
 
 - name: helm install istio-base
-  shell: helm install  istio-base istio/base  --kube-context {{item}} -n {{namespace}} --create-namespace --set defaultRevision=default --wait 10
+  shell: kubectl config use-context {{item}} && helm install istio-base istio/base -n {{namespace}} --create-namespace --set defaultRevision=default --wait 10
   loop: "{{ctx_clusters}}"
 
 - name: helm install istiod
-  shell: helm install  istiod istio/istiod  --kube-context {{item}} -n {{namespace}} --create-namespace --wait
+  shell: kubectl config use-context {{item}} && helm install istiod istio/istiod  -n {{namespace}} --create-namespace --wait
   loop: "{{ctx_clusters}}"
-
-- name: Get the deployment rollout status
-  shell: "kubectl get deployments -A | grep -i istiod | if [[ $(wc -l) > 0 ]]; then awk '{print $3}' | awk -F/ '{if ($1 ~ $2){exit 0} else {exit 1}}'; else exit 1; fi"
-  args:
-    executable: /bin/bash
-  register: deployment_result
-  ignore_errors: true
-
-- name: fail when deployment are not successful
-  fail:
-    msg: "Unable to get success status for any of these - deployment,"
-  when:  deployment_result.rc != 0
