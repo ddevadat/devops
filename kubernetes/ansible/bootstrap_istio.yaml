@@ -15,7 +15,7 @@
       shell: "kubectl create namespace istio-system "
       ignore_errors: yes
 
-    - name: Creating istio trust plugin ca secrets
+    - name: Creating istio trust plugin ca secrets in {{ctx_cluster1}}
       shell: 
         cmd: |
           cat <<EOF | kubectl apply -f - --context="${CTX_CLUSTER1}"
@@ -31,7 +31,7 @@
             root-cert.pem: "{{ istio_root_cert | b64encode }}"
           EOF
 
-    - name: Creating istio trust plugin ca secrets
+    - name: Creating istio trust plugin ca secrets in {{ctx_cluster2}}
       shell: 
         cmd: |
           cat <<EOF | kubectl apply -f - --context="${CTX_CLUSTER2}"
