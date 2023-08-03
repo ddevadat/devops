@@ -29,7 +29,7 @@
     - name: Create the Istio configuration for {{ctx_cluster2}}
       shell: 
         cmd: |
-          cat <<EOF | istioctl -y --set profile=minimal install -y -f - --context="${CTX_CLUSTER2}"
+          cat <<EOF | istioctl --set profile=minimal install -y -f - --context="${CTX_CLUSTER2}"
           apiVersion: install.istio.io/v1alpha1
           kind: IstioOperator
           spec:
