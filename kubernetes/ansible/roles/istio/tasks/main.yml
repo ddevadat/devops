@@ -14,7 +14,7 @@
 #   with_items:
 #     - istio-install-helm
 
-- name: helm install istio-base - {{item}}
+- name: "helm install istio-base - {{item}}"
   debug: 
     msg: "Kubecontex: {{ item }}"
   loop: "{{ctx_clusters}}"
