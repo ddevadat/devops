@@ -1,0 +1,11 @@
+---
+- hosts: local
+  gather_facts: no
+  vars_files:
+    - "{{inventory_dir}}/secrets.yml"
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+    OCI_CLI_AUTH: instance_principal
+  roles:
+    - "{{ role_name }}"
+
