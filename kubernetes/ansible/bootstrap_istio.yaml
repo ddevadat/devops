@@ -1,0 +1,48 @@
+---
+# tasks file for bootstrap-k8s
+
+- hosts: local
+  gather_facts: false
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+    CTX_CLUSTER1: "{{ctx_cluster1}}"
+    CTX_CLUSTER2: "{{ctx_cluster2}}"
+    OCI_CLI_AUTH: instance_principal
+  vars_files:
+    - "{{inventory_dir}}/secrets.yml"
+  tasks:
+    - name: Creating namespace
+      shell: "kubectl create namespace istio-system "
+      ignore_errors: yes
+
+    - name: Creating istio trust plugin ca secrets
+      shell: 
+        cmd: |
+          cat <<EOF | kubectl apply -f - --context="${CTX_CLUSTER1}"
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: cacerts
+            namespace: istio-system
+          data:
+            ca-cert.pem: "{{ istio_cluster1_ca_cert | b64encode }}"
+            ca-key.pem: "{{ istio_cluster1_ca_key | b64encode }}"
+            cert-chain.pem: "{{ istio_cluster1_chain | b64encode }}"
+            root-cert.pem: "{{ istio_root_cert | b64encode }}"
+          EOF
+
+    - name: Creating istio trust plugin ca secrets
+      shell: 
+        cmd: |
+          cat <<EOF | kubectl apply -f - --context="${CTX_CLUSTER2}"
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: cacerts
+            namespace: istio-system
+          data:
+            ca-cert.pem: "{{ istio_cluster2_ca_cert | b64encode }}"
+            ca-key.pem: "{{ istio_cluster2_ca_key | b64encode }}"
+            cert-chain.pem: "{{ istio_cluster2_chain | b64encode }}"
+            root-cert.pem: "{{ istio_root_cert | b64encode }}"
+          EOF
