@@ -1,0 +1,48 @@
+---
+# tasks file for bootstrap-k8s
+
+- hosts: local
+  gather_facts: false
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+    CTX_CLUSTER1: "{{ctx_cluster1}}"
+    CTX_CLUSTER2: "{{ctx_cluster2}}"
+    OCI_CLI_AUTH: instance_principal
+  vars_files:
+    - "{{inventory_dir}}/secrets.yml"
+  tasks:
+    - name: Create the Istio configuration for {{ctx_cluster1}}
+      shell: 
+        cmd: |
+          cat <<EOF | istioctl install -f - --context="${CTX_CLUSTER1}"
+          apiVersion: install.istio.io/v1alpha1
+          kind: IstioOperator
+          spec:
+            values:
+              global:
+                meshID: mesh1
+                multiCluster:
+                  clusterName: cluster1
+                network: network1
+          EOF
+
+    - name: Create the Istio configuration for {{ctx_cluster2}}
+      shell: 
+        cmd: |
+          cat <<EOF | istioctl install -f - --context="${CTX_CLUSTER2}"
+          apiVersion: install.istio.io/v1alpha1
+          kind: IstioOperator
+          spec:
+            values:
+              global:
+                meshID: mesh1
+                multiCluster:
+                  clusterName: cluster2
+                network: network1
+          EOF
+
+    - name: Install a remote secret in {{ctx_cluster2}} that provides access to {{ctx_cluster1}} API server.
+      shell: "istioctl x create-remote-secret --context="${CTX_CLUSTER1}" --name=cluster1 | kubectl apply -f - --context="${CTX_CLUSTER2}""
+
+    - name: Install a remote secret in {{ctx_cluster1}} that provides access to {{ctx_cluster2}} API server.
+      shell: "istioctl x create-remote-secret --context="${CTX_CLUSTER2}" --name=cluster2 | kubectl apply -f - --context="${CTX_CLUSTER1}""
