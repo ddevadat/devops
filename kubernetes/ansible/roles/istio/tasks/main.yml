@@ -7,6 +7,14 @@
   with_items:
     - istio
 
+
+- name: add istio helm repo
+  shell: helm repo add istio {{istio_chart_repo}}
+
+
+- name: update repo
+  shell: helm repo update
+
 - name: helm install istio-base
   shell: helm install  istio-base istio/base  --kube-context {{item}} -n {{namespace}} --create-namespace --set defaultRevision=default --wait 10
   loop: "{{ctx_clusters}}"
