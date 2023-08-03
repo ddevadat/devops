@@ -22,7 +22,7 @@
               global:
                 meshID: mesh1
                 multiCluster:
-                  clusterName: cluster1
+                  clusterName: sunbird-rc-primary
                 network: network1
           EOF
 
@@ -37,12 +37,12 @@
               global:
                 meshID: mesh1
                 multiCluster:
-                  clusterName: cluster2
+                  clusterName: sunbird-rc-secondary
                 network: network1
           EOF
 
     - name: Install a remote secret in {{ctx_cluster2}} that provides access to {{ctx_cluster1}} API server.
-      shell: "istioctl x create-remote-secret --context=${CTX_CLUSTER1} --name=cluster1 | kubectl apply -f - --context=${CTX_CLUSTER2}"
+      shell: "istioctl x create-remote-secret --context=${CTX_CLUSTER1} --name=sunbird-rc-primary | kubectl apply -f - --context=${CTX_CLUSTER2}"
 
     - name: Install a remote secret in {{ctx_cluster1}} that provides access to {{ctx_cluster2}} API server.
-      shell: "istioctl x create-remote-secret --context=${CTX_CLUSTER2} --name=cluster2 | kubectl apply -f - --context=${CTX_CLUSTER1}"
+      shell: "istioctl x create-remote-secret --context=${CTX_CLUSTER2} --name=sunbird-rc-secondary | kubectl apply -f - --context=${CTX_CLUSTER1}"
