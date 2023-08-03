@@ -1,0 +1,26 @@
+---
+# tasks file for istio
+- name: tempating variables
+  template:
+    src: "{{ item }}.j2"
+    dest: "/tmp/{{item}}.yaml"
+  with_items:
+    - longhorn
+
+
+- name: add longhorn helm repo
+  shell: helm repo add longhorn {{longhorn_chart_repo}}
+
+
+- name: update repo
+  shell: helm repo update
+
+- name: helm install longhorn
+  shell: kubectl config use-context {{item}} &&  helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} longhorn longhorn/longhorn -n longhorn-system --create-namespace  --version {{longhorn_version}} --wait
+  loop: "{{ctx_clusters}}"
+
+
+- name: create longhorn storageclass
+  shell: kubectl config use-context {{item}} &&  kubectl create -f {{longhorn_storage_class_yaml}}
+  loop: "{{ctx_clusters}}"
+
