@@ -25,7 +25,7 @@ node() {
             jobName = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-1].trim().toLowerCase()
             currentWs = sh(returnStdout: true, script: 'pwd').trim()
             ansiblePlaybook = "$currentWs/kubernetes/ansible/deploy_mesh_service.yml"
-            ansibleExtraArgs = "--extra-vars \"release_name=$jobName role_name=${params.role_name}\" --vault-password-file /var/lib/jenkins/secrets/vault-pass"
+            ansibleExtraArgs = "--extra-vars \"release_name=$jobName role_name=${params.role_name}\"  --tags ${params.deployment_model} --vault-password-file /var/lib/jenkins/secrets/vault-pass"
             values.put('env', envDir)
             values.put('module', module) 
             values.put('currentWs', currentWs)

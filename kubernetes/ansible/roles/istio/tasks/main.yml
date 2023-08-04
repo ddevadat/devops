@@ -6,19 +6,57 @@
     dest: "/tmp/{{item}}.yaml"
   with_items:
     - istio
-
+  tags:
+    - helm  
 
 - name: add istio helm repo
   shell: helm repo add istio {{istio_chart_repo}}
-
+  tags:
+    - helm
 
 - name: update repo
   shell: helm repo update
+  tags:
+    - helm
 
 - name: helm install istio-base
   shell: kubectl config use-context {{item}} &&  helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} istio-base istio/base -n istio-system --create-namespace --set defaultRevision=default --wait
   loop: "{{ctx_clusters}}"
+  tags:
+    - helm
 
 - name: helm install istiod
   shell: kubectl config use-context {{item}} &&  helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} istiod istio/istiod  -n istio-system --create-namespace --wait
   loop: "{{ctx_clusters}}"
+  tags:
+    - helm
+
+- name: tempating variables for multi primary
+  template:
+    src: "{{ item }}.j2"
+    dest: "/tmp/{{item}}.yaml"
+  with_items:
+    - istio_multiprimary_cluster1
+    - istio_multiprimary_cluster2
+  tags:
+    - multi_primary 
+
+- name: Apply the configuration to {{ctx_cluster1}}
+  shell: "istioctl install -y --context="${CTX_CLUSTER1}" -f /tmp/istio_multiprimary_cluster1.yaml"
+  tags:
+    - multi_primary 
+
+- name: Apply the configuration to {{ctx_cluster2}}
+  shell: "istioctl install -y --context="${CTX_CLUSTER2}" -f /tmp/istio_multiprimary_cluster2.yaml"
+  tags:
+    - multi_primary 
+
+- name: Install a remote secret in {{ctx_cluster2}} that provides access to {{ctx_cluster1}} API server.
+  shell: "istioctl x create-remote-secret --context=${CTX_CLUSTER1} --name={{ctx_cluster1}} | kubectl apply -f - --context=${CTX_CLUSTER2}"
+  tags:
+    - multi_primary 
+
+- name: Install a remote secret in {{ctx_cluster1}} that provides access to {{ctx_cluster2}} API server.
+  shell: "istioctl x create-remote-secret --context=${CTX_CLUSTER2} --name={{ctx_cluster2}} | kubectl apply -f - --context=${CTX_CLUSTER1}"
+  tags:
+    - multi_primary 

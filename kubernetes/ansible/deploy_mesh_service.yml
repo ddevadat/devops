@@ -5,6 +5,8 @@
     - "{{inventory_dir}}/secrets.yml"
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
+    CTX_CLUSTER1: "{{ctx_cluster1}}"
+    CTX_CLUSTER2: "{{ctx_cluster2}}"
     OCI_CLI_AUTH: instance_principal
   roles:
     - "{{ role_name }}"
