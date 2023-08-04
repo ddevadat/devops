@@ -42,12 +42,12 @@
     - multi_primary 
 
 - name: Apply the configuration to {{ctx_cluster1}}
-  shell: "istioctl install -y --context="${CTX_CLUSTER1}" -f /tmp/istio_multiprimary_cluster1.yaml"
+  shell: "istioctl install -y --context=${CTX_CLUSTER1} -f /tmp/istio_multiprimary_cluster1.yaml"
   tags:
     - multi_primary 
 
 - name: Apply the configuration to {{ctx_cluster2}}
-  shell: "istioctl install -y --context="${CTX_CLUSTER2}" -f /tmp/istio_multiprimary_cluster2.yaml"
+  shell: "istioctl install -y --context=${CTX_CLUSTER2} -f /tmp/istio_multiprimary_cluster2.yaml"
   tags:
     - multi_primary 
 
