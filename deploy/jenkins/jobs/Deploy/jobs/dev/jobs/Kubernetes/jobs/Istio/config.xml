@@ -86,6 +86,14 @@ return """&lt;b&gt;This parameter is not used&lt;/b&gt;"""</script>
             </a>
           </choices>
         </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>deployment_model</name>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>multi_primary</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
     <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.10">
