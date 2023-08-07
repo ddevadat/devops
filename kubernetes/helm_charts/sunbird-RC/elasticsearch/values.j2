@@ -83,10 +83,10 @@ networkHost: "0.0.0.0"
 
 volumeClaimTemplate:
   accessModes: [ "ReadWriteOnce" ]
-  storageClassName: "{{storage_class_name}}"
+  storageClassName: {{ elastic_search_storage_class|default('oci-bv') }}
   resources:
     requests:
-      storage: 15Gi
+      storage: {{ elastic_search_storage_size|default('15Gi') }}
 
 rbac:
   create: true
