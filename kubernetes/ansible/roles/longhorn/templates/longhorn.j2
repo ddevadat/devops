@@ -6,4 +6,4 @@ persistence:
 
 service:
   ui:
-    type: LoadBalancer
+    type: {{ longhorn_ui_type |default('ClusterIP') }}
