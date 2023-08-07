@@ -3,3 +3,7 @@
 
 persistence:
   defaultClassReplicaCount: {{ longhorn_default_replica_count |default('3') }}
+
+service:
+  ui:
+    type: Loadbalancer
