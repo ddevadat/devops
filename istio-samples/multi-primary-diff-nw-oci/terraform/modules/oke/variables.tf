@@ -1,9 +1,9 @@
 variable "compartment_id" {
-    description = "Compartment OCID"
+  description = "Compartment OCID"
 }
 
 variable "vcn_id" {
-    description = "VCN OCID"
+  description = "VCN OCID"
 }
 
 variable "kubernetes_version" {
@@ -60,3 +60,48 @@ variable "cluster_type" {
   }
 }
 
+
+variable "node_pool_name" {
+  default     = "pool1"
+  description = "Name of the node pool"
+}
+
+variable "node_pool_size" {
+  default     = "1"
+  description = "Pool Size"
+}
+
+variable "node_pool_shape" {
+  default     = "VM.Standard.E3.Flex"
+  description = "A shape is a template that determines the number of OCPUs, amount of memory, and other resources allocated to a newly created instance for the Worker Node"
+}
+
+
+variable "tenancy_id" {
+  description = "The tenancy id of the OCI Cloud Account in which to create the resources."
+  type        = string
+}
+
+
+variable "node_pool_node_shape_config_ocpus" {
+  default     = "1" # Only used if flex shape is selected
+  description = "You can customize the number of OCPUs to a flexible shape"
+}
+variable "node_pool_node_shape_config_memory_in_gbs" {
+  default     = "16" # Only used if flex shape is selected
+  description = "You can customize the amount of memory allocated to a flexible shape"
+}
+
+variable "image_operating_system" {
+  default     = "Oracle Linux"
+  description = "The OS/image installed on all nodes in the node pool."
+}
+variable "image_operating_system_version" {
+  default     = "7.9"
+  description = "The OS/image version installed on all nodes in the node pool."
+}
+
+variable "node_pool_boot_volume_size_in_gbs" {
+  default     = "50"
+  description = "Specify a custom boot volume size (in GB)"
+}

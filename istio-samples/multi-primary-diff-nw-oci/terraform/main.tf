@@ -33,12 +33,14 @@ module "vcn_cluster2" {
 module "oke_cluster1" {
   source                  = "./modules/oke"
   compartment_id          = var.compartment_id
+  tenancy_id              = var.tenancy_id
   cluster_name            = "oke_cluster1"
   vcn_id                  = module.vcn_cluster1.vcn_id
   control_plane_subnet_id = module.vcn_cluster1.subnet_k8s_ep_id
   worker_node_subnet_id   = module.vcn_cluster1.subnet_worker_id
-  lb_subnet_id            = module.vcn_cluster1.subnet_lb_id
-  pods_cidr               = lookup(var.cls1_network_cidrs, "SUBNET_WORKER_NODE-CIDR")
+  # worker_node_subnet_id = "ocid1.subnet.oc1.ap-osaka-1.aaaaaaaajlh4tah2vt3z6nhwkayykedsmsbicqpbnz4zedzwjzd2d47o3dba"
+  lb_subnet_id = module.vcn_cluster1.subnet_lb_id
+  pods_cidr    = lookup(var.cls1_network_cidrs, "SUBNET_WORKER_NODE-CIDR")
   providers = {
     oci = oci.cls1
   }
