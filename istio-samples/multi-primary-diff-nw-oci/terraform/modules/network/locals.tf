@@ -1,0 +1,18 @@
+locals {
+  http_port_number              = "80"
+  https_port_number             = "443"
+  k8s_api_port_number           = "6443"
+  k8s_control_plane_port_number = "12250"
+  kube_proxy_port_number        = "10256"
+  lb_work_min_port_number       = "30000"
+  lb_work_max_port_number       = "32767"
+  ssh_port_number               = "22"
+  jenkins_port_number           = "8080"
+  longhorn_ui_port_number       = "9990"
+  postgres_port_number          = "5432"
+  tcp_protocol_number           = "6"
+  icmp_protocol_number          = "1"
+  icmp_options_type             = "3"
+  icmp_options_code             = "4"
+  all_protocols                 = "all"
+}
