@@ -8,6 +8,7 @@ Steps to orchestrate service mesh with [Istio](https://istio.io/) across two dif
 
 - `oci` CLI
 - `kubectl`
+- `terraform`
 - `helm` CLI
 
 
