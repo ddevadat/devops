@@ -10,6 +10,19 @@ Steps to orchestrate service mesh with [Istio](https://istio.io/) across two dif
 - `kubectl`
 - `helm` CLI
 
+
+
+## Set Env Variables
+
+```
+export cluster1_oci_profile_name="REGION1"
+export cluster2_oci_profile_name="REGION2"
+export cluster1_region="<region_1_identifier>
+export cluster2_region="<region_2_identifier>"
+export compartment_id="<compartment_ocid>"
+
+```
+
 ## Configure OCI cli for two regions
 
 Get the [region](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#About) identifier for OCI
