@@ -42,3 +42,12 @@ tenancy=ocid1.tenancy.oc1..xxxxxx
 region=<region_identifier>
 key_file=<path_to_api_key_file>
 ```
+
+## Provision Infra
+
+This will create two oke cluster in two different region , with remote peering
+
+```
+./scripts/create_infra.sh
+
+```
