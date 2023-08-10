@@ -15,8 +15,6 @@ Steps to orchestrate service mesh with [Istio](https://istio.io/) across two dif
 ## Set Env Variables
 
 ```
-export cluster1_oci_profile_name="REGION1"
-export cluster2_oci_profile_name="REGION2"
 export cluster1_region="<region_1_identifier>
 export cluster2_region="<region_2_identifier>"
 export compartment_id="<compartment_ocid>"
