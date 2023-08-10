@@ -26,3 +26,14 @@ fi
 if [ $cluster2_rpc_status != "PEERED" ];then   
     oci --profile $cluster2_oci_profile_name network remote-peering-connection connect --peer-id $cluster1_rpc_id --peer-region-name $cluster1_region  --remote-peering-connection-id $cluster2_rpc_idfi
 fi
+
+
+echo -e "\n\e[0;32m${bold}Getting Cluster 1 Node Status ${normal}"
+export KUBECONFIG=../terraform/modules/oke/generated/oke_cluster1
+kubectl get nodes
+
+echo -e "\n\e[0;32m${bold}Getting Cluster 2 Node Status ${normal}"
+export KUBECONFIG=../terraform/modules/oke/generated/oke_cluster2
+kubectl get nodes
+
+

@@ -10,7 +10,7 @@
 # .tfvars files
 *.tfvars
 
-generated/**
+**/generated/**
 
 # visual code
  **/.vscode/*

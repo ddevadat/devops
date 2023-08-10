@@ -13,3 +13,7 @@ data "oci_core_images" "node_pool_images" {
   sort_order               = "DESC"
 }
 
+data "oci_containerengine_cluster_kube_config" "oke" {
+  cluster_id = oci_containerengine_cluster.oke_cluster.id
+  depends_on = [oci_containerengine_node_pool.oke_node_pool]
+}
