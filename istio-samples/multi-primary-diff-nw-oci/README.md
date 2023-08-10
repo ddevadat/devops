@@ -11,7 +11,10 @@ Steps to orchestrate service mesh with [Istio](https://istio.io/) across two dif
 - `terraform`
 - `helm` CLI
 
-
+### Add section for creating terraform variables
+```
+TBD
+```
 
 ## Set Env Variables
 
