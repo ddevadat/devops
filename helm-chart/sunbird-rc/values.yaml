@@ -3,7 +3,8 @@ certificateapi:
   enabled: true
 
 certificatesign:
-  enabled: false
+  enabled: true
+
 
 claim-ms:
   enabled: false
