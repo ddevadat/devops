@@ -1,0 +1,27 @@
+
+certificateapi:
+  enabled: false
+
+certificatesign:
+  enabled: false
+
+claim-ms:
+  enabled: false
+
+elasticsearch:
+  enabled: false
+
+filestorage:
+  enabled: true
+  storage_size: 1Gi
+  storage_class_name: longhorn
+  filestorageenv:
+    MINIO_ROOT_USER: admin
+    MINIO_ROOT_PASSWORD: admin1234
+
+keycloak:
+  enabled: false
+
+registry:
+  enabled: false
+
