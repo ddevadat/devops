@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "VehicleCertificateV2": {
+      "$ref": "#/definitions/VehicleCertificateV2"
+    }
+  },
+  "required": [
+    "VehicleCertificateV2"
+  ],
+  "title": "VehicleCertificateV2",
+  "definitions": {
+    "VehicleCertificateV2": {
+      "$id": "#/properties/VehicleCertificateV2",
+      "type": "object",
+      "title": "The VehicleCertificateV2 Schema",
+      "required": [
+        "regnumber",
+        "mnfyear",
+        "dateofaward",
+        "nameofScheme",
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "dateofaward": {
+          "type": "string",
+          "title": "Date Of Award",
+          "format": "date"
+        },
+        "nameofScheme": {
+          "type": "string",
+          "title": "Name of Scheme"
+        },
+        "regnumber": {
+          "type": "string",
+          "title": "Vehicle Registration Number"
+        },
+        "mnfyear": {
+          "type": "string",
+          "title": "Manufacturing year"
+        }
+      }
+    }
+  },
+  "_osConfig": {
+    "uniqueIndexFields": [],
+    "privateFields": [],
+    "privateFieldConfig": "HASH",
+    "internalFieldConfig": "FULL",
+    "systemFields": [
+      "osCreatedAt",
+      "osUpdatedAt",
+      "osCreatedBy",
+      "osUpdatedBy"
+    ],
+    "roles": [
+      "Official","CitizenV2"
+    ],
+    "inviteRoles": [
+      "anonymous"
+    ],
+    "credentialTemplate": {
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://gist.githubusercontent.com/ddevadat/4bb88499cf374f7ba8d1c9138f52eb67/raw/7c62ff3d2af28e1abc6dfcc2c95b89a97c029554/vehiclecertificate_ct.json"
+      ],
+      "type": [
+        "VerifiableCredential"
+      ],
+      "issuanceDate": "{{osCreatedAt}}",
+      "credentialSubject": {
+        "type": "Vehicle",
+        "name": "{{name}}",
+        "mnfyear": "{{mnfyear}}",
+        "regnumber": "{{regnumber}}"
+      },
+      "evidence": {
+        "type": "Registration",
+        "nameofScheme": "{{nameofScheme}}",
+        "dateofaward": "{{dateofaward}}"
+      },
+      "issuer": "did:web:sunbirdrc.dev/vc/Official"
+    },
+    "certificateTemplates": {
+      "html": "https://gist.githubusercontent.com/ddevadat/315f89c88cb0a45e1757a1e153e28228/raw/eec4dcce02e0602c0880ec22a0f0e29944c56b01/registrationcertificate_2.svg"
+    }
+  }
+}

@@ -36,16 +36,22 @@ keycloak:
     KEYCLOAK_PASSWORD: 'admin'
     KEYCLOAK_LOGO: 'https://svgshare.com/i/hCs.svg'
     DB_VENDOR: 'postgres'
-    DB_ADDR: "XXXXXXX"
+    DB_ADDR: "XXXXX"
     DB_PORT: '5432'
     DB_DATABASE: 'registry'
     DB_USER: 'postgres'
     KEYCLOAK_USER: 'admin'
     PROXY_ADDRESS_FORWARDING: 'true'
     KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
-    DOMAIN_NAME: "example.com"
-    ADMIN_API_SECRET: "XXXXXXXXX"
+    DOMAIN_NAME: "demo.sunbirdrc.app.oci"
+    ADMIN_API_SECRET: "XXXXX"
 
 registry:
-  enabled: false
+  enabled: true
+  rccoreenv:
+    connectionInfo_uri: 'jdbc:postgresql://XXXXXX:5432/registry'
+    connectionInfo_username: 'postgres'
+    connectionInfo_password: 'postgres'
+    elastic_search_enabled: 'false'
+    sunbird_sso_admin_client_secret: 'XXXXXX'
 
