@@ -8,6 +8,10 @@ certificatesign:
 
 claim-ms:
   enabled: false
+  claim_msenv:
+    connectionInfo_uri: ''
+    connectionInfo_username: ''
+    connectionInfo_password: ''
 
 elasticsearch:
   enabled: false
