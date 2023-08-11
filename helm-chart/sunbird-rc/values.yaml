@@ -1,6 +1,6 @@
 
 certificateapi:
-  enabled: false
+  enabled: true
 
 certificatesign:
   enabled: false

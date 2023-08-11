@@ -1,7 +1,7 @@
 dependencies:
-  # - name: certificateapi
-  #   version: 0.1.0
-  #   condition: certificateapi.enabled
+  - name: certificateapi
+    version: 0.1.0
+    condition: certificateapi.enabled
   # - name: certificatesign
   #   version: 0.1.0
   #   condition: certificatesign.enabled
