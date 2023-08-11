@@ -14,9 +14,9 @@ dependencies:
   - name: filestorage
     version: 0.1.0
     condition: filestorage.enabled
-  # - name: keycloak
-  #   version: 0.1.0
-  #   condition: keycloak.enabled
+  - name: keycloak
+    version: 0.1.0
+    condition: keycloak.enabled
   # - name: registry
   #   version: 0.1.0
   #   condition: registry.enabled

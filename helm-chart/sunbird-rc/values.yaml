@@ -1,9 +1,9 @@
 
 certificateapi:
-  enabled: true
+  enabled: false
 
 certificatesign:
-  enabled: true
+  enabled: false
 
 
 claim-ms:
@@ -22,7 +22,7 @@ elasticsearch:
         storage: 5Gi
 
 filestorage:
-  enabled: true
+  enabled: false
   storage_size: 1Gi
   storage_class_name: longhorn
   filestorageenv:
@@ -30,7 +30,21 @@ filestorage:
     MINIO_ROOT_PASSWORD: admin1234
 
 keycloak:
-  enabled: false
+  enabled: true
+  keycloakenv:
+    DB_PASSWORD: 'postgres'
+    KEYCLOAK_PASSWORD: 'admin'
+    KEYCLOAK_LOGO: 'https://svgshare.com/i/hCs.svg'
+    DB_VENDOR: 'postgres'
+    DB_ADDR: "XXXXXXX"
+    DB_PORT: '5432'
+    DB_DATABASE: 'registry'
+    DB_USER: 'postgres'
+    KEYCLOAK_USER: 'admin'
+    PROXY_ADDRESS_FORWARDING: 'true'
+    KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+    DOMAIN_NAME: "example.com"
+    ADMIN_API_SECRET: "XXXXXXXXX"
 
 registry:
   enabled: false
