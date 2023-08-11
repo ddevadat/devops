@@ -5,12 +5,12 @@ dependencies:
   - name: certificatesign
     version: 0.1.0
     condition: certificatesign.enabled
-  # - name: claim-ms
-  #   version: 0.1.0
-  #   condition: claim-ms.enabled
-  # - name: elasticsearch
-  #   version: 0.1.0
-  #   condition: elasticsearch.enabled
+  - name: claim-ms
+    version: 0.1.0
+    condition: claim-ms.enabled
+  - name: elasticsearch
+    version: 7.3.2
+    condition: elasticsearch.enabled
   - name: filestorage
     version: 0.1.0
     condition: filestorage.enabled

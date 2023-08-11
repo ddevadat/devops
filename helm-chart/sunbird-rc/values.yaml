@@ -14,7 +14,12 @@ claim-ms:
     connectionInfo_password: ''
 
 elasticsearch:
-  enabled: false
+  enabled: false 
+  volumeClaimTemplate:
+    storageClassName: longhorn
+    resources:
+      requests:
+        storage: 5Gi
 
 filestorage:
   enabled: true
