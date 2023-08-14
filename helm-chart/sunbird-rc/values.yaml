@@ -1,9 +1,15 @@
 
 certificateapi:
   enabled: false
+  CERTIFICATE_DOMAIN_URL: "https://example.com"
+  CERTIFICATE_PUBLIC_KEY: ''
+  CERTIFICATE_PRIVATE_KEY: ''
 
 certificatesign:
   enabled: false
+  CERTIFICATE_DOMAIN_URL: "https://example.com"
+  CERTIFICATE_PUBLIC_KEY: ""
+  CERTIFICATE_PRIVATE_KEY: ""
 
 
 claim-ms:
@@ -12,6 +18,7 @@ claim-ms:
     connectionInfo_uri: ''
     connectionInfo_username: ''
     connectionInfo_password: ''
+    sunbirdrc_url: http://registry:8081
 
 elasticsearch:
   enabled: false 
@@ -53,5 +60,10 @@ registry:
     connectionInfo_username: 'postgres'
     connectionInfo_password: 'postgres'
     elastic_search_enabled: 'false'
+    elastic_search_connection_url: 'elasticsearch-master:9200'
     sunbird_sso_admin_client_secret: 'XXXXXX'
+    sunbird_sso_url: http://keycloak:8080/auth
+    filestorage_access_key: 'admin'
+    filestorage_secret_key: 'admin1234'
+
 
