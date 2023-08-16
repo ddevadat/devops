@@ -1,0 +1,438 @@
+{
+  "environment": {
+    "IAM": [
+      {
+        "name": "environment_prefix",
+        "type": "textbox",
+        "defaultvalue": "P",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "domain_admin_email",
+        "type": "textbox",
+        "defaultvalue": "noreply@example.com",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "enable_dmz",
+        "type": "boolean",
+        "defaultvalue": "False",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "enable_shared_tools",
+        "type": "boolean",
+        "defaultvalue": "False",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      }
+    ],
+    "Budget": [
+      {
+        "name": "enable_budget",
+        "type": "boolean",
+        "defaultvalue": "False",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "budget_alert_rule_message",
+        "type": "textbox",
+        "defaultvalue": "[PROD] Budget 70% alert",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_budget",
+        "value": ""
+      },
+      {
+        "name": "budget_alert_rule_threshold",
+        "type": "textbox",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_budget",
+        "value": ""
+      },
+      {
+        "name": "budget_amount",
+        "type": "textbox",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_budget",
+        "value": ""
+      },
+      {
+        "name": "budget_alert_rule_recipients",
+        "type": "textbox-array",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_budget",
+        "value": ""
+      }
+    ],
+    "Network": [
+      {
+        "name": "enable_internet_gateway_hub",
+        "type": "boolean",
+        "defaultvalue": "True",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "enable_nat_gateway_hub",
+        "type": "boolean",
+        "defaultvalue": "True",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "enable_service_gateway_hub",
+        "type": "boolean",
+        "defaultvalue": "True",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "hub_vcn_cidr_block",
+        "type": "textbox",
+        "defaultvalue": "10.1.0.0/16",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "hub_public_subnet_cidr_block",
+        "type": "textbox",
+        "defaultvalue": "10.1.1.0/24",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "hub_private_subnet_cidr_block",
+        "type": "textbox",
+        "defaultvalue": "10.1.2.0/24",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_vcn_cidr_block",
+        "type": "textbox",
+        "defaultvalue": "10.10.0.0/16",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_subnet1_cidr_block",
+        "type": "textbox",
+        "defaultvalue": "10.10.1.0/24",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_subnet2_cidr_block",
+        "type": "textbox",
+        "defaultvalue": "10.10.2.0/24",
+        "source": "",
+        "staticvalues": [],
+        "optional": true,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_subnet3_cidr_block",
+        "type": "textbox",
+        "defaultvalue": "10.10.3.0/24",
+        "source": "",
+        "staticvalues": [],
+        "optional": true,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_subnet4_cidr_block",
+        "type": "textbox",
+        "defaultvalue": "10.10.4.0/24",
+        "source": "",
+        "staticvalues": [],
+        "optional": true,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_vcn_display_name",
+        "type": "textbox",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": true,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_vcn_dns_label",
+        "type": "textbox",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": true,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_subnet1_dns_label",
+        "type": "textbox",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": true,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_subnet2_dns_label",
+        "type": "textbox",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": true,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_subnet3_dns_label",
+        "type": "textbox",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": true,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_subnet4_dns_label",
+        "type": "textbox",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": true,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "enable_tools_internet_gateway",
+        "type": "boolean",
+        "defaultvalue": "False",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "enable_tools_nat_gateway",
+        "type": "boolean",
+        "defaultvalue": "True",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      },
+      {
+        "name": "enable_tools_service_gateway",
+        "type": "boolean",
+        "defaultvalue": "True",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      }
+    ],
+    "NetworkExtension": [
+      {
+        "name": "enable_vpn",
+        "type": "boolean",
+        "defaultvalue": "False",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "enable_fastconnect",
+        "type": "boolean",
+        "defaultvalue": "False",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "enable_drg_rpc",
+        "type": "boolean",
+        "defaultvalue": "True",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      }
+    ],
+    "Monitoring": [
+      {
+        "name": "network_topic_endpoints",
+        "type": "textbox-array",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "secops_topic_endpoints",
+        "type": "textbox-array",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "platform_topic_endpoints",
+        "type": "textbox-array",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "identity_topic_endpoints",
+        "type": "textbox-array",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      }
+    ],
+    "Tagging": [
+      {
+        "name": "enable_tagging",
+        "type": "boolean",
+        "defaultvalue": "True",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "cost_center_tagging",
+        "type": "textbox",
+        "defaultvalue": "cost_tag",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_tagging",
+        "value": ""
+      },
+      {
+        "name": "geo_location_tagging",
+        "type": "textbox",
+        "defaultvalue": "geo_tag",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_tagging",
+        "value": ""
+      }
+    ],
+    "WorkloadExtension": [
+      {
+        "name": "workload_compartment_names",
+        "type": "textbox-array",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "additional_workload_subnets_cidr_blocks",
+        "type": "textbox-array",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "",
+        "value": ""
+      },
+      {
+        "name": "shared_tools_workload_subnets_cidr_blocks",
+        "type": "textbox-array",
+        "defaultvalue": "",
+        "source": "",
+        "staticvalues": [],
+        "optional": false,
+        "dependson": "enable_shared_tools",
+        "value": ""
+      }
+    ]
+  }
+}

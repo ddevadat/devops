@@ -1,0 +1,9 @@
+{
+  "config": {
+      "homedir" : "templates/enterprise-landing-zone",
+      "inputgroups": [
+          { "name" : "general", "repeat" : "false"},
+          { "name" : "environment", "repeat" : "true"}
+      ]
+  }
+}
