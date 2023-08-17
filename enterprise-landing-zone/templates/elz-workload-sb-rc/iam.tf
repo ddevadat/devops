@@ -109,62 +109,57 @@ module "workload_compartment" {
   }
 }
 
-# module "groups" {
-#   source             = "../../modules/identity-domain-group"
-#   identity_domain_id = var.identity_domain_id
-#   group_names        = values(local.group_names)
+
+# module "workload_admin_group" {
+#   source             = "../../modules/non-default-domain-group"
+#   idcs_endpoint      = var.identity_domain_url
+#   group_display_name = local.group_names.workload_admin_group_name
+# }
+# module "application_admin_group" {
+#   source             = "../../modules/non-default-domain-group"
+#   idcs_endpoint      = var.identity_domain_url
+#   group_display_name = local.group_names.application_admin_group_name
+# }
+# module "database_admin_group" {
+#   source             = "../../modules/non-default-domain-group"
+#   idcs_endpoint      = var.identity_domain_url
+#   group_display_name = local.group_names.database_admin_group_name
+# }
+# module "datasafe_admin_group" {
+#   count              = var.enable_datasafe ? 1 : 0
+#   source             = "../../modules/non-default-domain-group"
+#   idcs_endpoint      = var.identity_domain_url
+#   group_display_name = local.group_names.datasafe_admin_group_name
+# }
+# module "datasafe_reports_group" {
+#   count              = var.enable_datasafe ? 1 : 0
+#   source             = "../../modules/non-default-domain-group"
+#   idcs_endpoint      = var.identity_domain_url
+#   group_display_name = local.group_names.datasafe_reports_group_name
 # }
 
-module "workload_admin_group" {
-  source             = "../../modules/non-default-domain-group"
-  idcs_endpoint      = var.identity_domain_url
-  group_display_name = local.group_names.workload_admin_group_name
-}
-module "application_admin_group" {
-  source             = "../../modules/non-default-domain-group"
-  idcs_endpoint      = var.identity_domain_url
-  group_display_name = local.group_names.application_admin_group_name
-}
-module "database_admin_group" {
-  source             = "../../modules/non-default-domain-group"
-  idcs_endpoint      = var.identity_domain_url
-  group_display_name = local.group_names.database_admin_group_name
-}
-module "datasafe_admin_group" {
-  count              = var.enable_datasafe ? 1 : 0
-  source             = "../../modules/non-default-domain-group"
-  idcs_endpoint      = var.identity_domain_url
-  group_display_name = local.group_names.datasafe_admin_group_name
-}
-module "datasafe_reports_group" {
-  count              = var.enable_datasafe ? 1 : 0
-  source             = "../../modules/non-default-domain-group"
-  idcs_endpoint      = var.identity_domain_url
-  group_display_name = local.group_names.datasafe_reports_group_name
-}
 
+# module "workload_expansion_policy" {
+#   source           = "../../modules/policies"
+#   compartment_ocid = module.workload_compartment.compartment_id
+#   policy_name      = local.workload_expansion_policy.name
+#   description      = local.workload_expansion_policy.description
+#   statements       = local.workload_expansion_policy.statements
+# }
 
-module "workload_expansion_policy" {
-  source           = "../../modules/policies"
-  compartment_ocid = module.workload_compartment.compartment_id
-  policy_name      = local.workload_expansion_policy.name
-  description      = local.workload_expansion_policy.description
-  statements       = local.workload_expansion_policy.statements
-}
+# module "workload_expansion_sec_policy" {
+#   source           = "../../modules/policies"
+#   compartment_ocid = var.security_compartment_id
+#   policy_name      = local.workload_expansion_policy_security.name
+#   description      = local.workload_expansion_policy_security.description
+#   statements       = local.workload_expansion_policy_security.statements
+# }
 
-module "workload_expansion_sec_policy" {
-  source           = "../../modules/policies"
-  compartment_ocid = var.security_compartment_id
-  policy_name      = local.workload_expansion_policy_security.name
-  description      = local.workload_expansion_policy_security.description
-  statements       = local.workload_expansion_policy_security.statements
-}
-
-module "datasafe_admin_policy" {
-  count            = var.enable_datasafe ? 1 : 0
-  source           = "../../modules/policies"
-  compartment_ocid = var.environment_compartment_id
-  policy_name      = local.datasafe_admin_policy.name
-  description      = local.datasafe_admin_policy.description
-  statements       = local.datasafe_admin_policy.statements
-}
+# module "datasafe_admin_policy" {
+#   count            = var.enable_datasafe ? 1 : 0
+#   source           = "../../modules/policies"
+#   compartment_ocid = var.environment_compartment_id
+#   policy_name      = local.datasafe_admin_policy.name
+#   description      = local.datasafe_admin_policy.description
+#   statements       = local.datasafe_admin_policy.statements
+# }

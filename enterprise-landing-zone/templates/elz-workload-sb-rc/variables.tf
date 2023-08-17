@@ -265,18 +265,18 @@ variable "hub_vcn_id" {
   type        = string
 }
 
-variable "workload_private_spoke_subnet_web_cidr_block" {
+variable "workload_public_spoke_subnet_web_cidr_block" {
   type        = string
-  description = "Workload Enivornment Spoke VCN CIDR Block."
+  description = "Workload Enivornment Web Subnet CIDR Block."
   validation {
-    condition     = can(cidrhost(var.workload_private_spoke_subnet_web_cidr_block, 0))
+    condition     = can(cidrhost(var.workload_public_spoke_subnet_web_cidr_block, 0))
     error_message = "Must be valid IPv4 CIDR."
   }
 }
 
 variable "workload_private_spoke_subnet_app_cidr_block" {
   type        = string
-  description = "Workload Enivornment Spoke VCN CIDR Block."
+  description = "Workload Enivornment App Subnet CIDR Block."
   validation {
     condition     = can(cidrhost(var.workload_private_spoke_subnet_app_cidr_block, 0))
     error_message = "Must be valid IPv4 CIDR."
@@ -285,9 +285,27 @@ variable "workload_private_spoke_subnet_app_cidr_block" {
 
 variable "workload_private_spoke_subnet_db_cidr_block" {
   type        = string
-  description = "Workload Enivornment Spoke VCN CIDR Block."
+  description = "Workload Enivornment DB Subnet CIDR Block."
   validation {
     condition     = can(cidrhost(var.workload_private_spoke_subnet_db_cidr_block, 0))
+    error_message = "Must be valid IPv4 CIDR."
+  }
+}
+
+variable "workload_private_spoke_subnet_k8s_ep_cidr_block" {
+  type        = string
+  description = "Workload Enivornment K8S EP Subnet CIDR Block."
+  validation {
+    condition     = can(cidrhost(var.workload_private_spoke_subnet_k8s_ep_cidr_block, 0))
+    error_message = "Must be valid IPv4 CIDR."
+  }
+}
+
+variable "workload_private_spoke_subnet_worker_cidr_block" {
+  type        = string
+  description = "Workload Enivornment K8S Worker Subnet CIDR Block."
+  validation {
+    condition     = can(cidrhost(var.workload_private_spoke_subnet_worker_cidr_block, 0))
     error_message = "Must be valid IPv4 CIDR."
   }
 }
@@ -315,6 +333,15 @@ variable "enable_service_gateway_spoke" {
   }
 }
 
+variable "enable_internet_gateway_spoke" {
+  type    = bool
+  default = false
+  validation {
+    condition     = can(regex("^([t][r][u][e]|[f][a][l][s][e])$", var.enable_internet_gateway_spoke))
+    error_message = "The variable must be either true or false."
+  }
+}
+
 variable "vcn_dns_label" {
   description = "A DNS label for the VCN, used in conjunction with the VNIC's hostname and subnet's DNS label to form a fully qualified domain name (FQDN) for each VNIC within this subnet"
   type        = string
@@ -325,22 +352,33 @@ variable "vcn_dns_label" {
   }
 }
 
-variable "enable_internet_gateway_spoke" {
-  type    = bool
-  default = false
-  validation {
-    condition     = can(regex("^([t][r][u][e]|[f][a][l][s][e])$", var.enable_internet_gateway_spoke))
-    error_message = "The enable_internet_gateway_spoke variable must be either true or false."
-  }
-}
 
-
-variable "workload_private_spoke_subnet_web_dns_label" {
+variable "workload_public_spoke_subnet_web_dns_label" {
   description = "A DNS label for the VCN Subnet, used in conjunction with the VNIC's hostname and subnet's DNS label to form a fully qualified domain name (FQDN) for each VNIC within this subnet"
   type        = string
   default     = "webdnslabel"
   validation {
-    condition     = length(var.workload_private_spoke_subnet_web_dns_label) < 16
+    condition     = length(var.workload_public_spoke_subnet_web_dns_label) < 16
+    error_message = "DNS Label : Max 15 alphanumeric characters allowed."
+  }
+}
+
+variable "workload_private_spoke_subnet_k8s_dns_label" {
+  description = "A DNS label for the VCN Subnet, used in conjunction with the VNIC's hostname and subnet's DNS label to form a fully qualified domain name (FQDN) for each VNIC within this subnet"
+  type        = string
+  default     = "k8sdnslabel"
+  validation {
+    condition     = length(var.workload_private_spoke_subnet_k8s_dns_label) < 16
+    error_message = "DNS Label : Max 15 alphanumeric characters allowed."
+  }
+}
+
+variable "workload_private_spoke_subnet_wrkr_dns_label" {
+  description = "A DNS label for the VCN Subnet, used in conjunction with the VNIC's hostname and subnet's DNS label to form a fully qualified domain name (FQDN) for each VNIC within this subnet"
+  type        = string
+  default     = "wrkrdnslabel"
+  validation {
+    condition     = length(var.workload_private_spoke_subnet_wrkr_dns_label) < 16
     error_message = "DNS Label : Max 15 alphanumeric characters allowed."
   }
 }
@@ -377,12 +415,23 @@ variable "service_gateway_display_name" {
   default     = "sgw"
 }
 
+variable "internet_gateway_display_name" {
+  description = "(Updatable) Name of Internet Gateway. Does not have to be unique."
+  type        = string
+  default     = "igw"
+}
+
 variable "nat_gw_spoke_check" {
   type    = list(string)
   default = [""]
 }
 
 variable "service_gw_spoke_check" {
+  type    = list(string)
+  default = [""]
+}
+
+variable "internet_gw_spoke_check" {
   type    = list(string)
   default = [""]
 }
@@ -399,7 +448,7 @@ variable "vcn_display_name" {
   default     = ""
 }
 
-variable "workload_private_spoke_subnet_web_display_name" {
+variable "workload_public_spoke_subnet_web_display_name" {
   type        = string
   description = "Workload Expansion Spoke Web Subnet Display Name."
   default     = ""
@@ -417,9 +466,27 @@ variable "workload_private_spoke_subnet_db_display_name" {
   default     = ""
 }
 
+variable "workload_private_spoke_subnet_k8s_display_name" {
+  type        = string
+  description = "Workload Expansion k8s endpoint Subnet Display Name."
+  default     = ""
+}
+
+variable "workload_private_spoke_subnet_wrkr_display_name" {
+  type        = string
+  description = "Workload Expansion k8s worker Subnet Display Name."
+  default     = ""
+}
+
 variable "route_table_display_name" {
   type        = string
   description = "Workload Expansion Spoke Route Table Name Disply Name."
+  default     = ""
+}
+
+variable "public_route_table_display_name" {
+  type        = string
+  description = "Workload Expansion Spoke Public Route Table Name Disply Name."
   default     = ""
 }
 
