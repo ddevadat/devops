@@ -2,9 +2,9 @@
 #     Workload | Workload Expansion Spoke Network Configuration      #
 ######################################################################
 locals {
-  workload_nat_gw_spoke_check     = var.enable_nat_gateway_spoke == true ? var.nat_gw_spoke_check : []
-  workload_service_gw_spoke_check = var.enable_service_gateway_spoke == true ? var.service_gw_spoke_check : []
-  workload_internet_gw_spoke_check     = var.enable_internet_gateway_spoke == true ? var.internet_gw_spoke_check : []
+  workload_nat_gw_spoke_check      = var.enable_nat_gateway_spoke == true ? var.nat_gw_spoke_check : []
+  workload_service_gw_spoke_check  = var.enable_service_gateway_spoke == true ? var.service_gw_spoke_check : []
+  workload_internet_gw_spoke_check = var.enable_internet_gateway_spoke == true ? var.internet_gw_spoke_check : []
 
   ipsec_connection_static_routes = var.enable_vpn_or_fastconnect == "VPN" && var.enable_vpn_on_environment ? var.ipsec_connection_static_routes : []
   customer_onprem_ip_cidr        = var.enable_vpn_or_fastconnect == "FASTCONNECT" ? var.customer_onprem_ip_cidr : []
@@ -104,7 +104,7 @@ locals {
       dns_label                  = var.workload_private_spoke_subnet_wrkr_dns_label
       cidr_block                 = var.workload_private_spoke_subnet_worker_cidr_block
       prohibit_public_ip_on_vnic = true
-    }  
+    }
   }
 
   workload_expansion_public_subnet_map = {
@@ -142,12 +142,55 @@ locals {
     description      = "All Traffic For All Port"
     destination_type = "CIDR_BLOCK"
   }
+
+  security_list_egress_https = {
+    destination      = lookup(data.oci_core_services.all_services.services[0], "cidr_block")
+    protocol         = local.ip_protocols.TCP
+    description      = "Allow Kubernetes control plane to communicate with OKE"
+    destination_type = "SERVICE_CIDR_BLOCK"
+    tcp_destination_port_min = 443
+    tcp_destination_port_max = 443
+  }
+
+  security_list_ingress_k8s_api = {
+    protocol                 = local.ip_protocols.TCP
+    source                   = var.workload_private_spoke_subnet_worker_cidr_block
+    description              = "Kubernetes worker to Kubernetes API endpoint communication"
+    source_type              = "CIDR_BLOCK"
+    tcp_destination_port_min = 6443
+    tcp_destination_port_max = 6443
+  }
+  security_list_ingress_k8s_cp = {
+    protocol                 = local.ip_protocols.TCP
+    source                   = var.workload_private_spoke_subnet_worker_cidr_block
+    description              = "Kubernetes worker to control plane communication"
+    source_type              = "CIDR_BLOCK"
+    tcp_destination_port_min = 12250
+    tcp_destination_port_max = 12250
+  }
+
+  security_list_ingress_k8s_path_discovery = {
+    protocol    = local.ip_protocols.ICMP
+    source      = var.workload_private_spoke_subnet_worker_cidr_block
+    description = "Path Discovery"
+    source_type = "CIDR_BLOCK"
+    icmp_type   = 3
+    icmp_code   = 4
+  }
 }
 #Get Service Gateway For Region .
 data "oci_core_services" "service_gateway" {
   filter {
     name   = "name"
     values = [".*Object.*Storage"]
+    regex  = true
+  }
+}
+
+data "oci_core_services" "all_services" {
+  filter {
+    name   = "name"
+    values = ["All .* Services In Oracle Services Network"]
     regex  = true
   }
 }
@@ -181,6 +224,18 @@ module "workload_spoke_security_list" {
   egress_rules  = [local.security_list_egress]
   ingress_rules = [local.security_list_ingress] # , local.security_list_ingress_ssh
 }
+
+module "workload_spoke_k8s_security_list" {
+  source = "../../modules/security-list"
+
+  compartment_id             = var.workload_compartment_id
+  vcn_id                     = module.workload_spoke_vcn.vcn_id
+  security_list_display_name = var.security_list_k8s_display_name
+
+  egress_rules  = [local.security_list_egress, local.security_list_egress_https]
+  ingress_rules = [local.security_list_ingress_k8s_cp, local.security_list_ingress_k8s_api, local.security_list_ingress_k8s_path_discovery] # , local.security_list_ingress_ssh
+}
+
 ######################################################################
 #          Create Workload VCN Spoke Subnet                          #
 ######################################################################
@@ -224,11 +279,11 @@ module "workload-spoke-service-gateway" {
 }
 
 module "workload-spoke-internet-gateway" {
-  source                       = "../../modules/internet-gateway"
-  count                        = var.enable_internet_gateway_spoke ? 1 : 0
-  network_compartment_id       = var.workload_compartment_id
+  source                        = "../../modules/internet-gateway"
+  count                         = var.enable_internet_gateway_spoke ? 1 : 0
+  network_compartment_id        = var.workload_compartment_id
   internet_gateway_display_name = var.internet_gateway_display_name
-  vcn_id                       = module.workload_spoke_vcn.vcn_id
+  vcn_id                        = module.workload_spoke_vcn.vcn_id
 }
 
 ######################################################################

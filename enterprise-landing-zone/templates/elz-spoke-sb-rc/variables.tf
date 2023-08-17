@@ -168,6 +168,12 @@ variable "security_list_display_name" {
   type        = string
   description = "Workload Expansion Spoke Security List Name Disly Name."
 }
+
+variable "security_list_k8s_display_name" {
+  type        = string
+  description = "Workload Expansion Spoke K8S Security List Name Disly Name."
+}
+
 variable "enable_vpn_or_fastconnect" {}
 variable "enable_vpn_on_environment" {}
 variable "ipsec_connection_static_routes" {}

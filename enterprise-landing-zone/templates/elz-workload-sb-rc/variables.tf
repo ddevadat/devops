@@ -496,6 +496,12 @@ variable "security_list_display_name" {
   default     = ""
 }
 
+variable "security_list_k8s_display_name" {
+  type        = string
+  description = "Workload Expansion Spoke K8S Security List Name Disly Name."
+  default     = ""
+}
+
 variable "drg_id" {
   type = string
   validation {

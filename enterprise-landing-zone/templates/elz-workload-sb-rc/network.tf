@@ -33,16 +33,17 @@ module "workload_expansion_spoke" {
   workload_private_spoke_subnet_wrkr_dns_label = var.workload_private_spoke_subnet_wrkr_dns_label
 
   #VCN Gateway Variables
-  enable_nat_gateway_spoke        = var.enable_nat_gateway_spoke
-  enable_service_gateway_spoke    = var.enable_service_gateway_spoke
-  enable_internet_gateway_spoke    = var.enable_internet_gateway_spoke
-  nat_gateway_display_name        = var.nat_gateway_display_name != "" ? var.nat_gateway_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-NAT-${local.region_key[0]}"
-  service_gateway_display_name    = var.service_gateway_display_name != "" ? var.service_gateway_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-SGW-${local.region_key[0]}"
-  internet_gateway_display_name    = var.internet_gateway_display_name != "" ? var.internet_gateway_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-IGW-${local.region_key[0]}"
+  enable_nat_gateway_spoke      = var.enable_nat_gateway_spoke
+  enable_service_gateway_spoke  = var.enable_service_gateway_spoke
+  enable_internet_gateway_spoke = var.enable_internet_gateway_spoke
+  nat_gateway_display_name      = var.nat_gateway_display_name != "" ? var.nat_gateway_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-NAT-${local.region_key[0]}"
+  service_gateway_display_name  = var.service_gateway_display_name != "" ? var.service_gateway_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-SGW-${local.region_key[0]}"
+  internet_gateway_display_name = var.internet_gateway_display_name != "" ? var.internet_gateway_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-IGW-${local.region_key[0]}"
 
   route_table_display_name        = var.route_table_display_name != "" ? var.route_table_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-RTPRV-${local.region_key[0]}"
   public_route_table_display_name = var.public_route_table_display_name != "" ? var.public_route_table_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-RTPUB-${local.region_key[0]}"
   security_list_display_name      = var.security_list_display_name != "" ? var.security_list_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-Security-List"
+  security_list_k8s_display_name  = var.security_list_k8s_display_name != "" ? var.security_list_k8s_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-K8S-Security-List"
   drg_id                          = var.drg_id
   hub_public_subnet_cidr_block    = var.hub_public_subnet_cidr_block
   hub_private_subnet_cidr_block   = var.hub_private_subnet_cidr_block

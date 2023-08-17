@@ -22,7 +22,7 @@ resource "oci_core_security_list" "security_list_spoke" {
       destination      = egress_security_rules.value.destination
       protocol         = egress_security_rules.value.protocol
       description      = egress_security_rules.value.description
-      destination_type = egress_security_rules.value.destination_type
+      destination_type = egress_security_rules.value.destination_type    
     }
   }
 
