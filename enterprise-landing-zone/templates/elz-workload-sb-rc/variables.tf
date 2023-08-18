@@ -265,11 +265,11 @@ variable "hub_vcn_id" {
   type        = string
 }
 
-variable "workload_public_spoke_subnet_web_cidr_block" {
+variable "workload_private_spoke_subnet_web_cidr_block" {
   type        = string
   description = "Workload Enivornment Web Subnet CIDR Block."
   validation {
-    condition     = can(cidrhost(var.workload_public_spoke_subnet_web_cidr_block, 0))
+    condition     = can(cidrhost(var.workload_private_spoke_subnet_web_cidr_block, 0))
     error_message = "Must be valid IPv4 CIDR."
   }
 }
@@ -353,12 +353,12 @@ variable "vcn_dns_label" {
 }
 
 
-variable "workload_public_spoke_subnet_web_dns_label" {
+variable "workload_private_spoke_subnet_web_dns_label" {
   description = "A DNS label for the VCN Subnet, used in conjunction with the VNIC's hostname and subnet's DNS label to form a fully qualified domain name (FQDN) for each VNIC within this subnet"
   type        = string
   default     = "webdnslabel"
   validation {
-    condition     = length(var.workload_public_spoke_subnet_web_dns_label) < 16
+    condition     = length(var.workload_private_spoke_subnet_web_dns_label) < 16
     error_message = "DNS Label : Max 15 alphanumeric characters allowed."
   }
 }
@@ -448,7 +448,7 @@ variable "vcn_display_name" {
   default     = ""
 }
 
-variable "workload_public_spoke_subnet_web_display_name" {
+variable "workload_private_spoke_subnet_web_display_name" {
   type        = string
   description = "Workload Expansion Spoke Web Subnet Display Name."
   default     = ""

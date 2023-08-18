@@ -12,21 +12,21 @@ module "workload_expansion_spoke" {
   vcn_dns_label           = var.vcn_dns_label
   vcn_display_name        = var.vcn_display_name != "" ? var.vcn_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-VCN-${local.region_key[0]}"
   #Spoke VCN Subnet Variables
-  workload_public_spoke_subnet_web_display_name   = var.workload_public_spoke_subnet_web_display_name != "" ? var.workload_public_spoke_subnet_web_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-SUB-${local.region_key[0]}-WEB"
+  workload_private_spoke_subnet_web_display_name   = var.workload_private_spoke_subnet_web_display_name != "" ? var.workload_private_spoke_subnet_web_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-SUB-${local.region_key[0]}-WEB"
   workload_private_spoke_subnet_app_display_name  = var.workload_private_spoke_subnet_app_display_name != "" ? var.workload_private_spoke_subnet_app_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-SUB-${local.region_key[0]}-APP"
   workload_private_spoke_subnet_db_display_name   = var.workload_private_spoke_subnet_db_display_name != "" ? var.workload_private_spoke_subnet_db_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-SUB-${local.region_key[0]}-DB"
   workload_private_spoke_subnet_k8s_display_name  = var.workload_private_spoke_subnet_k8s_display_name != "" ? var.workload_private_spoke_subnet_k8s_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-SUB-${local.region_key[0]}-K8S"
   workload_private_spoke_subnet_wrkr_display_name = var.workload_private_spoke_subnet_wrkr_display_name != "" ? var.workload_private_spoke_subnet_wrkr_display_name : "OCI-ELZ-${var.workload_prefix}-EXP-SPK-SUB-${local.region_key[0]}-WRK"
 
 
-  workload_public_spoke_subnet_web_cidr_block     = var.workload_public_spoke_subnet_web_cidr_block
+  workload_private_spoke_subnet_web_cidr_block     = var.workload_private_spoke_subnet_web_cidr_block
   workload_private_spoke_subnet_app_cidr_block    = var.workload_private_spoke_subnet_app_cidr_block
   workload_private_spoke_subnet_db_cidr_block     = var.workload_private_spoke_subnet_db_cidr_block
   workload_private_spoke_subnet_k8s_ep_cidr_block = var.workload_private_spoke_subnet_k8s_ep_cidr_block
   workload_private_spoke_subnet_worker_cidr_block = var.workload_private_spoke_subnet_worker_cidr_block
 
 
-  workload_public_spoke_subnet_web_dns_label   = var.workload_public_spoke_subnet_web_dns_label
+  workload_private_spoke_subnet_web_dns_label   = var.workload_private_spoke_subnet_web_dns_label
   workload_private_spoke_subnet_app_dns_label  = var.workload_private_spoke_subnet_app_dns_label
   workload_private_spoke_subnet_db_dns_label   = var.workload_private_spoke_subnet_db_dns_label
   workload_private_spoke_subnet_k8s_dns_label  = var.workload_private_spoke_subnet_k8s_dns_label

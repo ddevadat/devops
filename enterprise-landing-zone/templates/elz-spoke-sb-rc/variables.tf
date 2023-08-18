@@ -31,7 +31,7 @@ variable "vcn_dns_label" {
   description = "A DNS label for the VCN, used in conjunction with the VNIC's hostname and subnet's DNS label to form a fully qualified domain name (FQDN) for each VNIC within this subnet"
   type        = string
 }
-variable "workload_public_spoke_subnet_web_cidr_block" {
+variable "workload_private_spoke_subnet_web_cidr_block" {
   type        = string
   description = "Workload Enivornment Spoke VCN CIDR Block."
 }
@@ -52,7 +52,7 @@ variable "workload_private_spoke_subnet_worker_cidr_block" {
   description = "Workload Enivornment Spoke VCN CIDR Block."
 }
 
-variable "workload_public_spoke_subnet_web_dns_label" {
+variable "workload_private_spoke_subnet_web_dns_label" {
   description = "A DNS label for the VCN Subnet, used in conjunction with the VNIC's hostname and subnet's DNS label to form a fully qualified domain name (FQDN) for each VNIC within this subnet"
   type        = string
 }
@@ -134,7 +134,7 @@ variable "vcn_display_name" {
   type        = string
   description = "Workload Expansion Spoke VCN Display Name"
 }
-variable "workload_public_spoke_subnet_web_display_name" {
+variable "workload_private_spoke_subnet_web_display_name" {
   type        = string
   description = "Workload Expansion Spoke Web Subnet Display Name."
 }

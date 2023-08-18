@@ -59,18 +59,18 @@ locals {
     }
   }
 
-  spoke_public_route_rules_options = {
-    route_rules_igw_spoke = {
-      for index, route in local.workload_internet_gw_spoke_check : "internet-gw-rule-${index}" => {
-        network_entity_id = module.workload-spoke-internet-gateway[0].internet_gw_id
-        destination       = "0.0.0.0/0"
-        destination_type  = "CIDR_BLOCK"
-      }
-    }
-  }
-  spoke_public_route_rules = {
-    route_rules = merge(local.spoke_public_route_rules_options.route_rules_igw_spoke)
-  }
+  # spoke_public_route_rules_options = {
+  #   route_rules_igw_spoke = {
+  #     for index, route in local.workload_internet_gw_spoke_check : "internet-gw-rule-${index}" => {
+  #       network_entity_id = module.workload-spoke-internet-gateway[0].internet_gw_id
+  #       destination       = "0.0.0.0/0"
+  #       destination_type  = "CIDR_BLOCK"
+  #     }
+  #   }
+  # }
+  # spoke_public_route_rules = {
+  #   route_rules = merge(local.spoke_public_route_rules_options.route_rules_igw_spoke)
+  # }
 
   spoke_route_rules = {
     route_rules = merge(local.spoke_route_rules_options.route_rules_default, local.spoke_route_rules_options.route_rules_nat_spoke, local.spoke_route_rules_options.route_rules_srvc_gw_spoke, local.spoke_route_rules_options.route_rules_fastconnect, local.spoke_route_rules_options.route_rules_vpn)
@@ -105,17 +105,24 @@ locals {
       cidr_block                 = var.workload_private_spoke_subnet_worker_cidr_block
       prohibit_public_ip_on_vnic = true
     }
-  }
-
-  workload_expansion_public_subnet_map = {
     Workload-Spoke-Web-Subnet = {
-      name                       = var.workload_public_spoke_subnet_web_display_name
+      name                       = var.workload_private_spoke_subnet_web_display_name
       description                = "Web Subnet"
-      dns_label                  = var.workload_public_spoke_subnet_web_dns_label
-      cidr_block                 = var.workload_public_spoke_subnet_web_cidr_block
-      prohibit_public_ip_on_vnic = false
+      dns_label                  = var.workload_private_spoke_subnet_web_dns_label
+      cidr_block                 = var.workload_private_spoke_subnet_web_cidr_block
+      prohibit_public_ip_on_vnic = true
     }
   }
+
+  # workload_expansion_public_subnet_map = {
+  #   Workload-Spoke-Web-Subnet = {
+  #     name                       = var.workload_private_spoke_subnet_web_display_name
+  #     description                = "Web Subnet"
+  #     dns_label                  = var.workload_private_spoke_subnet_web_dns_label
+  #     cidr_block                 = var.workload_private_spoke_subnet_web_cidr_block
+  #     prohibit_public_ip_on_vnic = false
+  #   }
+  # }
 
   ip_protocols = {
     ICMP   = "1"
@@ -249,15 +256,15 @@ module "workload_spoke_subnet" {
   subnet_security_list_id = toset([module.workload_spoke_security_list.security_list_id])
 }
 
-module "workload_spoke_public_subnet" {
-  source = "../../modules/subnet"
+# module "workload_spoke_public_subnet" {
+#   source = "../../modules/subnet"
 
-  subnet_map              = local.workload_expansion_public_subnet_map
-  compartment_id          = var.workload_compartment_id
-  vcn_id                  = module.workload_spoke_vcn.vcn_id
-  subnet_route_table_id   = module.workload_spoke_route_table_public.route_table_id
-  subnet_security_list_id = toset([module.workload_spoke_security_list.security_list_id])
-}
+#   subnet_map              = local.workload_expansion_public_subnet_map
+#   compartment_id          = var.workload_compartment_id
+#   vcn_id                  = module.workload_spoke_vcn.vcn_id
+#   subnet_route_table_id   = module.workload_spoke_route_table_public.route_table_id
+#   subnet_security_list_id = toset([module.workload_spoke_security_list.security_list_id])
+# }
 
 ######################################################################
 #          Create Workload VCN Spoke Gateway                         #
@@ -278,13 +285,13 @@ module "workload-spoke-service-gateway" {
   vcn_id                       = module.workload_spoke_vcn.vcn_id
 }
 
-module "workload-spoke-internet-gateway" {
-  source                        = "../../modules/internet-gateway"
-  count                         = var.enable_internet_gateway_spoke ? 1 : 0
-  network_compartment_id        = var.workload_compartment_id
-  internet_gateway_display_name = var.internet_gateway_display_name
-  vcn_id                        = module.workload_spoke_vcn.vcn_id
-}
+# module "workload-spoke-internet-gateway" {
+#   source                        = "../../modules/internet-gateway"
+#   count                         = var.enable_internet_gateway_spoke ? 1 : 0
+#   network_compartment_id        = var.workload_compartment_id
+#   internet_gateway_display_name = var.internet_gateway_display_name
+#   vcn_id                        = module.workload_spoke_vcn.vcn_id
+# }
 
 ######################################################################
 #          Create Workload VCN Spoke Route Table                     #
@@ -297,13 +304,13 @@ module "workload_spoke_route_table" {
   route_rules              = local.spoke_route_rules.route_rules
 }
 
-module "workload_spoke_route_table_public" {
-  source                   = "../../modules/route-table"
-  compartment_id           = var.workload_compartment_id
-  vcn_id                   = module.workload_spoke_vcn.vcn_id
-  route_table_display_name = var.public_route_table_display_name
-  route_rules              = local.spoke_public_route_rules.route_rules
-}
+# module "workload_spoke_route_table_public" {
+#   source                   = "../../modules/route-table"
+#   compartment_id           = var.workload_compartment_id
+#   vcn_id                   = module.workload_spoke_vcn.vcn_id
+#   route_table_display_name = var.public_route_table_display_name
+#   route_rules              = local.spoke_public_route_rules.route_rules
+# }
 
 ######################################################################
 #          Attach Workload Spoke VCN to DRG                          #

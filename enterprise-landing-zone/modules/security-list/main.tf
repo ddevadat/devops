@@ -23,6 +23,22 @@ resource "oci_core_security_list" "security_list_spoke" {
       protocol         = egress_security_rules.value.protocol
       description      = egress_security_rules.value.description
       destination_type = egress_security_rules.value.destination_type    
+      # dynamic "tcp_options" {
+      #   iterator = tcp_options
+      #   for_each = (egress_security_rules.value.tcp_destination_port_min == null) ? [] : [egress_security_rules.value.tcp_destination_port_min]
+      #   content {
+      #     min = tcp_options.value
+      #     max = (egress_security_rules.value.tcp_destination_port_max != null) ? egress_security_rules.value.tcp_destination_port_max : tcp_options.value
+      #     dynamic "source_port_range" {
+      #       iterator = source_port_range
+      #       for_each = (egress_security_rules.value.tcp_source_port_min == null) ? [] : [egress_security_rules.value.tcp_source_port_min]
+      #       content {
+      #         min = source_port_range.value
+      #         max = (egress_security_rules.value.tcp_source_port_max != null) ? egress_security_rules.value.tcp_source_port_max : source_port_range.value
+      #       }
+      #     }
+      #   }
+      # }
     }
   }
 
