@@ -91,6 +91,13 @@ resource "oci_core_security_list" "worker_node_security_list" {
   }
 
   ingress_security_rules {
+    protocol    = local.all_protocols
+    source      = lookup(var.remote_network_cidrs, "SUBNET_WORKER_NODE-CIDR")
+    description = "Allow pods on remote worker node to communicate with pods on other worker nodes."
+
+  }
+
+  ingress_security_rules {
     protocol    = local.icmp_protocol_number
     source      = lookup(var.network_cidrs, "SUBNET_K8S_API_EP-CIDR")
     description = "Path Discovery"

@@ -17,6 +17,10 @@ variable "network_cidrs" {
   type = map(string)
 }
 
+variable "remote_network_cidrs" {
+  type = map(string)
+}
+
 variable "remote_cluster_vcn_cidr" {
   description = "Remote cluster vcn cidr"
 }
