@@ -1,0 +1,69 @@
+
+certificateapi:
+  enabled: false
+  CERTIFICATE_DOMAIN_URL: "https://example.com"
+  CERTIFICATE_PUBLIC_KEY: ''
+  CERTIFICATE_PRIVATE_KEY: ''
+
+certificatesign:
+  enabled: false
+  CERTIFICATE_DOMAIN_URL: "https://example.com"
+  CERTIFICATE_PUBLIC_KEY: ""
+  CERTIFICATE_PRIVATE_KEY: ""
+
+
+claim-ms:
+  enabled: false
+  claim_msenv:
+    connectionInfo_uri: ''
+    connectionInfo_username: ''
+    connectionInfo_password: ''
+    sunbirdrc_url: http://registry:8081
+
+elasticsearch:
+  enabled: false 
+  volumeClaimTemplate:
+    storageClassName: longhorn
+    resources:
+      requests:
+        storage: 5Gi
+
+filestorage:
+  enabled: false
+  storage_size: 1Gi
+  storage_class_name: longhorn
+  filestorageenv:
+    MINIO_ROOT_USER: admin
+    MINIO_ROOT_PASSWORD: admin1234
+
+keycloak:
+  enabled: true
+  keycloakenv:
+    DB_PASSWORD: 'postgres'
+    KEYCLOAK_PASSWORD: 'admin'
+    KEYCLOAK_LOGO: 'https://svgshare.com/i/hCs.svg'
+    DB_VENDOR: 'postgres'
+    DB_ADDR: "XXXXX"
+    DB_PORT: '5432'
+    DB_DATABASE: 'registry'
+    DB_USER: 'postgres'
+    KEYCLOAK_USER: 'admin'
+    PROXY_ADDRESS_FORWARDING: 'true'
+    KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+    DOMAIN_NAME: "demo.sunbirdrc.app.oci"
+    ADMIN_API_SECRET: "XXXXX"
+
+registry:
+  enabled: true
+  rccoreenv:
+    connectionInfo_uri: 'jdbc:postgresql://XXXXXX:5432/registry'
+    connectionInfo_username: 'postgres'
+    connectionInfo_password: 'postgres'
+    elastic_search_enabled: 'false'
+    elastic_search_connection_url: 'elasticsearch-master:9200'
+    sunbird_sso_admin_client_secret: 'XXXXXX'
+    sunbird_sso_url: http://keycloak:8080/auth
+    filestorage_access_key: 'admin'
+    filestorage_secret_key: 'admin1234'
+
+
