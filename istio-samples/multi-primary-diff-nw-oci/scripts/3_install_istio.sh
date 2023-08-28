@@ -33,17 +33,14 @@ EOF
 
 istioctl install -y  --set profile=minimal --context=${cluster_ctx} -f ${script_path}/generated/${cluster_name}.yaml
 
+# Install the east-west gateway
 ${script_path}/gen-eastwest-gateway.sh \
     --mesh mesh1 --cluster ${cluster_name} --network network1 | \
     istioctl --context="${cluster_ctx}" install -y -f -
 
 
-# Install the east-west gateway
-pushd ${ISTIO_INSTALL_LOCATION}/istio-${ISTIO_VERSION}
 
-# samples/multicluster/gen-eastwest-gateway.sh \
-#     --mesh mesh1 --cluster ${cluster_name} --network network1 | \
-#     istioctl --context="${cluster_ctx}" install -y -f -
+pushd ${ISTIO_INSTALL_LOCATION}/istio-${ISTIO_VERSION}
 
 # Expose services in cluster
 kubectl --context="${cluster_ctx}" apply -n istio-system -f \
