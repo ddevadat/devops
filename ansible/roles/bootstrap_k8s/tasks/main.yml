@@ -1,0 +1,44 @@
+- name: Creating tmp file
+  tempfile:
+    state: file
+    suffix: helm
+  register: helm_file
+
+- name: Creating helm_charts vars file
+  copy:
+    content: "{{ helm_vars|to_yaml }}"
+    dest: "{{ helm_file.path }}"
+
+- name: Creating namespace
+  shell: "kubectl create namespace {{ item }} "
+  with_items:
+    - "{{ bootstrap_namespace.split(',') }}"
+    - monitoring
+    - logging
+  ignore_errors: yes
+
+- name: Creating docker secrets
+  shell: "kubectl create secret docker-registry {{ imagepullsecrets }} --namespace {{ item }} --docker-server {{ vault_docker_registry_url }} --docker-username {{ vault_docker_registry_user }} --docker-password {{ vault_docker_registry_password }} --dry-run=client -o=yaml | kubectl apply -f -"
+  when: imagepullsecrets|length > 0
+  with_items:
+    - "{{ bootstrap_namespace.split(',') }}"
+
+- name: Creating domain ssl
+  shell: 
+    cmd: |
+      cat <<EOF | kubectl apply -f -
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: ingress-cert
+        namespace: "{{ bootstrap_namespace.split(',')[0] }}"
+      data:
+        ca.crt: ""
+        site.crt: "{{ ssl_site_crt | b64encode }}"
+        site.key: "{{ ssl_site_key | b64encode }}"
+      EOF
+
+- name: Installing reloader for configmaps reload
+  shell: helm upgrade --install --atomic reloader "{{ playbook_dir }}"/../helm_charts/core/reloader --namespace "{{ item }}" -f "{{ helm_file.path }}"
+  with_items:
+    - "{{ bootstrap_namespace.split(',') }}"
