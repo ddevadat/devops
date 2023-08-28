@@ -1,8 +1,0 @@
-istio_regions = {
-  
-  home  = "your-tenancy-home-region" #replace with your tenancy's home region   
-  cls1_region   = "ap-osaka-1"  
-  cls2_region   = "ap-tokyo-1"  
-  }
-  
-

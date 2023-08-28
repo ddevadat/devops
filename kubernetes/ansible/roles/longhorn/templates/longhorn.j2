@@ -1,9 +1,0 @@
----
-# longhorn chart customization
-
-persistence:
-  defaultClassReplicaCount: {{ longhorn_default_replica_count |default('3') }}
-
-service:
-  ui:
-    type: {{ longhorn_ui_type |default('ClusterIP') }}
