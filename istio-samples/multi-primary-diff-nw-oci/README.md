@@ -2,7 +2,7 @@
 
 Steps to orchestrate service mesh with [Istio](https://istio.io/) across two different OKE clusters.
 
-![dual-screenshot](images/mutli-primary.svg)
+![dual-screenshot](images/multicluster-diff-network.png)
 
 ## Prerequisites
 
