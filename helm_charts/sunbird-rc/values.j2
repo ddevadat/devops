@@ -25,17 +25,10 @@ claim-ms:
     sunbirdrc_url: http://registry:8081
 
 elasticsearch:
-  enabled: false 
-  volumeClaimTemplate:
-    storageClassName: longhorn
-    resources:
-      requests:
-        storage: 5Gi
+  enabled: {{sunbird_rc.elasticsearch_enabled}} 
 
 filestorage:
-  enabled: false
-  storage_size: 1Gi
-  storage_class_name: longhorn
+  enabled: {{sunbird_rc.filestorage_enabled}}
   filestorageenv:
     MINIO_ROOT_USER: admin
     MINIO_ROOT_PASSWORD: admin1234
