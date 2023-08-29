@@ -21,7 +21,7 @@ claim-ms:
   claim_msenv:
     connectionInfo_uri: {{postgres_connectionInfo_uri}}
     connectionInfo_username: {{postgres_connectionInfo_username}}
-    connectionInfo_password: {{connectionInfo_password}}
+    connectionInfo_password: {{postgres_connectionInfo_password}}
     sunbirdrc_url: http://registry:8081
 
 elasticsearch:
@@ -36,19 +36,19 @@ filestorage:
 keycloak:
   enabled: {{sunbird_rc.keycloak_enabled}}
   keycloakenv:
-    DB_PASSWORD: {{postgres_connectionInfo_username}}
-    KEYCLOAK_PASSWORD: 'admin'
-    KEYCLOAK_LOGO: 'https://svgshare.com/i/hCs.svg'
+    DB_PASSWORD: {{postgres_connectionInfo_password}}
+    KEYCLOAK_PASSWORD: {{keycloak.admin_password}}
+    KEYCLOAK_LOGO: {{keycloak.keycloak_logo_url}}
     DB_VENDOR: 'postgres'
-    DB_ADDR: "XXXXX"
+    DB_ADDR: {{postgres_connectionInfo_uri}}
     DB_PORT: '5432'
     DB_DATABASE: 'registry'
-    DB_USER: 'postgres'
-    KEYCLOAK_USER: 'admin'
+    DB_USER: {{postgres_connectionInfo_username}}
+    KEYCLOAK_USER: {{keycloak.admin_user}}
     PROXY_ADDRESS_FORWARDING: 'true'
     KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
-    DOMAIN_NAME: "demo.sunbirdrc.app.oci"
-    ADMIN_API_SECRET: "XXXXX"
+    DOMAIN_NAME: "{{domain_name}}"
+    ADMIN_API_SECRET: {{keycloak.admin_api_secret}}
 
 registry:
   enabled: true
