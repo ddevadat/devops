@@ -19,9 +19,9 @@ certificatesign:
 claim-ms:
   enabled: {{sunbird_rc.claim_ms_enabled}}
   claim_msenv:
-    connectionInfo_uri: ''
-    connectionInfo_username: ''
-    connectionInfo_password: ''
+    connectionInfo_uri: {{postgres_connectionInfo_uri}}
+    connectionInfo_username: {{postgres_connectionInfo_username}}
+    connectionInfo_password: {{connectionInfo_password}}
     sunbirdrc_url: http://registry:8081
 
 elasticsearch:
