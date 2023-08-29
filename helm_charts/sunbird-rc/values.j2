@@ -8,14 +8,16 @@ certificateapi:
     {{ CERTIFICATE_PRIVATE_KEY | default("''") | indent(width=4) }}
   
 certificatesign:
-  enabled: false
+  enabled: {{sunbird_rc.certificatesign_enabled}}
   CERTIFICATE_DOMAIN_URL: "https://example.com"
-  CERTIFICATE_PUBLIC_KEY: ""
-  CERTIFICATE_PRIVATE_KEY: ""
+  CERTIFICATE_PUBLIC_KEY: |- 
+    {{ CERTIFICATE_PUBLIC_KEY | default("''") | indent(width=4) }}
+  CERTIFICATE_PRIVATE_KEY: |-
+    {{ CERTIFICATE_PRIVATE_KEY | default("''") | indent(width=4) }}
 
 
 claim-ms:
-  enabled: false
+  enabled: {{sunbird_rc.claim_ms_enabled}}
   claim_msenv:
     connectionInfo_uri: ''
     connectionInfo_username: ''
