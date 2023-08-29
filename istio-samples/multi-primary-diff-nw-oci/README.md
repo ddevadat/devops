@@ -20,9 +20,14 @@ TBD
 ## Set Env Variables
 
 ```
-export cluster1_region="<region_1_identifier>
+export cluster1_oci_profile_name="REGION1"
+export cluster2_oci_profile_name="REGION2"
+export cluster1_region="<region_1_identifier>"
 export cluster2_region="<region_2_identifier>"
+export CTX_CLUSTER1=oke_cluster1
+export CTX_CLUSTER2=oke_cluster2
 export compartment_id="<compartment_ocid>"
+export PATH=/tmp/istio-1.18.2/istio-1.18.2/bin:$PATH
 
 ```
 
