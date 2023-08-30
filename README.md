@@ -1,11 +1,58 @@
-# istio-samples
+# Install Sunbird RC on OKE
 
-This repository contains [Istio](https://istio.io/) implementation in Oracle Cloud Infrastructure
+Steps to orchestrate [Sunbird-RC](https://docs.sunbirdrc.dev/learn/readme) on OKE cluster.
 
-**⚠️ Note**: These samples are last updated to the [Istio 1.18.2 release](https://github.com/istio/istio/releases/).See the [Istio documentation](https://istio.io/) for the most up-to-date examples.
+<!-- ![dual-screenshot](images/mutli-primary.svg) -->
 
-## Contents
+## Prerequisites
 
-### [Install Multi-Primary on different networks](/istio-samples/multi-primary-diff-nw-oci/)
+- `oci` CLI
+- `kubectl`
+- `terraform`
+- `make`
+- `helm` CLI
 
-Sample implementation of installing Istio in Multi-Primary on different networks.
+### Add section for creating terraform variables
+```
+TBD
+```
+
+## Set Env Variables
+
+```
+export cluster1_region="<region_1_identifier>
+export cluster2_region="<region_2_identifier>"
+export compartment_id="<compartment_ocid>"
+
+```
+
+## Configure OCI cli for two regions
+
+Get the [region](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#About) identifier for OCI
+
+```
+## REGION1
+[REGION1]
+user=ocid1.user.oc1..xxxxxxxx
+fingerprint=xxxx
+tenancy=ocid1.tenancy.oc1..xxxxxx
+region=<region_identifier>
+key_file=/home/ubuntu/api-key/api-key.pem
+
+### REGION2
+[REGION2]
+user=ocid1.user.oc1..xxxxxxxx
+fingerprint=xxxx
+tenancy=ocid1.tenancy.oc1..xxxxxx
+region=<region_identifier>
+key_file=<path_to_api_key_file>
+```
+
+## Provision Infra
+
+This will create two oke cluster in two different region , with remote peering
+
+```
+./scripts/create_infra.sh
+
+```
