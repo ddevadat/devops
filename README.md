@@ -6,53 +6,53 @@ Steps to orchestrate [Sunbird-RC](https://docs.sunbirdrc.dev/learn/readme) on OK
 
 ## Prerequisites
 
-- `oci` CLI
-- `kubectl`
-- `terraform`
-- `make`
-- `helm` CLI
+- Oracle Enterprise Landing Zone
+- Provision an Operator vm in the app subnet
+- Provision a db vm in the db subnet
+- oci cli ,ansible, helm, kubectl installed on operator vm
 
-### Add section for creating terraform variables
-```
-TBD
-```
 
-## Set Env Variables
+## Create ansible inventory and private variables
 
 ```
-export cluster1_region="<region_1_identifier>
-export cluster2_region="<region_2_identifier>"
-export compartment_id="<compartment_ocid>"
+clone the repo in operator vm
+update the variables in private_repo/ansible/inv/dev/Core/secrets.yaml
+update the db vm ip address in private_repo/ansible/inv/dev/Core/hosts
+update the private ssh key in the operator vm /home/ubuntu/secrets/deployer_ssh_key
+update the oke access config in /home/ubuntu/secrets/k8s.yaml
+export OCI_CLI_AUTH=instance_principal
+update the path in scripts/env.sh
+ANSIBLE_INVENTORY_LOCATION=<repo_dir>/private_repo/ansible/inv/dev/Core/
 
 ```
 
-## Configure OCI cli for two regions
+## Provision Postgres
 
-Get the [region](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#About) identifier for OCI
-
-```
-## REGION1
-[REGION1]
-user=ocid1.user.oc1..xxxxxxxx
-fingerprint=xxxx
-tenancy=ocid1.tenancy.oc1..xxxxxx
-region=<region_identifier>
-key_file=/home/ubuntu/api-key/api-key.pem
-
-### REGION2
-[REGION2]
-user=ocid1.user.oc1..xxxxxxxx
-fingerprint=xxxx
-tenancy=ocid1.tenancy.oc1..xxxxxx
-region=<region_identifier>
-key_file=<path_to_api_key_file>
-```
-
-## Provision Infra
-
-This will create two oke cluster in two different region , with remote peering
+Provision postgres db
 
 ```
-./scripts/create_infra.sh
+cd scripts
+./provision-postgres.sh
+./postgres-data-update.sh
+
+```
+
+## Bootstrap OKE 
+
+Bootstrap oke cluster
+
+```
+cd scripts
+./bootstrap_k8s.sh
+
+```
+
+## Install sunbird-rc helm chart 
+
+sunbird-rc helm chart 
+
+```
+cd scripts
+./deploy_sunbird-rc.sh
 
 ```
