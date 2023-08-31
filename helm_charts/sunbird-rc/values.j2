@@ -6,18 +6,6 @@ certificateapi:
     {{ CERTIFICATE_PUBLIC_KEY | default("''") | indent(width=4) }}
   CERTIFICATE_PRIVATE_KEY: |-
     {{ CERTIFICATE_PRIVATE_KEY | default("''") | indent(width=4) }}
-  ingress:
-    enabled: {{ingress_enabled.certificateapi}}
-    path: /certificateapi
-    annotations: {{ingress_service_annotations | d('')  | to_json}}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"    
-    hosts:
-      - {{domain_name}}
-    tls:
-     - secretName: ingress-cert
-       hosts:
-         - {{domain_name}}
   
 certificatesign:
   enabled: {{sunbird_rc.certificatesign_enabled}}
@@ -57,6 +45,17 @@ filestorage:
     MINIO_ROOT_USER: {{filestorage.minio_root_user}}
     MINIO_ROOT_PASSWORD: {{filestorage.minio_root_password}}
 
+  ingress:
+    enabled: {{ingress_enabled.filestorage}}
+    path: /bucket
+    annotations: {{ingress_service_annotations | d('')  | to_json}}  
+    hosts:
+      - {{domain_name}}
+    tls:
+     - secretName: ingress-cert
+       hosts:
+         - {{domain_name}}
+
 keycloak:
   enabled: {{sunbird_rc.keycloak_enabled}}
   keycloakenv:
@@ -74,6 +73,17 @@ keycloak:
     DOMAIN_NAME: "{{domain_name}}"
     ADMIN_API_SECRET: {{keycloak.admin_api_secret}}
 
+  ingress:
+    enabled: {{ingress_enabled.keycloak}}
+    path: /auth
+    annotations: {{ingress_service_annotations | d('')  | to_json}}  
+    hosts:
+      - {{domain_name}}
+    tls:
+     - secretName: ingress-cert
+       hosts:
+         - {{domain_name}}
+
 registry:
   enabled: {{sunbird_rc.registry_enabled}}
   rccoreenv:
@@ -87,4 +97,13 @@ registry:
     filestorage_access_key: {{filestorage.minio_root_user}}
     filestorage_secret_key: {{filestorage.minio_root_password}}
 
-
+  ingress:
+    enabled: {{ingress_enabled.registry}}
+    path: /auth
+    annotations: {{ingress_service_annotations | d('')  | to_json}}  
+    hosts:
+      - {{domain_name}}
+    tls:
+     - secretName: ingress-cert
+       hosts:
+         - {{domain_name}}

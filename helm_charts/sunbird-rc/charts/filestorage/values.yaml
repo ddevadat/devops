@@ -28,6 +28,15 @@ autoscaling:
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: ''
 
+ingress:
+  enabled: false
+  annotations: {}
+  path: /bucket
+  hosts:
+    - chart-example.local
+  tls: []
+
+
 filestorageenv:
   MINIO_ROOT_USER: admin
   MINIO_ROOT_PASSWORD: admin1234

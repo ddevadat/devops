@@ -26,6 +26,14 @@ autoscaling:
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: ''
 
+ingress:
+  enabled: false
+  annotations: {}
+  path: /auth
+  hosts:
+    - chart-example.local
+  tls: []
+
 keycloakenv:
   DB_PASSWORD: 'postgres'
   KEYCLOAK_PASSWORD: 'admin'
