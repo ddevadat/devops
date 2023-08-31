@@ -36,7 +36,7 @@ claim-ms:
     connectionInfo_password: {{postgres_connectionInfo_password}}
     sunbirdrc_url: http://registry:8081
   ingress:
-    enabled: {{ingress_enabled.certificateapi}}
+    enabled: {{ingress_enabled.claim_ms}}
     path: /claim-ms
     annotations: {{ingress_service_annotations | d('')  | to_json}}
       # kubernetes.io/ingress.class: nginx
