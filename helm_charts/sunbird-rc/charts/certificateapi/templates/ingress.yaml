@@ -9,7 +9,7 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
   annotations:
-{{ toYaml .Values.annotations | indent 4 }}
+{{ toYaml .Values.ingress.annotations | indent 4 }}
 spec:
 {{- if .Values.ingress.tls }}
   tls:
