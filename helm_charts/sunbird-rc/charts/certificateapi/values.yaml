@@ -19,6 +19,19 @@ strategy:
   maxsurge: '50%'
   maxunavailable: '50%'
 
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /certificateapi
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
 autoscaling:
   enabled: 'false'
   minReplicas: 1
