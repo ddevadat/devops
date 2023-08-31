@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $sericeName := {{ .Chart.Name }} -}}
+{{- $sericeName := test -}}
 {{- $servicePort := .Values.network.port -}}
 {{- $ingressPath := .Values.ingress.path -}}
 apiVersion: networking.k8s.io/v1
