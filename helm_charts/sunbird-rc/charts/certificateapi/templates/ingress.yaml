@@ -1,4 +1,5 @@
 {{- if .Values.ingress.enabled -}}
+{{- $sericeName := include "uname" . -}}
 {{- $servicePort := .Values.network.port -}}
 {{- $ingressPath := .Values.ingress.path -}}
 apiVersion: networking.k8s.io/v1
@@ -30,7 +31,7 @@ spec:
         paths:
           - path: {{ $ingressPath }}
             backend:
-              serviceName: {{ .Chart.Name }}
+              serviceName: {{ $sericeName }}
               servicePort: {{ $servicePort }}
   {{- end }}
 {{- end }}
