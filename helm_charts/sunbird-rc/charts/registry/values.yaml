@@ -26,6 +26,14 @@ autoscaling:
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: ''
 
+ingress:
+  enabled: false
+  annotations: {}
+  path: /registry
+  hosts:
+    - chart-example.local
+  tls: []
+
 rccoreenv:
   connectionInfo_uri: 'jdbc:postgresql://postgres:5432/registry'
   connectionInfo_username: 'postgres'
