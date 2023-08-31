@@ -8,10 +8,8 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Chart.Name }}
-{{- with .Values.ingress.annotations }}
   annotations:
-{{ toYaml . | indent 4 }}
-{{- end }}
+{{ toYaml .Values.annotations | indent 4 }}
 spec:
 {{- if .Values.ingress.tls }}
   tls:
