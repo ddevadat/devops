@@ -7,7 +7,7 @@ certificateapi:
   CERTIFICATE_PRIVATE_KEY: |-
     {{ CERTIFICATE_PRIVATE_KEY | default("''") | indent(width=4) }}
   ingress:
-    enabled: false
+    enabled: {{ingress_enabled.certificateapi}}
     path: /certificateapi
     annotations: {{nginx_public_ingress_service_annotations | d('')  | to_json}}
       # kubernetes.io/ingress.class: nginx
