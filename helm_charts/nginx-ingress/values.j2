@@ -37,7 +37,7 @@ repository: {{image_name|default('sunbird-rc-nginx')}}
 image_tag: {{ image_tag | default('latest')}}
 
 proxyconfig: |-
-  {% if proto=='https' %}
+{% if proto=='https' %}
   server {
     listen 80;
     listen [::]:80;
@@ -49,18 +49,18 @@ proxyconfig: |-
     limit_conn limitbyaddr {{ nginx_per_ip_connection_limit }};
     return 301 https://{{ proxy_server_name }}$request_uri;
   }
-  {% endif %}
+{% endif %}
   server {
-  {% if proto=='http' %}
+{% if proto=='http' %}
     listen                80;
     listen    [::]:80;
-  {% else %}
+{% else %}
     listen                443 ssl;
     ssl_certificate       /etc/secrets/site.crt;
     ssl_certificate_key   /etc/secrets/site.key;
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA HIGH !RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS";
-  {% endif  %}
+{% endif  %}
     server_name *.{{ proxy_server_name }} {{ proxy_server_name }};
     {#
     custom nginx server config section
