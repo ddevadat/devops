@@ -7,7 +7,7 @@
     KUBECONFIG: "{{ kubeconfig_path }}"
     OCI_CLI_AUTH: instance_principal
   roles:
-    - "{{ role_name }}"
+    - role: "{{ role_name }}"
       vars:
         chart_path: "../helm_charts/{{item}}"
         release_name: "{{item}}"
