@@ -15,7 +15,7 @@
     dest: "{{ chart_path }}/values.yaml"
 
 
-- name: helm install
+- name: helm install - {{release_name}}
   shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} {{ release_name }} {{ chart_path }} -n {{namespace}}
 
 
