@@ -1,10 +1,10 @@
 namespace: {{ namespace }}
-imagepullsecrets: {{ imagepullsecrets }}
-dockerhub: {{ dockerhub }}
+imagepullsecrets: {{ imagepullsecrets | default("")}}
+dockerhub: {{ dockerhub | default("dockerhub")}}
 
 replicaCount: {{certificatesign_replicacount|default(1)}}
 repository: {{certificatesign_repository|default('sunbird-rc-certificate-signer')}}
-image_tag: {{image_tag}}
+image_tag: {{ image_tag | default('v0.0.13')}}
 resources:
   requests:
     cpu: {{certificatesign_cpu_req|default('100m')}}
