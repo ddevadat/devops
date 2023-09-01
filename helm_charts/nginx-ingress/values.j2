@@ -23,7 +23,7 @@ volumeMounts: {{ nginx_volumes.volumeMounts | to_json }}
 {% endif %}
 
 imagepullsecrets: {{ imagepullsecrets |default('') }}
-dockerhub: {{ dockerhub |default('') }}
+dockerhub: {{ dockerhub |default('dockerhub') }}
 
 resources:
   requests:
@@ -34,7 +34,7 @@ resources:
     memory: {{proxy_mem_limit|default('1024Mi')}}
 
 repository: {{image_name|default('sunbird-rc-nginx')}}
-image_tag: {{ image_tag }}
+image_tag: {{ image_tag |default('latest'}}
 
 serviceMonitor:
   enabled: true
