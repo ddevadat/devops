@@ -19,7 +19,7 @@
     src: "{{ item }}"
     dest: "{{ item }}"
   with_fileglob:
-    - "{{ chart_path }}/configs/*.conf"
+    - "{{ chart_path }}/config/*.conf"
   when: release_name == "nginx-ingress"
 
 
