@@ -5,8 +5,8 @@ metadata:
   name: proxy-default
   namespace: {{ .Values.namespace }}
 data:
-{{ tpl (.Files.Glob "config/proxy-default.conf").AsConfig .| indent 4}}
-{{ tpl (.Files.Glob "config/compression.conf").AsConfig .| indent 4}}
+{{ (.Files.Glob "config/compression.conf").AsConfig | indent 2 }}
+{{ (.Files.Glob "config/proxy-default.conf").AsConfig | indent 2 }}
 
 ---
 apiVersion: v1
@@ -15,4 +15,4 @@ metadata:
   name: nginx-conf
   namespace: {{ .Values.namespace }}
 data:
-{{ tpl (.Files.Glob "config/nginx.conf").AsConfig .| indent 2 }}
+{{ (.Files.Glob "config/nginx.conf").AsConfig | indent 2 }}
