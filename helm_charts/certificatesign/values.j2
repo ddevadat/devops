@@ -1,0 +1,37 @@
+imagepullsecrets: {{ imagepullsecrets | default("")}}
+dockerhub: {{ dockerhub | default("dockerhub")}}
+
+replicaCount: {{ replica_count | default("1")}}
+repository: {{image_name | default('sunbird-rc-certificate-signer')}}
+image_tag: {{ image_tag | default('v0.0.13')}}
+resources:
+  requests:
+    cpu: {{certifcatesign_cpu_req|default('100m')}}
+    memory: {{certifcatesign_mem_req|default('100Mi')}}
+  limits:
+    cpu: {{certifcatesign_cpu_limit|default('1')}}
+    memory: {{certifcatesign_mem_limit|default('1024Mi')}}
+network:
+  port: 8079
+  targetport: 8079
+strategy:
+  type: RollingUpdate
+  maxsurge: '50%'
+  maxunavailable: '50%'
+
+autoscaling:
+  enabled: 'false'
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 60
+  targetMemoryUtilizationPercentage: ''
+
+certificatesignenv:
+  PORT: "8079"
+  QR_TYPE: 'URL'
+  CERTIFICATE_DOMAIN_URL: {{certificate_domain_url | default('https://example.com')}}
+  CERTIFICATE_PUBLIC_KEY: |- 
+    {{ CERTIFICATE_PUBLIC_KEY | default("''") | indent(width=4) }}
+  CERTIFICATE_PRIVATE_KEY: |-
+    {{ CERTIFICATE_PRIVATE_KEY | default("''") | indent(width=4) }}
+  SIGNING_KEY_TYPE: RSA

@@ -8,7 +8,7 @@
 - name: setting variable
   set_fact:
     kube_dns_ip: "{{ kube_dns_ip.stdout }}"
-
+    
 - name: rename template
   template:
     src: "{{ chart_path }}/values.j2"
