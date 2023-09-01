@@ -1,0 +1,44 @@
+imagepullsecrets: {{ imagepullsecrets | default("")}}
+dockerhub: {{ dockerhub | default("dockerhub")}}
+
+replicaCount: {{ replica_count | default("1")}}
+repository: {{image_name | default('sunbird-rc-keycloak')}}
+image_tag: {{ image_tag | default('latest')}}
+resources:
+  requests:
+    cpu: '100m'
+    memory: '100Mi'
+  limits:
+    cpu: '1000m'
+    memory: '1024Mi'
+network:
+  port: 8080
+  targetport: 8080
+strategy:
+  type: RollingUpdate
+  maxsurge: '50%'
+  maxunavailable: '50%'
+
+autoscaling:
+  enabled: 'false'
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 60
+  targetMemoryUtilizationPercentage: ''
+
+keycloak:
+  enabled: {{sunbird_rc.keycloak_enabled}}
+  keycloakenv:
+    DB_PASSWORD: {{postgres_connectionInfo_password}}
+    KEYCLOAK_PASSWORD: {{keycloak.admin_password}}
+    KEYCLOAK_LOGO: {{keycloak.keycloak_logo_url}}
+    DB_VENDOR: 'postgres'
+    DB_ADDR: {{postgress_db_host}}
+    DB_PORT: '5432'
+    DB_DATABASE: 'registry'
+    DB_USER: {{postgres_connectionInfo_username}}
+    KEYCLOAK_USER: {{keycloak.admin_user}}
+    PROXY_ADDRESS_FORWARDING: 'true'
+    KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+    DOMAIN_NAME: "{{domain_name}}"
+    ADMIN_API_SECRET: {{keycloak.admin_api_secret}}
