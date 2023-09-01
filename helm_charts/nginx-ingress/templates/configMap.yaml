@@ -5,7 +5,8 @@ metadata:
   name: proxy-default
   namespace: {{ .Values.namespace }}
 data:
-{{ tpl (.Files.Glob "config/proxy-default.conf config/compression.conf").AsConfig .| indent 2 }}
+  proxy-default.conf: |-
+{{ tpl (.Files.Glob "config/proxy-default.conf") .| indent 4}}
 
 ---
 apiVersion: v1
