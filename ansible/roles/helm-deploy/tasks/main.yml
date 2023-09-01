@@ -14,14 +14,6 @@
     src: "{{ chart_path }}/values.j2"
     dest: "{{ chart_path }}/values.yaml"
 
-- name: template nginx configuration
-  template:
-    src: "{{ item }}"
-    dest: "{{ item }}"
-  with_fileglob:
-    - "{{ chart_path }}/config/*.conf"
-  when: release_name == "nginx-ingress"
-
 
 - name: helm install
   shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} {{ release_name }} {{ chart_path }} -n {{namespace}}

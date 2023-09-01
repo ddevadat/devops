@@ -1,4 +1,29 @@
 ---
+proxy_server_name: "{{domain_name}}"
+proto: 'https'
+nginx_per_ip_connection_limit: 400
+proxy_custom_config:
+
+proxy_cache_path:
+  large_cache:
+    path: /tmp/large_cache
+    levels: "1:2"
+    keys_zone: large_cache:3m
+    max_size: 100m
+    inactive: 10m
+  medium_cache:
+    path: /tmp/medium_cache
+    levels: "1:2"
+    keys_zone: medium_cache:2m
+    max_size: 50m
+    inactive: 10m
+  small_cache:
+    path: /tmp/small_cache
+    levels: "1:2"
+    keys_zone: small_cache:1m
+    max_size: 10m
+    inactive: 10m
+
 #######################  SUnbird RC Variables ########################
 postgress_db_host: "{{groups['postgres'][0]}}"
 postgres_connectionInfo_uri: "jdbc:postgresql://{{postgress_db_host}}:5432/registry"
