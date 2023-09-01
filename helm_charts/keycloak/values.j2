@@ -26,19 +26,17 @@ autoscaling:
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: ''
 
-keycloak:
-  enabled: {{sunbird_rc.keycloak_enabled}}
-  keycloakenv:
-    DB_PASSWORD: {{postgres_connectionInfo_password}}
-    KEYCLOAK_PASSWORD: {{keycloak.admin_password}}
-    KEYCLOAK_LOGO: {{keycloak.keycloak_logo_url}}
-    DB_VENDOR: 'postgres'
-    DB_ADDR: {{postgress_db_host}}
-    DB_PORT: '5432'
-    DB_DATABASE: 'registry'
-    DB_USER: {{postgres_connectionInfo_username}}
-    KEYCLOAK_USER: {{keycloak.admin_user}}
-    PROXY_ADDRESS_FORWARDING: 'true'
-    KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
-    DOMAIN_NAME: "{{domain_name}}"
-    ADMIN_API_SECRET: {{keycloak.admin_api_secret}}
+keycloakenv:
+  DB_PASSWORD: {{postgres_connectionInfo_password}}
+  KEYCLOAK_PASSWORD: {{keycloak.admin_password}}
+  KEYCLOAK_LOGO: {{keycloak.keycloak_logo_url}}
+  DB_VENDOR: 'postgres'
+  DB_ADDR: {{postgress_db_host}}
+  DB_PORT: '5432'
+  DB_DATABASE: 'registry'
+  DB_USER: {{postgres_connectionInfo_username}}
+  KEYCLOAK_USER: {{keycloak.admin_user}}
+  PROXY_ADDRESS_FORWARDING: 'true'
+  KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+  DOMAIN_NAME: "{{domain_name}}"
+  ADMIN_API_SECRET: {{keycloak.admin_api_secret}}
