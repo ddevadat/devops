@@ -1,0 +1,77 @@
+  {% if proto=='https' %}
+  server {
+    listen 80;
+    listen [::]:80;
+    server_name {{ proxy_server_name }};
+    {#
+    custom nginx server config section
+    eg:
+    nginx_server_config: |
+      if ($allowed_country = no) {
+          return 444;
+      }
+    #}
+{% if nginx_server_config is defined and nginx_server_config %}
+  {{ nginx_server_config | indent( width=4, indentfirst=True)  }}
+{% endif %}
+    # Limitting open connection per ip
+    limit_conn limitbyaddr {{ nginx_per_ip_connection_limit }};
+    return 301 https://{{ proxy_server_name }}$request_uri;
+  }
+  {% endif %}
+  server {
+  {% if proto=='http' %}
+    listen                80;
+    listen    [::]:80;
+  {% else %}
+    listen                443 ssl;
+    ssl_certificate       /etc/secrets/site.crt;
+    ssl_certificate_key   /etc/secrets/site.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA HIGH !RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS";
+  {% endif  %}
+    server_name *.{{ proxy_server_name }} {{ proxy_server_name }};
+    {#
+    custom nginx server config section
+    eg:
+    nginx_server_config: |
+      if ($allowed_country = no) {
+          return 444;
+      }
+    #}
+{% if nginx_server_config is defined and nginx_server_config %}
+  {{ nginx_server_config | indent( width=6, indentfirst=True)  }}
+{% endif %}
+    # Limitting open connection per ip
+    limit_conn limitbyaddr {{ nginx_per_ip_connection_limit }};
+    proxy_set_header    Host              $host;
+    proxy_set_header    X-Real-IP         {{ nginx_client_public_ip_header | d('$remote_addr') }};
+    proxy_set_header    X-Forwarded-SSL   on;
+    proxy_set_header    X-Forwarded-Proto $scheme;
+    ignore_invalid_headers off;  #pass through headers from Jenkins which are considered invalid by Nginx server.
+    resolver {{ kube_dns_ip }} valid=30s;
+    location /auth/ {
+          proxy_pass          http://keycloak:8080/auth/;
+          proxy_set_header    Host               $host;
+          proxy_set_header    X-Real-IP          $remote_addr;
+          proxy_set_header    X-Forwarded-For    $proxy_add_x_forwarded_for;
+          proxy_set_header    X-Forwarded-Host   $host;
+          proxy_set_header    X-Forwarded-Server $host;
+          proxy_set_header    X-Forwarded-Port   $server_port;
+          proxy_set_header    X-Forwarded-Proto  $scheme;
+    }
+
+    location /claim-ms/ {
+          proxy_pass          http://claim-ms:8082/;
+    }
+    
+    location /registry/ {
+          proxy_pass http://registry:8081/;
+    }
+
+    location /bucket/ {
+          proxy_pass http://filestorage:9000/;
+    }
+
+    {# Including custom configuration #}
+    {{ proxy_custom_config }}}
