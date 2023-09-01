@@ -22,6 +22,8 @@ volumes: {{ nginx_volumes.volumes | to_json }}
 volumeMounts: {{ nginx_volumes.volumeMounts | to_json }}
 {% endif %}
 
+nginx_worker_processes: {{nginx_worker_processes | d("auto")}}
+
 imagepullsecrets: {{ imagepullsecrets |default('') }}
 dockerhub: {{ dockerhub |default('dockerhub') }}
 
