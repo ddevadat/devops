@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Chart.Name }}-pvc
+spec:
+  storageClassName: {{ .Values.storage_class_name }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage_size }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+     rollingUpdate:
+        maxSurge: {{ .Values.strategy.maxsurge }}
+        maxUnavailable: {{ .Values.strategy.maxunavailable }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+{{- if .Values.imagepullsecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.imagepullsecrets }}
+{{- end }}
+      containers:
+      - name: minio
+        image: "{{ .Values.image_name }}:{{ .Values.image_tag }}"
+        command:
+        - /bin/bash
+        - -c
+        args:
+        - minio server /data --console-address :9001 --address :9000
+        volumeMounts:
+        - mountPath: /data
+          name: {{ .Chart.Name }}-pvc
+        envFrom:
+        - configMapRef:
+            name: {{ .Chart.Name }}-config
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        ports:
+        - containerPort: {{ .Values.network.http_port }}
+        - containerPort: {{ .Values.network.console_port }}
+      volumes:
+      - name: {{ .Chart.Name }}-pvc
+        persistentVolumeClaim:
+          claimName: {{ .Chart.Name }}-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  ports:
+  - name: http-{{ .Chart.Name }}
+    protocol: TCP
+    port: {{ .Values.network.http_targetport }}
+  - name: console-{{ .Chart.Name }}
+    protocol: TCP
+    port: {{ .Values.network.console_targetport }}
+  selector:
+    app: {{ .Chart.Name }}
