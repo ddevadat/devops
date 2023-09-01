@@ -34,7 +34,7 @@ resources:
     memory: {{proxy_mem_limit|default('1024Mi')}}
 
 repository: {{image_name|default('sunbird-rc-nginx')}}
-image_tag: {{ image_tag |default('latest'}}
+image_tag: {{ image_tag |default('latest')}}
 
 serviceMonitor:
   enabled: true
