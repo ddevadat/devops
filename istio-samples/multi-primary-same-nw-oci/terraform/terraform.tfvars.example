@@ -1,0 +1,13 @@
+api_fingerprint      = "<api_fingerprint>"
+api_private_key_path = "<path_to_api_key_file>"
+user_id              = "ocid1.user.oc1..xxxxxtpa4pkocl34a"
+tenancy_id           = "ocid1.tenancy.oc1..aaaaaaaa"
+compartment_id       = "ocid1.compartment.oc1..aaaaaaaa"
+
+istio_regions = {
+
+  home        = "<home_region_id>" #replace with your tenancy's home region   
+  cls1_region = "<region_1_id>"
+  cls2_region = "<region_2_id>"
+}
+

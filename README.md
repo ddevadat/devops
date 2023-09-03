@@ -8,4 +8,9 @@ This repository contains [Istio](https://istio.io/) implementation in Oracle Clo
 
 ### [Install Multi-Primary on different networks](/istio-samples/multi-primary-diff-nw-oci/)
 
-Sample implementation of installing Istio in Multi-Primary on different networks.
+Sample implementation of installing Istio in Multi-Primary on different networks across two regions.
+
+
+### [Install Multi-Primary on same networks](/istio-samples/multi-primary-same-nw-oci/)
+
+Sample implementation of installing Istio in Multi-Primary on same network.
