@@ -13,15 +13,6 @@ resource "oci_core_security_list" "k8s_api_ep_security_list" {
     }
   }
 
-  ingress_security_rules {
-    protocol    = local.tcp_protocol_number
-    source      = lookup(var.remote_network_cidrs, "SUBNET_WORKER_NODE-CIDR")
-    description = "Kubernetes worker to Kubernetes API endpoint communication."
-    tcp_options {
-      max = local.k8s_api_port_number
-      min = local.k8s_api_port_number
-    }
-  }
 
   ingress_security_rules {
     protocol    = local.tcp_protocol_number
@@ -43,15 +34,6 @@ resource "oci_core_security_list" "k8s_api_ep_security_list" {
     }
   }
 
-  ingress_security_rules {
-    protocol    = local.tcp_protocol_number
-    source      = lookup(var.remote_network_cidrs, "SUBNET_WORKER_NODE-CIDR")
-    description = "Kubernetes worker to control plane communication."
-    tcp_options {
-      max = local.k8s_control_plane_port_number
-      min = local.k8s_control_plane_port_number
-    }
-  }
 
   ingress_security_rules {
     protocol    = local.icmp_protocol_number
@@ -62,17 +44,6 @@ resource "oci_core_security_list" "k8s_api_ep_security_list" {
       code = local.icmp_options_code
     }
   }
-
-  ingress_security_rules {
-    protocol    = local.icmp_protocol_number
-    source      = lookup(var.remote_network_cidrs, "SUBNET_WORKER_NODE-CIDR")
-    description = "Path Discovery"
-    icmp_options {
-      type = local.icmp_options_type
-      code = local.icmp_options_code
-    }
-  }
-
 
   egress_security_rules {
     protocol         = local.tcp_protocol_number
@@ -119,12 +90,6 @@ resource "oci_core_security_list" "worker_node_security_list" {
 
   }
 
-  ingress_security_rules {
-    protocol    = local.all_protocols
-    source      = lookup(var.remote_network_cidrs, "SUBNET_WORKER_NODE-CIDR")
-    description = "Allow pods on remote worker node to communicate with pods on other worker nodes."
-
-  }
 
   ingress_security_rules {
     protocol    = local.icmp_protocol_number

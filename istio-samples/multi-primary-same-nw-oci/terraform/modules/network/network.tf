@@ -53,12 +53,6 @@ resource "oci_core_route_table" "private_rt" {
     network_entity_id = oci_core_nat_gateway.vcn_nat.id
   }
 
-  route_rules {
-    destination       = var.remote_cluster_vcn_cidr
-    destination_type  = "CIDR_BLOCK"
-    network_entity_id = oci_core_drg.drg.id
-    description = "To Cluster 2"
-  }
 
 }
 
@@ -113,23 +107,4 @@ resource "oci_core_subnet" "lb_subnet" {
 }
 
 
-resource "oci_core_drg" "drg" {
-    #Required
-    compartment_id = var.compartment_id
-    display_name = "drg"
-}
 
-
-resource "oci_core_drg_attachment" "drg_attachment" {
-    drg_id = oci_core_drg.drg.id
-    network_details {
-        id = oci_core_virtual_network.vcn.id
-        type = "VCN"
-    }
-}
-
-resource "oci_core_remote_peering_connection" "remote_peering_connection" {
-    compartment_id = var.compartment_id
-    drg_id = oci_core_drg.drg.id
-    display_name = var.rpc_name
-}
