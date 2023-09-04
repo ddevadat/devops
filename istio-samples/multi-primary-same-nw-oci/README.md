@@ -26,7 +26,6 @@ istio_regions = {
 
   home        = "<home_region_id>" #replace with your tenancy's home region   
   cls1_region = "<region_1_id>"
-  cls2_region = "<region_2_id>"
 }
 ```
 
@@ -34,9 +33,7 @@ istio_regions = {
 
 ```
 export cluster1_oci_profile_name="REGION1"
-export cluster2_oci_profile_name="REGION2"
 export cluster1_region="<region_1_identifier>"
-export cluster2_region="<region_2_identifier>"
 export CTX_CLUSTER1=oke_cluster1
 export CTX_CLUSTER2=oke_cluster2
 export compartment_id="<compartment_ocid>"
@@ -57,13 +54,6 @@ tenancy=ocid1.tenancy.oc1..xxxxxx
 region=<region_identifier>
 key_file=/home/ubuntu/api-key/api-key.pem
 
-### REGION2
-[REGION2]
-user=ocid1.user.oc1..xxxxxxxx
-fingerprint=xxxx
-tenancy=ocid1.tenancy.oc1..xxxxxx
-region=<region_identifier>
-key_file=<path_to_api_key_file>
 ```
 
 ## Provision Infra

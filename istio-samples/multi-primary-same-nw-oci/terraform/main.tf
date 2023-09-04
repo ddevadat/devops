@@ -4,10 +4,6 @@ module "vcn_cluster1" {
   vcn_name                = "vcn_cluster1"
   vcn_dns_label           = "vcncls1"
   network_cidrs           = var.cls1_network_cidrs
-  remote_network_cidrs    = var.cls2_network_cidrs
-  remote_cluster_vcn_cidr = lookup(var.cls2_network_cidrs, "MAIN-VCN-CIDR")
-  rpc_name                = "cluster1_to_cluster2"
-
 
   providers = {
     oci = oci.cls1
