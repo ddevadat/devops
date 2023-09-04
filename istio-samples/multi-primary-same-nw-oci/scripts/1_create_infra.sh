@@ -28,13 +28,13 @@ terraform apply -auto-approve
 
 
 
-# merge_kubeconfig "${script_path}/../terraform/modules/oke/generated"
-# export KUBECONFIG="${script_path}/../terraform/modules/oke/generated/config"
+merge_kubeconfig "${script_path}/../terraform/modules/oke/generated"
+export KUBECONFIG="${script_path}/../terraform/modules/oke/generated/config"
 
-# echo -e "\n\e[0;32m${bold}Getting Cluster 1 Node Status ${normal}"
-# kubectl --context=${CTX_CLUSTER1} get nodes
+echo -e "\n\e[0;32m${bold}Getting Cluster 1 Node Status ${normal}"
+kubectl --context=${CTX_CLUSTER1} get nodes
 
-# echo -e "\n\e[0;32m${bold}Getting Cluster 2 Node Status ${normal}"
-# kubectl --context=${CTX_CLUSTER2} get nodes
+echo -e "\n\e[0;32m${bold}Getting Cluster 2 Node Status ${normal}"
+kubectl --context=${CTX_CLUSTER2} get nodes
 
 
