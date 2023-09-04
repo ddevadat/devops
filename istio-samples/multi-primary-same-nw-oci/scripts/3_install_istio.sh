@@ -15,7 +15,6 @@ cluster_ctx=$2
 
 # Set the default network
 kubectl --context="${cluster_ctx}" get namespace istio-system && \
-kubectl --context="${cluster_ctx}" label namespace istio-system topology.istio.io/network=network1
 
 # Configure as a primary
 
@@ -32,21 +31,6 @@ spec:
 EOF
 
 istioctl install -y  --set profile=minimal --context=${cluster_ctx} -f ${script_path}/generated/${cluster_name}.yaml
-
-# Install the east-west gateway
-${script_path}/gen-eastwest-gateway.sh \
-    --mesh mesh1 --cluster ${cluster_name} --network network1 | \
-    istioctl --context="${cluster_ctx}" install -y -f -
-
-
-
-pushd ${ISTIO_INSTALL_LOCATION}/istio-${ISTIO_VERSION}
-
-# Expose services in cluster
-kubectl --context="${cluster_ctx}" apply -n istio-system -f \
-    samples/multicluster/expose-services.yaml
-
-popd
 
 }
 
