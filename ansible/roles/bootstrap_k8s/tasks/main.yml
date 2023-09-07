@@ -51,6 +51,8 @@
   with_items:
     - longhorn
     - prometheus
+    - prom_rules
+    - grafana_dashboard
 
 
 - name: add longhorn helm repo
@@ -74,3 +76,8 @@
 - name: helm install prometheus
   shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} prometheus-community prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace  --values /tmp/prometheus.yaml --wait
 
+- name: Define alerts
+  shell: kubectl apply -f /tmp/prom_rules.yaml
+
+- name: Sample Grafana Dashboard
+  shell: kubectl apply -f /tmp/grafana_dashboard.yaml
