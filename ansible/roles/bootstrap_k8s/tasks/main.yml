@@ -65,4 +65,4 @@
   shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} longhorn longhorn/longhorn -n longhorn-system  --version {{longhorn_version}} --values /tmp/longhorn.yaml --wait
 
 - name: helm install cloudnative_pg
-  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} cnpg charts/cloudnative-pg --namespace cnpg-system --create-namespace  --wait
+  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} cnpg cnpg/cloudnative-pg --namespace cnpg-system --create-namespace  --wait
