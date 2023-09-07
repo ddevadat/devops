@@ -5,3 +5,4 @@ imagepullsecrets: ""
 longhorn_chart_repo: https://charts.longhorn.io
 longhorn_version: 1.5.1
 longhorn_storage_class_yaml: https://raw.githubusercontent.com/longhorn/longhorn/{{longhorn_version}}/examples/storageclass.yaml
+cloud_native_pg_chart_repo: https://cloudnative-pg.github.io/charts
