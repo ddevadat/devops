@@ -42,3 +42,22 @@
   shell: helm upgrade --install --atomic reloader "{{ playbook_dir }}"/../helm_charts/reloader --namespace "{{ item }}" -f "{{ helm_file.path }}"
   with_items:
     - "{{ bootstrap_namespace.split(',') }}"
+
+- name: tempating variables
+  template:
+    src: "{{ item }}.j2"
+    dest: "/tmp/{{item}}.yaml"
+  with_items:
+    - longhorn
+
+
+- name: add longhorn helm repo
+  shell: helm repo add longhorn {{longhorn_chart_repo}}
+
+
+- name: update repo
+  shell: helm repo update
+
+- name: helm install longhorn
+  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} longhorn longhorn/longhorn -n longhorn-system --create-namespace  --version {{longhorn_version}} --values /tmp/longhorn.yaml --wait
+
