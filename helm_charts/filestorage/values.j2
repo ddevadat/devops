@@ -34,5 +34,5 @@ filestorageenv:
   MINIO_ROOT_USER: {{ MINIO_ROOT_USER|default('admin') }}
   MINIO_ROOT_PASSWORD: {{ MINIO_ROOT_PASSWORD|default('admin1234') }}
   
-storage_size: {{ MINIO_STORAGE_SIZE_GB|default('50Gi') }}
-storage_class_name: {{ MINIO_STORAGE_CLASS|default('oci-bv') }}
+storage_size: {{ MINIO_STORAGE_SIZE_GB|default('1Gi') }}
+storage_class_name: {{ MINIO_STORAGE_CLASS|default('longhorn') }}
