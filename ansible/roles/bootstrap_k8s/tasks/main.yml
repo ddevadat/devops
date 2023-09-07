@@ -52,10 +52,15 @@
   with_items:
     - longhorn
     - prometheus
-    - prom_rules
-    - grafana_dashboard
     - postgres
 
+- name: copy files
+  copy:
+    src: "{{ item }}.yaml"
+    dest: "/tmp/{{item}}.yaml"
+  with_items:
+    - grafana_dashboard
+    - prom_rules
 
 - name: add longhorn helm repo
   shell: helm repo add longhorn {{longhorn_chart_repo}}
