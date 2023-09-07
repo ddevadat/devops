@@ -16,6 +16,7 @@
     - monitoring
     - logging
     - longhorn-system
+    - cnpg
   ignore_errors: yes
 
 - name: Creating docker secrets
@@ -53,6 +54,7 @@
     - prometheus
     - prom_rules
     - grafana_dashboard
+    - postgres
 
 
 - name: add longhorn helm repo
@@ -81,3 +83,6 @@
 
 - name: Sample Grafana Dashboard
   shell: kubectl apply -f /tmp/grafana_dashboard.yaml
+
+- name: Create Postgres Cluster
+  shell: kubectl apply -f /tmp/postgres.yaml -n cnpg

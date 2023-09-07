@@ -7,3 +7,6 @@ longhorn_version: 1.5.1
 longhorn_storage_class_yaml: https://raw.githubusercontent.com/longhorn/longhorn/{{longhorn_version}}/examples/storageclass.yaml
 cloud_native_pg_chart_repo: https://cloudnative-pg.github.io/charts
 prometheus_chart_repo: https://prometheus-community.github.io/helm-charts
+postgres_replica: 3
+postgres_storage_class: longhorn
+postgres_data_size: 1Gi
