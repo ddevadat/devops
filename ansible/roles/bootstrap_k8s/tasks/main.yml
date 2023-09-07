@@ -50,6 +50,7 @@
     dest: "/tmp/{{item}}.yaml"
   with_items:
     - longhorn
+    - prometheus
 
 
 - name: add longhorn helm repo
@@ -57,6 +58,9 @@
 
 - name: add cloudnative postgres helm repo
   shell: helm repo add cnpg {{cloud_native_pg_chart_repo}}
+
+- name: add prometheus helm repo
+  shell: helm repo add prometheus-community {{prometheus_chart_repo}}
 
 - name: update repo
   shell: helm repo update
@@ -66,3 +70,7 @@
 
 - name: helm install cloudnative_pg
   shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} cnpg cnpg/cloudnative-pg --namespace cnpg-system --create-namespace  --wait
+
+- name: helm install prometheus
+  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} prometheus-community prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace  --values /tmp/prometheus.yaml --wait
+
