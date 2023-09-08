@@ -103,12 +103,19 @@ proxyconfig: |-
     location /longhorn/ {
           proxy_pass http://longhorn-frontend.longhorn-system:80/;
     }
-    location ~ ^/(grafana|login)/ {
+    location /grafana/ {
           proxy_pass http://prometheus-community-grafana.monitoring:80/;
     }
-    location ~ ^/(prometheus|graph)/ {
+    location /login/ {
+          proxy_pass http://prometheus-community-grafana.monitoring:80/;
+    }
+    location /prometheus/ {
           proxy_pass http://prometheus-community-kube-prometheus.monitoring:9090/;
     }
+    location /graph/ {
+          proxy_pass http://prometheus-community-kube-prometheus.monitoring:9090/;
+    }
+
     {# Including custom configuration #}
     {{ proxy_custom_config }}}
 
