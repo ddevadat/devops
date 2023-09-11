@@ -115,6 +115,16 @@ proxyconfig: |-
       rewrite ^/grafana/(.*) /$1 break;
       proxy_pass $target;
     }
+    location = /login {
+      set $target http://prometheus-community-grafana.monitoring.svc.cluster.local;
+      proxy_set_header Host             $host;
+      proxy_set_header X-Real-IP        $remote_addr;
+      proxy_set_header X-Scheme         $scheme;
+      proxy_set_header Content-Length   "";
+      proxy_pass_request_body           off;
+      proxy_set_header X-Request-ID $sb_request_id;
+      proxy_pass $target;
+    }
     {# Including custom configuration #}
     {{ proxy_custom_config }}}
 
