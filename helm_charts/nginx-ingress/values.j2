@@ -104,6 +104,7 @@ proxyconfig: |-
           proxy_pass http://longhorn-frontend.longhorn-system:80/;
     }
     location /grafana/ {
+      auth_request /login;
       auth_request_set $target http://prometheus-community-grafana.monitoring.svc.cluster.local;
       include /etc/nginx/defaults.d/compression.conf;
       proxy_set_header Connection "";
