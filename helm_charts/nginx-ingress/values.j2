@@ -107,11 +107,6 @@ proxyconfig: |-
       proxy_set_header Host $host;
       proxy_pass http://prometheus-community-grafana.monitoring.svc.cluster.local;
     }
-    location /prometheus {
-      proxy_set_header Host $host;
-      proxy_pass http://prometheus-community-kube-prometheus.monitoring.svc.cluster.local:9090;
-      rewrite ^/prometheus$ /graph break;
-    }
     {# Including custom configuration #}
     {{ proxy_custom_config }}}
 
