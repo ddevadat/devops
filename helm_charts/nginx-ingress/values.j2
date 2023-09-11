@@ -106,6 +106,9 @@ proxyconfig: |-
     location /grafana/ {
           proxy_pass http://prometheus-community-grafana.monitoring:80/;
     }
+    location /login/ {
+          proxy_pass http://prometheus-community-grafana.monitoring:80/;
+    }
     {# Including custom configuration #}
     {{ proxy_custom_config }}}
 
