@@ -72,6 +72,22 @@ grafana:
         enabled: true
   #nodeSelector:
     #workload: monitor
+  grafana.ini:
+    paths:
+      data: /var/lib/grafana/
+      logs: /var/log/grafana
+      plugins: /var/lib/grafana/plugins
+      provisioning: /etc/grafana/provisioning
+    analytics:
+      check_for_updates: true
+    log:
+      mode: console
+    grafana_net:
+      url: https://grafana.net
+    server:
+      domain: "{{domain_name}}"
+      root_url = %(protocol)s://%(domain)s:%(http_port)s/grafana/
+      serve_from_sub_path = true
 alertmanager:
   enabled: true
   #alerManagerSpec:
