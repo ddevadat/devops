@@ -110,6 +110,7 @@ proxyconfig: |-
     location /prometheus {
       proxy_set_header Host $host;
       proxy_pass http://prometheus-community-kube-prometheus.monitoring.svc.cluster.local:9090;
+      rewrite ^/prometheus$ / break;
     }
     {# Including custom configuration #}
     {{ proxy_custom_config }}}
