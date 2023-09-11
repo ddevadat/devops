@@ -106,7 +106,6 @@ proxyconfig: |-
     location /grafana {
       proxy_set_header Host $host;
       proxy_pass http://prometheus-community-grafana.monitoring.svc.cluster.local;
-      rewrite  ^/grafana/(.*)  /$1 break;
     }
     {# Including custom configuration #}
     {{ proxy_custom_config }}}
