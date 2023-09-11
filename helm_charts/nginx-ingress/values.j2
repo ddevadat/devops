@@ -112,6 +112,9 @@ proxyconfig: |-
         proxy_set_header X-Script-Name /grafana;
         proxy_redirect default;
     }
+    location /login/ {
+        proxy_pass http://prometheus-community-grafana.monitoring.svc.cluster.local/;
+    }
     {# Including custom configuration #}
     {{ proxy_custom_config }}}
 
