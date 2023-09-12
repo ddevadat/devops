@@ -10,3 +10,6 @@ prometheus_chart_repo: https://prometheus-community.github.io/helm-charts
 postgres_replica: 3
 postgres_storage_class: longhorn
 postgres_data_size: 1Gi
+oci_tenancy_ocid: ""
+region: ""
+prometheus_server: http://prometheus-community-kube-prometheus.monitoring.svc.cluster.local
