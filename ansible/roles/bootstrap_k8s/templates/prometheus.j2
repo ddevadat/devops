@@ -93,13 +93,6 @@ grafana:
     datasources.yaml:
       apiVersion: 1
       datasources:
-      - name: Prometheus
-        type: prometheus
-        url: "{{prometheus_server}}"
-        access: proxy
-        isDefault: true
-        disableDeletion: true
-        editable: false
       - name: Oracle Cloud Infrastructure Metrics
         type: oci-metrics-datasource
         access: proxy
