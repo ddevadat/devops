@@ -61,25 +61,62 @@
 
   - set_fact:
       ig_id: "{{ result.internet_gateway.id }}"
-      route_table_rules:
+      public_route_table_rules:
         - cidr_block: "{{ quad_zero_route }}"
           network_entity_id: "{{ result.internet_gateway.id }}"
     tags:
       - network
 
-  - name: Create route table to connect internet gateway to the VCN
-    oci_network_route_table:
+  - name: Create a new NAT Gateway
+    oci_network_nat_gateway:
       compartment_id: "{{ compartment_id }}"
       vcn_id: "{{ vcn_id }}"
-      name: "PUB-SL-RT"
-      route_rules: "{{ route_table_rules }}"
+      name: "NG"
+      is_enabled: 'yes'
       state: 'present'
     register: result
     tags:
       - network
 
   - set_fact:
-      rt_id: "{{ result.route_table.id }}"
+      ng_id: "{{ result.nat_gateway.id }}"
+      private_route_table_rules:
+        - cidr_block: "{{ quad_zero_route }}"
+          network_entity_id: "{{ result.nat_gateway.id }}"
+    tags:
+      - network
+
+
+
+  - name: Create route table to connect internet gateway to the VCN
+    oci_network_route_table:
+      compartment_id: "{{ compartment_id }}"
+      vcn_id: "{{ vcn_id }}"
+      name: "PUB-SL-RT"
+      route_rules: "{{ public_route_table_rules }}"
+      state: 'present'
+    register: result
+    tags:
+      - network
+
+  - set_fact:
+      public_rt_id: "{{ result.route_table.id }}"
+    tags:
+      - network
+
+  - name: Create route table to connect Nat gateway to the VCN
+    oci_network_route_table:
+      compartment_id: "{{ compartment_id }}"
+      vcn_id: "{{ vcn_id }}"
+      name: "PVT-SL-RT"
+      route_rules: "{{ private_route_table_rules }}"
+      state: 'present'
+    register: result
+    tags:
+      - network
+
+  - set_fact:
+      private_rt_id: "{{ result.route_table.id }}"
     tags:
       - network
 
@@ -103,7 +140,7 @@
       cidr_block: "{{ vlan_cidr_block }}"
       compartment_id: "{{ compartment_id }}"
       display_name: "K8S-API-SN"
-      route_table_id: "{{ rt_id }}"
+      route_table_id: "{{ private_rt_id }}"
       dns_label: "k8sapi"
       vcn_id: "{{ vcn_id }}"
     register: result
