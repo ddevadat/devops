@@ -62,7 +62,7 @@
       ig_id: "{{ result.internet_gateway.id }}"
       route_table_rules:
         - cidr_block: "{{ quad_zero_route }}"
-          network_entity_id: "{{ ig_id }}"
+          network_entity_id: "{{ result.internet_gateway.id }}"
     tags:
       - network
 
