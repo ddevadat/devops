@@ -25,9 +25,22 @@
     register: result
     tags:
       - network
+
   - set_fact:
       vcn_id: "{{ result.vcn.id }}"
       vcn: "{{ result.vcn }}"
       cacheable: yes
     tags:
       - network
+
+  - name: Get availability domains for vlans
+    oci_identity_availability_domain_facts:
+      compartment_id: "{{compartment_id}}"
+    register: oci_ads
+    tags:
+      - always
+
+  - set_fact:
+      availability_domain: "{{oci_ads.availability_domains[0].name}}"
+    tags:
+      - always
