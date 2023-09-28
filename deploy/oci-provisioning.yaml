@@ -25,3 +25,7 @@
     register: result
     tags:
       - network
+  - set_fact:
+      vcn_id: "{{ result.vcn.id }}"
+      vcn: "{{ result.vcn }}"
+      cacheable: yes
