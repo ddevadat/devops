@@ -1,0 +1,13 @@
+---
+# tasks file for bootstrap-k8s
+
+
+- hosts: local
+  gather_facts: false
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+    OCI_CLI_AUTH: instance_principal
+  vars_files:
+    - "{{inventory_dir}}/secrets.yml"
+  roles:
+    - istio

@@ -1,0 +1,7 @@
+
+
+export PATH="{{istio_install_location}}/istio-{{istio_version}}/bin:$PATH"
+
+
+istioctl uninstall -y --purge
+kubectl delete namespace istio-system
