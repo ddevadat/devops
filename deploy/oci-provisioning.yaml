@@ -23,3 +23,5 @@
       cidr_block: "{{ vcn_cidr_block }}"
       dns_label: "{{ vcn_dns_label }}"
     register: result
+    tags:
+      - network
