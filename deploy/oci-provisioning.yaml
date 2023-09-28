@@ -104,14 +104,12 @@
       compartment_id: "{{ compartment_id }}"
       display_name: "K8S-API-SN"
       route_table_id: "{{ rt_id }}"
-      dns_label: "{{ dns_label_subnet }}"
+      dns_label: "k8sapi"
       vcn_id: "{{ vcn_id }}"
     register: result
     tags:
-      - always
       - network
       - k8s
-      - info
   - set_fact:
       vlan_id: "{{ result.subnet.id }}"
       cacheable: yes
