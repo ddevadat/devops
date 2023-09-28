@@ -154,10 +154,10 @@
           destination_port_range:
             max: 6443
             min: 6443
-      register: result
-      tags:
-        - network
-        - k8s
+    register: result
+    tags:
+      - network
+      - k8s
   - set_fact:
       k8s_security_list_id: "{{ result.security_list.id }}"
       cacheable: yes
