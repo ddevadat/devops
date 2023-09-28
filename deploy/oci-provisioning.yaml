@@ -16,13 +16,10 @@
     with_items:
       - "SAMPLE_COMPARTMENT_OCID"
 
-- name: Create a VCN
-  oci_network_vcn:
-    compartment_id: "{{ compartment_id }}"
-    display_name: "{{ vcn_name }}"
-    cidr_block: "{{ vcn_cidr_block }}"
-    dns_label: "{{ vcn_dns_label }}"
-  register: result
-- set_fact:
-    vcn_id: "{{ result.vcn.id }}"
-    vcn: "{{ result.vcn }}"
+  - name: Create a VCN
+    oci_network_vcn:
+      compartment_id: "{{ compartment_id }}"
+      display_name: "{{ vcn_name }}"
+      cidr_block: "{{ vcn_cidr_block }}"
+      dns_label: "{{ vcn_dns_label }}"
+    register: result
