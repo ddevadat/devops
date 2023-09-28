@@ -81,3 +81,17 @@
       rt_id: "{{ result.route_table.id }}"
     tags:
       - network
+
+  - name: Create network_security_group
+    oci_network_security_group:
+      compartment_id: "{{ compartment_id }}"
+      display_name: "sunbird network security group"
+      vcn_id: "{{ vcn_id }}"
+    register: result
+    tags:
+      - network
+
+  - set_fact:
+      network_security_group_id: "{{result.network_security_group.id}}"
+    tags:
+      - network
