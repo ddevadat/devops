@@ -141,6 +141,7 @@
       display_name: "K8S-API-SN"
       route_table_id: "{{ private_rt_id }}"
       dns_label: "k8sapi"
+      prohibit_public_ip_on_vnic: yes
       vcn_id: "{{ vcn_id }}"
     register: result
     tags:
