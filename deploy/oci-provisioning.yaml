@@ -135,7 +135,6 @@
   
   - name: Create a Subnet
     oci_network_subnet:
-      availability_domain: "{{ availability_domain }}"
       cidr_block: "{{ vlan_cidr_block }}"
       compartment_id: "{{ compartment_id }}"
       display_name: "K8S-API-SN"
