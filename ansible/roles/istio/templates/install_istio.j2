@@ -16,3 +16,6 @@ export PATH="{{istio_install_location}}/istio-{{istio_version}}/bin:$PATH"
 
 
 istioctl install --set profile=minimal -y
+
+
+kubectl apply -f {{istio_install_location}}/istio-{{istio_version}}/samples/addons/
