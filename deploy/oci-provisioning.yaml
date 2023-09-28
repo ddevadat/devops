@@ -72,7 +72,6 @@
       compartment_id: "{{ compartment_id }}"
       vcn_id: "{{ vcn_id }}"
       name: "NG"
-      is_enabled: 'yes'
       state: 'present'
     register: result
     tags:
