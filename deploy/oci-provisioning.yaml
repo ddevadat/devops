@@ -44,3 +44,19 @@
       availability_domain: "{{oci_ads.availability_domains[0].name}}"
     tags:
       - always
+
+  - name: Create a new Internet Gateway
+    oci_network_internet_gateway:
+      compartment_id: "{{ compartment_id }}"
+      vcn_id: "{{ vcn_id }}"
+      name: "sunbird-igw"
+      is_enabled: 'yes'
+      state: 'present'
+    register: result
+    tags:
+      - network
+
+  - set_fact:
+      ig_id: "{{ result.internet_gateway.id }}"
+    tags:
+      - network
