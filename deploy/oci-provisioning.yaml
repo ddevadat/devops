@@ -4,9 +4,10 @@
     - oracle.oci
   hosts: localhost
   vars:
-    vcn_cidr_block: "10.0.0.0/16"
-    vcn_name: "sunbird-vcn"
-    vcn_dns_label: "sunbirdvcn"
+    vcn_cidr_block: "10.90.0.0/16"
+    vlan_cidr_block: "10.90.1.0/24"
+    vcn_name: "SunbirdEd-VCN"
+    vcn_dns_label: "sunbirded"
     compartment_id: "{{ lookup('env', 'SAMPLE_COMPARTMENT_OCID') }}"
     quad_zero_route: "0.0.0.0/0"
 
@@ -51,7 +52,7 @@
     oci_network_internet_gateway:
       compartment_id: "{{ compartment_id }}"
       vcn_id: "{{ vcn_id }}"
-      name: "sunbird-igw"
+      name: "IG"
       is_enabled: 'yes'
       state: 'present'
     register: result
@@ -70,7 +71,7 @@
     oci_network_route_table:
       compartment_id: "{{ compartment_id }}"
       vcn_id: "{{ vcn_id }}"
-      name: "public route table"
+      name: "PUB-SL-RT"
       route_rules: "{{ route_table_rules }}"
       state: 'present'
     register: result
@@ -82,16 +83,35 @@
     tags:
       - network
 
-  - name: Create network_security_group
-    oci_network_security_group:
+  # - name: Create network_security_group
+  #   oci_network_security_group:
+  #     compartment_id: "{{ compartment_id }}"
+  #     display_name: "sunbird network security group"
+  #     vcn_id: "{{ vcn_id }}"
+  #   register: result
+  #   tags:
+  #     - network
+
+  # - set_fact:
+  #     network_security_group_id: "{{result.network_security_group.id}}"
+  #   tags:
+  #     - network
+  
+  - name: Create a Subnet
+    oci_network_subnet:
+      availability_domain: "{{ availability_domain }}"
+      cidr_block: "{{ vlan_cidr_block }}"
       compartment_id: "{{ compartment_id }}"
-      display_name: "sunbird network security group"
+      display_name: "K8S-API-SN"
+      route_table_id: "{{ rt_id }}"
+      dns_label: "{{ dns_label_subnet }}"
       vcn_id: "{{ vcn_id }}"
     register: result
     tags:
+      - always
       - network
-
+      - k8s
+      - info
   - set_fact:
-      network_security_group_id: "{{result.network_security_group.id}}"
-    tags:
-      - network
+      vlan_id: "{{ result.subnet.id }}"
+      cacheable: yes
