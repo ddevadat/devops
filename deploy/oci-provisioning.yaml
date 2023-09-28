@@ -132,7 +132,40 @@
   #     network_security_group_id: "{{result.network_security_group.id}}"
   #   tags:
   #     - network
-  
+
+  - name: Create security list for K8S API
+    oci_network_security_list:
+      display_name: K8S-API-SL
+      compartment_id: "{{ compartment_id }}"
+      vcn_id: "{{ vcn_id }}"
+      egress_security_rules:
+      - description: "Allow outgoing traffic"
+        destination: "{{ quad_zero_route }}"
+        protocol: "all"
+        destination_type: CIDR_BLOCK
+        is_stateless: false
+      ingress_security_rules:
+      - description: "Allow kube api ep access from within the vcn"
+        protocol: 6
+        source: "{{vcn_cidr_block}}"
+        is_stateless: false
+        source_type: CIDR_BLOCK
+        tcp_options:
+          destination_port_range:
+            max: 6443
+            min: 6443
+      register: result
+      tags:
+        - network
+        - k8s
+    - set_fact:
+        k8s_security_list_id: "{{ result.security_list.id }}"
+        cacheable: yes
+      tags:
+        - network
+        - k8s
+
+
   - name: Create a Subnet
     oci_network_subnet:
       cidr_block: "{{ vlan_cidr_block }}"
@@ -149,3 +182,6 @@
   - set_fact:
       vlan_id: "{{ result.subnet.id }}"
       cacheable: yes
+    tags:
+      - network
+      - k8s
