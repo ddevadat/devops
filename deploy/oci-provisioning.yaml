@@ -485,95 +485,95 @@
       - network
       - k8s
 
-  - name: Create Private Buckets
-    oci_object_storage_bucket:
-      namespace_name: "{{ namespace_name }}" 
-      compartment_id: "{{ compartment_id }}"
-      public_access_type: NoPublicAccess
-      storage_tier: Standard
-      name: "{{ item }}"
-    with_items: "{{ private_containers }}"
-    tags:
-      - oss
+  # - name: Create Private Buckets
+  #   oci_object_storage_bucket:
+  #     namespace_name: "{{ namespace_name }}" 
+  #     compartment_id: "{{ compartment_id }}"
+  #     public_access_type: NoPublicAccess
+  #     storage_tier: Standard
+  #     name: "{{ item }}"
+  #   with_items: "{{ private_containers }}"
+  #   tags:
+  #     - oss
 
-  - name: Create Public Buckets
-    oci_object_storage_bucket:
-      # required
-      namespace_name: "{{ namespace_name }}" 
-      compartment_id: "{{ compartment_id }}"
-      public_access_type: ObjectRead
-      storage_tier: Standard
-      name: "{{ item }}"
-    with_items: "{{ public_containers }}"
-    tags:
-      - oss
+  # - name: Create Public Buckets
+  #   oci_object_storage_bucket:
+  #     # required
+  #     namespace_name: "{{ namespace_name }}" 
+  #     compartment_id: "{{ compartment_id }}"
+  #     public_access_type: ObjectRead
+  #     storage_tier: Standard
+  #     name: "{{ item }}"
+  #   with_items: "{{ public_containers }}"
+  #   tags:
+  #     - oss
 
-  - name: Create a temporary sample file to upload
-    tempfile:
-    register: tmpfile1
-    tags:
-      - oss
-  - name: Put content in the temporary sample file
-    copy:
-      content: "This is content for the sample file."
-      dest: "{{ tmpfile1.path }}"
-    tags:
-      - oss
-  - name: Creating folder structurue
-    oci_object_storage_object:
-      namespace_name: "{{ namespace_name }}"
-      bucket_name: contents
-      object_name: "{{ item }}/tmpfile1.txt"
-      src: "{{ tmpfile1.path }}"
-    with_items:
-      - collection-editor
-      - generic-editor
-      - content-edition
-      - v3/preview
-      - terms-and-conditions
-    tags:
-      - oss
+  # - name: Create a temporary sample file to upload
+  #   tempfile:
+  #   register: tmpfile1
+  #   tags:
+  #     - oss
+  # - name: Put content in the temporary sample file
+  #   copy:
+  #     content: "This is content for the sample file."
+  #     dest: "{{ tmpfile1.path }}"
+  #   tags:
+  #     - oss
+  # - name: Creating folder structurue
+  #   oci_object_storage_object:
+  #     namespace_name: "{{ namespace_name }}"
+  #     bucket_name: contents
+  #     object_name: "{{ item }}/tmpfile1.txt"
+  #     src: "{{ tmpfile1.path }}"
+  #   with_items:
+  #     - collection-editor
+  #     - generic-editor
+  #     - content-edition
+  #     - v3/preview
+  #     - terms-and-conditions
+  #   tags:
+  #     - oss
 
-  - name: Downloading terms-and-conditions
-    get_url:
-      url: https://sunbirdpublic.blob.core.windows.net/installation/terms-and-conditions/terms-and-conditions-v9.html
-      dest: /tmp/terms-and-conditions-v9.html
-      mode: '0440'
-    tags:
-      - oss
+  # - name: Downloading terms-and-conditions
+  #   get_url:
+  #     url: https://sunbirdpublic.blob.core.windows.net/installation/terms-and-conditions/terms-and-conditions-v9.html
+  #     dest: /tmp/terms-and-conditions-v9.html
+  #     mode: '0440'
+  #   tags:
+  #     - oss
 
-  - name: Uploading T&C
-    oci_object_storage_object:
-      namespace_name: "{{namespace_name}}"
-      bucket_name: contents
-      object_name: "terms-and-conditions/terms-and-conditions-v9.html"
-      src: /tmp/terms-and-conditions-v9.html
-      content_type: 'text/plain'
-    tags:
-      - oss
+  # - name: Uploading T&C
+  #   oci_object_storage_object:
+  #     namespace_name: "{{namespace_name}}"
+  #     bucket_name: contents
+  #     object_name: "terms-and-conditions/terms-and-conditions-v9.html"
+  #     src: /tmp/terms-and-conditions-v9.html
+  #     content_type: 'text/plain'
+  #   tags:
+  #     - oss
 
-  - name: Downloading GeoIP2
-    get_url:
-      url: "https://download.maxmind.com/app/geoip_download?edition_id={{ item.type }}&license_key={{ geoip_licence_key }}&suffix={{ item.prefix }}"
-      dest: "/tmp/geoip2_db.{{ item.prefix }}"
-      mode: '0440'
-    with_items:
-      - {type: 'GeoLite2-City-CSV', prefix: 'zip' }
-      - {type: 'GeoLite2-City', prefix: 'tar.gz'}
-    tags:
-      - oss
-  - name: Uploading GeoIP2 to artifacts
-    oci_object_storage_object:
-      namespace_name: "{{namespace_name}}"
-      bucket_name: artifacts
-      object_name: "geoip2_db.{{ item }}"
-      src: /tmp/geoip2_db.{{ item }}
-      content_type: 'text/plain'
-    with_items:
-      - zip
-      - tar.gz
-    tags:
-      - oss
+  # - name: Downloading GeoIP2
+  #   get_url:
+  #     url: "https://download.maxmind.com/app/geoip_download?edition_id={{ item.type }}&license_key={{ geoip_licence_key }}&suffix={{ item.prefix }}"
+  #     dest: "/tmp/geoip2_db.{{ item.prefix }}"
+  #     mode: '0440'
+  #   with_items:
+  #     - {type: 'GeoLite2-City-CSV', prefix: 'zip' }
+  #     - {type: 'GeoLite2-City', prefix: 'tar.gz'}
+  #   tags:
+  #     - oss
+  # - name: Uploading GeoIP2 to artifacts
+  #   oci_object_storage_object:
+  #     namespace_name: "{{namespace_name}}"
+  #     bucket_name: artifacts
+  #     object_name: "geoip2_db.{{ item }}"
+  #     src: /tmp/geoip2_db.{{ item }}
+  #     content_type: 'text/plain'
+  #   with_items:
+  #     - zip
+  #     - tar.gz
+  #   tags:
+  #     - oss
 
   # - name: Uploading labels
   #   shell:
@@ -581,14 +581,14 @@
   #   tags:
   #     - oss
 
-  - name: Unarchive plugins
-    unarchive:
-      src: "https://sunbirdpublic.blob.core.windows.net/installation/content-plugins.zip"
-      dest: /tmp/
-      creates: /tmp/content-plugins
-      remote_src: yes
-    tags:
-      - oss
+  # - name: Unarchive plugins
+  #   unarchive:
+  #     src: "https://sunbirdpublic.blob.core.windows.net/installation/content-plugins.zip"
+  #     dest: /tmp/
+  #     creates: /tmp/content-plugins
+  #     remote_src: yes
+  #   tags:
+  #     - oss
 
   # - name: Upload Content plugins
   #   shell:
@@ -596,12 +596,12 @@
   #   tags:
   #     - oss  
 
-  - name: Create ocir repos 
-    shell:
-       "oci artifacts container repository create --compartment-id {{compartment_id}} --display-name {{repo_name}}/{{item}} "
-    with_items: "{{ repo_list }}"
-    tags:
-      - ocir  
+  # - name: Create ocir repos 
+  #   shell:
+  #      "oci artifacts container repository create --compartment-id {{compartment_id}} --display-name {{repo_name}}/{{item}} "
+  #   with_items: "{{ repo_list }}"
+  #   tags:
+  #     - ocir  
 
   - name: Launch an instance
     oci_compute_instance:
