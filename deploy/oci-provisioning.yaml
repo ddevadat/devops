@@ -131,14 +131,15 @@
     oci_compute_image_facts:
       compartment_id: "{{compartment_id}}"
       shape: "{{instance_shape}}"
-      display_name : "Canonical-Ubuntu"
+      operating_system  : "Canonical-Ubuntu"
+      operating_system_version: "{{intance_os_version}}"
     register: oci_images
     tags:
       - always
 
   - name: show images
     debug:
-      msg: "{{oci_images.images}}"
+      msg: "{{oci_images.images[0]}}"
     tags:
       - always
 
