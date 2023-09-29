@@ -424,10 +424,14 @@
   - name: Create a temporary sample file to upload
     tempfile:
     register: tmpfile1
+    tags:
+      - oss
   - name: Put content in the temporary sample file
     copy:
       content: "This is content for the sample file."
       dest: "{{ tmpfile1.path }}"
+    tags:
+      - oss
   - name: Creating folder structurue
     oci_object_storage_object:
       namespace_name: "{{ namespace_name }}"
@@ -440,3 +444,5 @@
       - content-edition
       - v3/preview
       - terms-and-conditions
+    tags:
+      - oss
