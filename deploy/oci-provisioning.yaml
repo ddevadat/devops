@@ -138,20 +138,6 @@
     tags:
       - network
 
-  # - name: Create network_security_group
-  #   oci_network_security_group:
-  #     compartment_id: "{{ compartment_id }}"
-  #     display_name: "sunbird network security group"
-  #     vcn_id: "{{ vcn_id }}"
-  #   register: result
-  #   tags:
-  #     - network
-
-  # - set_fact:
-  #     network_security_group_id: "{{result.network_security_group.id}}"
-  #   tags:
-  #     - network
-
   - name: Create security list for K8S API
     oci_network_security_list:
       display_name: K8S-API-SL
@@ -206,8 +192,43 @@
       - network
       - k8s
 
+  - name: Create security list for K8S Worker
+    oci_network_security_list:
+      display_name: K8S-Worker-SL
+      compartment_id: "{{ compartment_id }}"
+      vcn_id: "{{ vcn_id }}"
+      egress_security_rules:
+      - description: "Allow outgoing traffic"
+        destination: "{{ quad_zero_route }}"
+        protocol: "all"
+        destination_type: CIDR_BLOCK
+        is_stateless: false
+      ingress_security_rules:
+      - description: "Allow  access from within the vcn"
+        protocol: 6
+        source: "{{vcn_cidr_block}}"
+        is_stateless: false
+        source_type: CIDR_BLOCK
+      - description: "Path Discovery"
+        protocol: 1
+        source: "{{vcn_cidr_block}}"
+        is_stateless: false
+        source_type: CIDR_BLOCK
+        icmp_options:
+          type: 3
+          code: 4
+    register: result
+    tags:
+      - network
+      - k8s
+  - set_fact:
+      k8s_worker_list_id: "{{ result.security_list.id }}"
+      cacheable: yes
+    tags:
+      - network
+      - k8s
 
-  - name: Create a Subnet
+  - name: Create a Subnet for K8S API
     oci_network_subnet:
       cidr_block: "{{ vlan_cidr_block }}"
       compartment_id: "{{ compartment_id }}"
@@ -229,14 +250,3 @@
       - network
       - k8s
 
-  # - name: List services
-  #   oci_network_service_facts:
-  #   register: result
-  #   tags:
-  #     - service
-
-  # - name: show results
-  #   debug:
-  #     msg: "{{result.services[0].id}}"
-  #   tags:
-  #     - service
