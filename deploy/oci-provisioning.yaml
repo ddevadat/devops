@@ -12,8 +12,22 @@
     vcn_name: "SunbirdEd-VCN"
     vcn_dns_label: "sunbirded"
     compartment_id: "{{ lookup('env', 'COMPARTMENT_OCID') }}"
+    namespace_name: "{{ lookup('env', 'OSS_NAMESPACE') }}"
     quad_zero_route: "0.0.0.0/0"
-
+    private_containers:
+      - private
+      - artifacts
+      - management
+      - e-credentials
+      - contents
+      - reports
+      - telemetry-data-store
+      - data-store
+      - manage-learn
+      - uci 
+      - dial
+    public_containers:
+      - public
   tasks: 
   - name: Check pre-requisites
     fail:
@@ -21,6 +35,7 @@
     when: item not in ansible_env
     with_items:
       - "COMPARTMENT_OCID"
+      - "OSS_NAMESPACE"
 
   - name: Create a VCN
     oci_network_vcn:
@@ -381,3 +396,27 @@
     tags:
       - network
       - k8s
+
+  - name: Create Private Buckets
+    oci_object_storage_bucket:
+      # required
+      namespace_name: "{{ namespace_name }}" 
+      compartment_id: "{{ compartment_id }}"
+      public_access_type: NoPublicAccess
+      storage_tier: Standard
+      name: "{{ item }}"
+    with_items: "{{ private_containers }}"
+    tags:
+      - oss
+
+  - name: Create Public Buckets
+    oci_object_storage_bucket:
+      # required
+      namespace_name: "{{ namespace_name }}" 
+      compartment_id: "{{ compartment_id }}"
+      public_access_type: NoPublicAccess
+      storage_tier: ObjectRead
+      name: "{{ item }}"
+    with_items: "{{ public_containers }}"
+    tags:
+      - oss
