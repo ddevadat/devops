@@ -213,6 +213,8 @@
       compartment_id: "{{ compartment_id }}"
       display_name: "K8S-API-SN"
       route_table_id: "{{ private_rt_id }}"
+      security_list_ids:
+        - "{{k8s_security_list_id}}"
       dns_label: "k8sapi"
       prohibit_public_ip_on_vnic: yes
       vcn_id: "{{ vcn_id }}"
