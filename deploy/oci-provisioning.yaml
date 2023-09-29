@@ -141,7 +141,7 @@
 
   - name: filter query
     debug:
-      var: oci_images.images | json_query("[?operating_system == "Windows"]")
+      var: oci_images.images | json_query("[?operating_system == 'Windows']")
     tags:
       - always
 
