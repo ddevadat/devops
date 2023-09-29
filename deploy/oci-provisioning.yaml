@@ -194,6 +194,6 @@
 
   - name: show results
     debug:
-      msg: "{{result.services[0]}}"
+      msg: "{{result.services[0].id}}"
     tags:
       - service
