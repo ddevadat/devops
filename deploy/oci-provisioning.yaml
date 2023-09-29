@@ -148,7 +148,7 @@
   - name: filter query
     debug:
       var: "{{ item.display_name }}"
-    loop: oci_images.images | selectattr('operating_system', 'equalto', 'Windows') | list"
+    loop: "{{oci_images.images | selectattr('operating_system', 'equalto', 'Windows') | list}}"
     tags:
       - always
 
