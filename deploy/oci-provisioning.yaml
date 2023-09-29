@@ -471,7 +471,7 @@
   - set_fact:
       vm_subnet_id: "{{ result.subnet.id }}"
       cacheable: yes
-      
+
   - name: Create user
     oci_identity_user:
       compartment_id: "{{compartment_id}}"
