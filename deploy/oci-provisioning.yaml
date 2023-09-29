@@ -616,7 +616,7 @@
         source_type: "image"
       shape_config: 
         ocpus: "{{ ocpu }}"
-        memory_in_gbs: "{{ memory_in_gbs }}
+        memory_in_gbs: "{{ memory_in_gbs }}"
       create_vnic_details:
         assign_public_ip: False
         hostname_label: "{{ item }}"
