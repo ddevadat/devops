@@ -185,3 +185,11 @@
     tags:
       - network
       - k8s
+
+  - name: List services
+    oci_network_service_facts:
+    register: result
+
+  - name: show results
+    debug:
+      msg: "{{result.stdout}}"
