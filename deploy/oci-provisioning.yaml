@@ -420,3 +420,23 @@
     with_items: "{{ public_containers }}"
     tags:
       - oss
+
+  - name: Create a temporary sample file to upload
+    tempfile:
+    register: tmpfile1
+  - name: Put content in the temporary sample file
+    copy:
+      content: "This is content for the sample file."
+      dest: "{{ tmpfile1.path }}"
+  - name: Creating folder structurue
+    oci_object_storage_object:
+      namespace_name: "{{ namespace_name }}"
+      bucket_name: contents
+      object_name: "{{ item }}/tmpfile1.txt"
+      src: "{{ tmpfile1.path }}"
+    with_items:
+      - collection-editor
+      - generic-editor
+      - content-edition
+      - v3/preview
+      - terms-and-conditions
