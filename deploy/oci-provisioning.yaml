@@ -131,8 +131,8 @@
     oci_compute_image_facts:
       compartment_id: "{{compartment_id}}"
       shape: "{{instance_shape}}"
-      operating_system  : "Canonical-Ubuntu"
-      operating_system_version: "{{intance_os_version}}"
+      # operating_system  : "Canonical-Ubuntu"
+      # operating_system_version: "{{intance_os_version}}"
     register: oci_images
     tags:
       - always
