@@ -27,6 +27,7 @@
       - manage-learn
       - uci 
       - dial
+      - label
     public_containers:
       - public
   tasks: 
@@ -488,3 +489,24 @@
       - tar.gz
     tags:
       - oss
+
+  # - name: Uploading labels
+  #   shell:
+  #      "oci os object bulk-upload --bucket-name label --prefix 'labels/' --src-dir ../utils/portal/labels/ --namespace {{ namespace_name }} -–overwrite"
+  #   tags:
+  #     - oss
+
+  - name: Unarchive plugins
+    unarchive:
+      src: "https://sunbirdpublic.blob.core.windows.net/installation/content-plugins.zip"
+      dest: /tmp/
+      creates: /tmp/content-plugins
+      remote_src: yes
+    tags:
+      - oss
+
+  - name: Upload Content plugins
+    shell:
+       "oci os object bulk-upload --bucket-name contents --prefix 'content-plugins/' --src-dir /tmp/content-plugins/ --namespace {{ namespace_name }} "
+    tags:
+      - oss  
