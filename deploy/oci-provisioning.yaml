@@ -165,6 +165,7 @@
       - description: "Allow outgoing traffic to OCI services"
         destination: "{{oci_all_service_id}}"
         destination_type: SERVICE_CIDR_BLOCK
+        protocol: "all"
         is_stateless: false
       ingress_security_rules:
       - description: "Allow kube api ep access from within the vcn"
