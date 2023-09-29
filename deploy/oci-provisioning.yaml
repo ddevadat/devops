@@ -132,8 +132,6 @@
       compartment_id: "{{compartment_id}}"
       shape: "{{instance_shape}}"
       display_name : "Canonical-Ubuntu"
-      operating_system: "Canonical Ubuntu"
-      operating_system_version: "{{intance_os_version}}"
     register: oci_images
     tags:
       - always
