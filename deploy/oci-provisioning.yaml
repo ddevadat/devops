@@ -446,3 +446,21 @@
       - terms-and-conditions
     tags:
       - oss
+
+  - name: Downloading terms-and-conditions
+    get_url:
+      url: https://sunbirdpublic.blob.core.windows.net/installation/terms-and-conditions/terms-and-conditions-v9.html
+      dest: /tmp/terms-and-conditions-v9.html
+      mode: '0440'
+    tags:
+      - oss
+
+  - name: Uploading T&C
+    oci_object_storage_object:
+      namespace_name: "{{namespace_name}}"
+      bucket_name: contents
+      object_name: "terms-and-conditions/terms-and-conditions-v9.html"
+      src: /tmp/terms-and-conditions-v9.html
+      content_type: 'text/plain'
+    tags:
+      - oss
