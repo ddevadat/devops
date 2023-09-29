@@ -13,6 +13,7 @@
     vcn_dns_label: "sunbirded"
     compartment_id: "{{ lookup('env', 'COMPARTMENT_OCID') }}"
     namespace_name: "{{ lookup('env', 'OSS_NAMESPACE') }}"
+    geoip_licence_key: "{{ lookup('env', 'GEO_IP_LIC_KEY') }}"
     quad_zero_route: "0.0.0.0/0"
     private_containers:
       - private
@@ -462,5 +463,28 @@
       object_name: "terms-and-conditions/terms-and-conditions-v9.html"
       src: /tmp/terms-and-conditions-v9.html
       content_type: 'text/plain'
+    tags:
+      - oss
+
+  - name: Downloading GeoIP2
+    get_url:
+      url: "https://download.maxmind.com/app/geoip_download?edition_id={{ item.type }}&license_key={{ geoip_licence_key }}&suffix={{ item.prefix }}"
+      dest: "/tmp/geoip2_db.{{ item.prefix }}"
+      mode: '0440'
+    with_items:
+      - {type: 'GeoLite2-City-CSV', prefix: 'zip' }
+      - {type: 'GeoLite2-City', prefix: 'tar.gz'}
+    tags:
+      - oss
+  - name: Uploading GeoIP2 to artifacts
+    oci_object_storage_object:
+      namespace_name: "{{namespace_name}}"
+      bucket_name: artifacts
+      object_name: "geoip2_db.{{ item }}"
+      src: /tmp/geoip2_db.{{ item }}
+      content_type: 'text/plain'
+    with_items:
+      - zip
+      - tar.gz
     tags:
       - oss
