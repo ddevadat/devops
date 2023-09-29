@@ -148,7 +148,7 @@
   - name: filter query
     debug:
       msg: "{{ item.display_name }}"
-    loop: "{{oci_images.images | selectattr('operating_system', 'equalto', 'Canonical Ubuntu') | list}}"
+    loop: "{{oci_images.images | selectattr('operating_system', 'equalto', 'Canonical Ubuntu') && selectattr('operating_system_version', 'equalto', '18.04')| list}}"
     tags:
       - always
 
