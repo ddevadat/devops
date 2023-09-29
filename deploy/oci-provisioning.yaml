@@ -14,12 +14,19 @@
     compartment_id: "{{ lookup('env', 'COMPARTMENT_OCID') }}"
     namespace_name: "{{ lookup('env', 'OSS_NAMESPACE') }}"
     geoip_licence_key: "{{ lookup('env', 'GEO_IP_LIC_KEY') }}"
+    authorized_key: "{{ lookup('env', 'INSTANCE_PUBLIC_KEY') }}"
     quad_zero_route: "0.0.0.0/0"
-    image_id: "ocid1.image.oc1.ap-mumbai-1.aaaaaaaajtelsa6ufuqoodhkqc6xwwi2wts7bkaladvmwhvjve6ibo6pbava"
     instance_shape: "VM.Standard.E3.Flex"
     intance_os_version: "18.04"
     ocpu: 1
     memory_in_gbs: 8
+    private_vm_hdd: 60
+    private_vm_names:
+      - kp
+      - dp
+      - yarn
+      - db
+      - others
     private_containers:
       - private
       - artifacts
@@ -94,6 +101,7 @@
     with_items:
       - "COMPARTMENT_OCID"
       - "OSS_NAMESPACE"
+      - "INSTANCE_PUBLIC_KEY"
 
   - name: Create a VCN
     oci_network_vcn:
@@ -125,8 +133,6 @@
     tags:
       - always
 
-#### some code to get image id 
-
   - name: Get all images
     oci_compute_image_facts:
       compartment_id: "{{compartment_id}}"
@@ -137,31 +143,19 @@
     tags:
       - always
 
-  - name: show images
-    debug:
-      msg: "{{oci_images.images[0].id}}"
-    tags:
-      - always
-
   # - name: filter query
   #   debug:
-  #     var: oci_images.images | json_query("[?operating_system == 'Windows']")
+  #     msg: "{{ item.display_name }}"
+  #   loop: "{{oci_images.images | selectattr('operating_system', 'equalto', 'Canonical Ubuntu') | selectattr('operating_system_version', 'equalto', '18.04')| list}}"
   #   tags:
   #     - always
 
-  - name: filter query
-    debug:
-      msg: "{{ item.display_name }}"
-    loop: "{{oci_images.images | selectattr('operating_system', 'equalto', 'Canonical Ubuntu') | selectattr('operating_system_version', 'equalto', '18.04')| list}}"
-    tags:
-      - always
-
-#####
 
   - set_fact:
       availability_domain: "{{oci_ads.availability_domains[0].name}}"
       oci_all_service_id: "{{oci_services.services[1].id}}"
       oci_all_service_cidr: "{{oci_services.services[1].cidr_block}}"
+      instance_image_id: "{{oci_images.images[0].id}}"
     tags:
       - always
 
@@ -471,6 +465,9 @@
     tags:
       - network
       - k8s
+  - set_fact:
+      vm_subnet_id: "{{ result.subnet.id }}"
+      cacheable: yes
 
   - name: Create a Subnet for LB
     oci_network_subnet:
@@ -606,25 +603,25 @@
     tags:
       - ocir  
 
-  # - name: Launch an instance
-  #   oci_compute_instance:
-  #     availability_domain: "{{ availability_domain }}"
-  #     compartment_id: "{{ compartment_id }}"
-  #     name: "{{ item }}"
-  #     image_id: "{{ image_id }}"
-  #     shape: "{{ instance_shape }}"
-  #     source_details:
-  #       boot_volume_size_in_gbs: 350
-  #       image_id: "{{ image_id }}"
-  #       source_type: "image"
-  #     shape_config: 
-  #       ocpus: "{{ ocpu }}"
-  #       memory_in_gbs: "{{ memory_in_gbs }}
-  #     create_vnic_details:
-  #         assign_public_ip: True
-  #         hostname_label: "{{ item }}"
-  #         subnet_id: "{{ vlan_id }}"
-  #     metadata:
-  #         ssh_authorized_keys: "{{ authorized_key }}"
-  #   with_items: "{{ vm_names }}
-  #   register: result
+  - name: Launch an instance
+    oci_compute_instance:
+      availability_domain: "{{ availability_domain }}"
+      compartment_id: "{{ compartment_id }}"
+      name: "{{ item }}"
+      image_id: "{{ instance_image_id }}"
+      shape: "{{ instance_shape }}"
+      source_details:
+        boot_volume_size_in_gbs: "{{private_vm_hdd}}"
+        image_id: "{{ instance_image_id }}"
+        source_type: "image"
+      shape_config: 
+        ocpus: "{{ ocpu }}"
+        memory_in_gbs: "{{ memory_in_gbs }}
+      create_vnic_details:
+          assign_public_ip: False
+          hostname_label: "{{ item }}"
+          subnet_id: "{{ vm_subnet_id }}"
+      metadata:
+          ssh_authorized_keys: "{{ authorized_key }}"
+    with_items: "{{ private_vm_names }}
+    register: result
