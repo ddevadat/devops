@@ -178,6 +178,23 @@
           destination_port_range:
             max: 6443
             min: 6443
+      - description: "Allow kubelet access from within the vcn"
+        protocol: 6
+        source: "{{vcn_cidr_block}}"
+        is_stateless: false
+        source_type: CIDR_BLOCK
+        tcp_options:
+          destination_port_range:
+            max: 12250
+            min: 12250
+      - description: "Path Discovery"
+        protocol: 1
+        source: "{{vcn_cidr_block}}"
+        is_stateless: false
+        source_type: CIDR_BLOCK
+        icmp_options:
+          type: 3
+          code: 4
     register: result
     tags:
       - network
