@@ -590,11 +590,11 @@
     tags:
       - oss
 
-  - name: Upload Content plugins
-    shell:
-       "oci os object bulk-upload --bucket-name contents --prefix 'content-plugins/' --src-dir /tmp/content-plugins/ --namespace {{ namespace_name }} "
-    tags:
-      - oss  
+  # - name: Upload Content plugins
+  #   shell:
+  #      "oci os object bulk-upload --bucket-name contents --prefix 'content-plugins/' --src-dir /tmp/content-plugins/ --namespace {{ namespace_name }} "
+  #   tags:
+  #     - oss  
 
   - name: Create ocir repos 
     shell:
