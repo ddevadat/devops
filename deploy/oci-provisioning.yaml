@@ -17,6 +17,7 @@
     quad_zero_route: "0.0.0.0/0"
     image_id: "ocid1.image.oc1.ap-mumbai-1.aaaaaaaajtelsa6ufuqoodhkqc6xwwi2wts7bkaladvmwhvjve6ibo6pbava"
     instance_shape: "VM.Standard.E3.Flex"
+    intance_os_version: "18.04"
     ocpu: 1
     memory_in_gbs: 8
     private_containers:
@@ -130,6 +131,9 @@
     oci_compute_image_facts:
       compartment_id: "{{compartment_id}}"
       shape: "{{instance_shape}}"
+      display_name : "Canonical-Ubuntu"
+      operating_system: "Canonical Ubuntu"
+      operating_system_version: "{{intance_os_version}}"
     register: oci_images
     tags:
       - always
