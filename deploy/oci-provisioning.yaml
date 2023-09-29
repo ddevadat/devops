@@ -189,7 +189,11 @@
   - name: List services
     oci_network_service_facts:
     register: result
+    tags:
+      - service
 
   - name: show results
     debug:
-      msg: "{{result.stdout}}"
+      msg: "{{result}}"
+    tags:
+      - service
