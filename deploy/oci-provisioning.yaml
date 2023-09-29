@@ -675,11 +675,3 @@
   #   with_items: "{{ public_vm_names }}"
   #   register: result
 
-- name: Create user
-  oci_identity_user:
-    compartment_id: "{{compartment_id}}"
-    name: sunbirded-svc
-    description: sunbird ed service user
-    state: present
-  tags:
-    - identity
