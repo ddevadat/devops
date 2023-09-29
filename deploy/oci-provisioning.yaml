@@ -243,10 +243,19 @@
     tags:
       - network
       - k8s
-  - set_fact:
-      vlan_id: "{{ result.subnet.id }}"
-      cacheable: yes
+
+  - name: Create a Subnet for K8S Woker
+    oci_network_subnet:
+      cidr_block: "{{ vlan_cidr_block }}"
+      compartment_id: "{{ compartment_id }}"
+      display_name: "K8S-WORKER-SN"
+      route_table_id: "{{ private_rt_id }}"
+      security_list_ids:
+        - "{{k8s_worker_list_id}}"
+      dns_label: "k8sworker"
+      prohibit_public_ip_on_vnic: yes
+      vcn_id: "{{ vcn_id }}"
+    register: result
     tags:
       - network
       - k8s
-
