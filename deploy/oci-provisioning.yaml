@@ -672,3 +672,5 @@
     name: sunbirded-svc
     description: sunbird ed service user
     state: present
+  tags:
+    - identity
