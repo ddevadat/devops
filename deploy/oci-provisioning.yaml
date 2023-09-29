@@ -618,10 +618,10 @@
         ocpus: "{{ ocpu }}"
         memory_in_gbs: "{{ memory_in_gbs }}
       create_vnic_details:
-          assign_public_ip: False
-          hostname_label: "{{ item }}"
-          subnet_id: "{{ vm_subnet_id }}"
+        assign_public_ip: False
+        hostname_label: "{{ item }}"
+        subnet_id: "{{ vm_subnet_id }}"
       metadata:
-          ssh_authorized_keys: "{{ authorized_key }}"
+        ssh_authorized_keys: "{{ authorized_key }}"
     with_items: "{{ private_vm_names }}
     register: result
