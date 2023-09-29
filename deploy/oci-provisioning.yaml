@@ -15,6 +15,10 @@
     namespace_name: "{{ lookup('env', 'OSS_NAMESPACE') }}"
     geoip_licence_key: "{{ lookup('env', 'GEO_IP_LIC_KEY') }}"
     quad_zero_route: "0.0.0.0/0"
+    image_id: "ocid1.image.oc1.ap-mumbai-1.aaaaaaaajtelsa6ufuqoodhkqc6xwwi2wts7bkaladvmwhvjve6ibo6pbava"
+    instance_shape: "VM.Standard.E3.Flex"
+    ocpu: 1
+    memory_in_gbs: 8
     private_containers:
       - private
       - artifacts
@@ -119,6 +123,23 @@
     register: oci_services
     tags:
       - always
+
+#### some code to get image id 
+
+  - name: Get all images
+    oci_compute_image_facts:
+      compartment_id: "{{compartment_id}}"
+    register: oci_images
+    tags:
+      - always
+
+  - name: show images
+    debug:
+      msg: "{{oci_images}}"
+    tags:
+      - always
+
+#####
 
   - set_fact:
       availability_domain: "{{oci_ads.availability_domains[0].name}}"
@@ -452,7 +473,6 @@
 
   - name: Create Private Buckets
     oci_object_storage_bucket:
-      # required
       namespace_name: "{{ namespace_name }}" 
       compartment_id: "{{ compartment_id }}"
       public_access_type: NoPublicAccess
@@ -568,3 +588,26 @@
     with_items: "{{ repo_list }}"
     tags:
       - ocir  
+
+  # - name: Launch an instance
+  #   oci_compute_instance:
+  #     availability_domain: "{{ availability_domain }}"
+  #     compartment_id: "{{ compartment_id }}"
+  #     name: "{{ item }}"
+  #     image_id: "{{ image_id }}"
+  #     shape: "{{ instance_shape }}"
+  #     source_details:
+  #       boot_volume_size_in_gbs: 350
+  #       image_id: "{{ image_id }}"
+  #       source_type: "image"
+  #     shape_config: 
+  #       ocpus: "{{ ocpu }}"
+  #       memory_in_gbs: "{{ memory_in_gbs }}
+  #     create_vnic_details:
+  #         assign_public_ip: True
+  #         hostname_label: "{{ item }}"
+  #         subnet_id: "{{ vlan_id }}"
+  #     metadata:
+  #         ssh_authorized_keys: "{{ authorized_key }}"
+  #   with_items: "{{ vm_names }}
+  #   register: result
