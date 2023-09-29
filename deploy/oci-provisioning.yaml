@@ -231,6 +231,93 @@
       - network
       - k8s
 
+  - name: Create security list for VM
+    oci_network_security_list:
+      display_name: VM-SL
+      compartment_id: "{{ compartment_id }}"
+      vcn_id: "{{ vcn_id }}"
+      egress_security_rules:
+      - description: "Allow outgoing traffic"
+        destination: "{{ quad_zero_route }}"
+        protocol: "all"
+        destination_type: CIDR_BLOCK
+        is_stateless: false
+      ingress_security_rules:
+      - description: "Allow  access from within the vcn"
+        protocol: 6
+        source: "{{vcn_cidr_block}}"
+        is_stateless: false
+        source_type: CIDR_BLOCK
+      - description: "Path Discovery"
+        protocol: 1
+        source: "{{vcn_cidr_block}}"
+        is_stateless: false
+        source_type: CIDR_BLOCK
+        icmp_options:
+          type: 3
+          code: 4
+    register: result
+    tags:
+      - network
+      - k8s
+  - set_fact:
+      vm_list_id: "{{ result.security_list.id }}"
+      cacheable: yes
+    tags:
+      - network
+      - k8s
+
+  - name: Create security list for LB
+    oci_network_security_list:
+      display_name: PUB-LB-SL
+      compartment_id: "{{ compartment_id }}"
+      vcn_id: "{{ vcn_id }}"
+      egress_security_rules:
+      - description: "Allow outgoing traffic"
+        destination: "{{ quad_zero_route }}"
+        protocol: "all"
+        destination_type: CIDR_BLOCK
+        is_stateless: false
+      ingress_security_rules:
+      - description: "allow all http traffic"
+        protocol: 6
+        source: "{{quad_zero_route}}"
+        is_stateless: false
+        source_type: CIDR_BLOCK
+        tcp_options:
+          destination_port_range:
+            max: 80
+            min: 80
+      - description: "allow all https traffic"
+        protocol: 6
+        source: "{{quad_zero_route}}"
+        is_stateless: false
+        source_type: CIDR_BLOCK
+        tcp_options:
+          destination_port_range:
+            max: 443
+            min: 443
+      - description: "allow ssh traffic"
+        protocol: 6
+        source: "{{quad_zero_route}}"
+        is_stateless: false
+        source_type: CIDR_BLOCK
+        tcp_options:
+          destination_port_range:
+            max: 22
+            min: 22
+    register: result
+    tags:
+      - network
+      - k8s
+  - set_fact:
+      vm_list_id: "{{ result.security_list.id }}"
+      cacheable: yes
+    tags:
+      - network
+      - k8s
+
+
   - name: Create a Subnet for K8S API
     oci_network_subnet:
       cidr_block: "{{ k8s_api_subnet_cidr_block }}"
