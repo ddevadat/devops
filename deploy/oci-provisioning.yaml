@@ -43,8 +43,15 @@
     tags:
       - always
 
+  - name: Get all services
+    oci_network_service_facts:
+    register: oci_services
+    tags:
+      - always
+
   - set_fact:
       availability_domain: "{{oci_ads.availability_domains[0].name}}"
+      oci_all_service_id: "{{oci_services.services[1].id}}"
     tags:
       - always
 
@@ -85,6 +92,17 @@
     tags:
       - network
 
+  - name: Create a new Service Gateway
+    oci_network_service_gateway:
+      compartment_id: "{{ compartment_id }}"
+      vcn_id: "{{ vcn_id }}"
+      services:  
+        - service_id: "{{oci_all_service_id}}"
+      display_name: "SVC_GW"
+      state: 'present'
+    register: result
+    tags:
+      - network
 
 
   - name: Create route table to connect internet gateway to the VCN
@@ -186,14 +204,14 @@
       - network
       - k8s
 
-  - name: List services
-    oci_network_service_facts:
-    register: result
-    tags:
-      - service
+  # - name: List services
+  #   oci_network_service_facts:
+  #   register: result
+  #   tags:
+  #     - service
 
-  - name: show results
-    debug:
-      msg: "{{result.services[0].id}}"
-    tags:
-      - service
+  # - name: show results
+  #   debug:
+  #     msg: "{{result.services[0].id}}"
+  #   tags:
+  #     - service
