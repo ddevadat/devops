@@ -608,17 +608,17 @@
   #   tags:
   #     - ocir  
 
-  - name: Create container_repository
-    oci_artifacts_container_repository:
-      compartment_id: "{{ compartment_id }}"
-      display_name: "{{repo_name}}/{{item}}"
-      is_public: false
-      readme:
-        content: "container registry for Sunbird deployment - {{item}} "
-        format: TEXT_MARKDOWN
-    with_items: "{{ repo_list }}"
-    tags:
-      - ocir      
+  # - name: Create container_repository
+  #   oci_artifacts_container_repository:
+  #     compartment_id: "{{ compartment_id }}"
+  #     display_name: "{{repo_name}}/{{item}}"
+  #     is_public: false
+  #     readme:
+  #       content: "container registry for Sunbird deployment - {{item}} "
+  #       format: TEXT_MARKDOWN
+  #   with_items: "{{ repo_list }}"
+  #   tags:
+  #     - ocir      
 
   # - name: Launch private instance
   #   oci_compute_instance:
