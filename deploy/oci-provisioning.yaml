@@ -139,6 +139,12 @@
     tags:
       - always
 
+  - name: filter query
+    debug:
+      var: "{{oci_images}} | json_query("[?operating_system == "Windows"]")"
+    tags:
+      - always
+
 #####
 
   - set_fact:
