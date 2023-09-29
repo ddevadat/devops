@@ -414,8 +414,8 @@
       # required
       namespace_name: "{{ namespace_name }}" 
       compartment_id: "{{ compartment_id }}"
-      public_access_type: NoPublicAccess
-      storage_tier: ObjectRead
+      public_access_type: ObjectRead
+      storage_tier: Standard
       name: "{{ item }}"
     with_items: "{{ public_containers }}"
     tags:
