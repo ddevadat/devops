@@ -138,7 +138,7 @@
 
   - name: show images
     debug:
-      msg: "{{oci_images.images[0]}}"
+      msg: "{{oci_images.images}}"
     tags:
       - always
 
