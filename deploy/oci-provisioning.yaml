@@ -5,7 +5,10 @@
   hosts: localhost
   vars:
     vcn_cidr_block: "10.90.0.0/16"
-    vlan_cidr_block: "10.90.1.0/24"
+    k8s_api_subnet_cidr_block: "10.90.1.0/24"
+    k8s_worker_subnet_cidr_block: "10.90.2.0/24"
+    k8s_lb_subnet_cidr_block: "10.90.3.0/24"
+    k8s_vm_subnet_cidr_block: "10.90.4.0/24"
     vcn_name: "SunbirdEd-VCN"
     vcn_dns_label: "sunbirded"
     compartment_id: "{{ lookup('env', 'COMPARTMENT_OCID') }}"
@@ -230,7 +233,7 @@
 
   - name: Create a Subnet for K8S API
     oci_network_subnet:
-      cidr_block: "{{ vlan_cidr_block }}"
+      cidr_block: "{{ k8s_api_subnet_cidr_block }}"
       compartment_id: "{{ compartment_id }}"
       display_name: "K8S-API-SN"
       route_table_id: "{{ private_rt_id }}"
@@ -246,7 +249,7 @@
 
   - name: Create a Subnet for K8S Woker
     oci_network_subnet:
-      cidr_block: "{{ vlan_cidr_block }}"
+      cidr_block: "{{ k8s_worker_subnet_cidr_block }}"
       compartment_id: "{{ compartment_id }}"
       display_name: "K8S-WORKER-SN"
       route_table_id: "{{ private_rt_id }}"
