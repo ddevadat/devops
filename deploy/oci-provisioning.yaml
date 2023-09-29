@@ -129,6 +129,7 @@
   - name: Get all images
     oci_compute_image_facts:
       compartment_id: "{{compartment_id}}"
+      shape: "{{instance_shape}}"
     register: oci_images
     tags:
       - always
