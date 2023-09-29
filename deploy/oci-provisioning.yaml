@@ -52,6 +52,7 @@
   - set_fact:
       availability_domain: "{{oci_ads.availability_domains[0].name}}"
       oci_all_service_id: "{{oci_services.services[1].id}}"
+      oci_all_service_cidr: "{{oci_services.services[1].cidr_block}}"
     tags:
       - always
 
@@ -163,7 +164,7 @@
         destination_type: CIDR_BLOCK
         is_stateless: false
       - description: "Allow outgoing traffic to OCI services"
-        destination: "{{oci_all_service_id}}"
+        destination: "{{oci_all_service_cidr}}"
         destination_type: SERVICE_CIDR_BLOCK
         protocol: "all"
         is_stateless: false
