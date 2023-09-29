@@ -30,6 +30,57 @@
       - label
     public_containers:
       - public
+    repo_name: testsunbird
+    repo_list:
+      - adminutil
+      - assessment-service
+      # - bot
+      # - cert_registry_service
+      # - cert_service
+      # - content-service
+      # - creation-player
+      # - data-pipeline
+      # - discussion-middleware
+      # - echo-server
+      # - enc_service
+      # - gotenberg
+      # - groups_service
+      # - hawkeye
+      # - knowledge-mw-service
+      # - knowledge-platform-jobs
+      # - kong
+      # - learner_service
+      # - lms_service
+      # - ml-core-service
+      # - ml-projects-service
+      # - ml-reports-service
+      # - ml-survey-service
+      # - nodebb
+      # - notification_service
+      # - odk
+      # - opensaber
+      # - player
+      # - print-service
+      # - program-service
+      # - proxy
+      # - report-service
+      # - router
+      # - search-service
+      # - secor
+      # - sunbird-analytics-service
+      # - sunbird-datapipeline
+      # - sunbird-dial-service
+      # - sunbird-rc-certificate-api
+      # - sunbird-rc-certificate-signer
+      # - sunbird-rc-core
+      # - taxonomy-service
+      # - telemetry-service
+      # - uci-inbound
+      # - uci-orchestrator
+      # - uci-outbound
+      # - uci-transformer
+      # - uci_api  
+
   tasks: 
   - name: Check pre-requisites
     fail:
@@ -510,3 +561,10 @@
        "oci os object bulk-upload --bucket-name contents --prefix 'content-plugins/' --src-dir /tmp/content-plugins/ --namespace {{ namespace_name }} "
     tags:
       - oss  
+
+  - name: Create ocir repos 
+    shell:
+       "oci artifacts container repository create --compartment-id {{compartment_id}} --display-name {{repo_name}}/{{item}} "
+    with_items: "{{ repo_list }}"
+    tags:
+      - ocir  
