@@ -704,5 +704,7 @@
     oci_identity_user_group_membership:
       user_id: "{{user_id}}"
       group_id: "{{group_id}}"
+      compartment_id: "{{tenancy_id}}"
+      state: present
     tags:
       - identity
