@@ -678,11 +678,29 @@
     tags:
       - identity
 
+  - set_fact:
+      user_id: "{{ result.user.id }}"
+      cacheable: yes
+    tags:
+      - identity
+
   - name: Create group
     oci_identity_group:
       compartment_id: "{{tenancy_id}}"
       name: sunbirded-svc-test-group
       description: User group for Sunbird Service Users
       state: present
+    tags:
+      - identity
+  - set_fact:
+      group_id: "{{ result.group.id }}"
+      cacheable: yes
+    tags:
+      - identity
+
+  - name: Create user_group_membership
+    oci_identity_user_group_membership:
+      user_id: "{{user_id}}"
+      group_id: "{{group_id}}"
     tags:
       - identity
