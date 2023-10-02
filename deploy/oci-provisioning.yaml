@@ -475,7 +475,7 @@
   - name: Create user
     oci_identity_user:
       compartment_id: "{{compartment_id}}"
-      name: sunbirded-svc
+      name: sunbirded-svc-test
       description: sunbird ed service user
       state: present
     tags:
