@@ -700,12 +700,23 @@
     tags:
       - identity
 
-  - name: Create user_group_membership
-    oci_identity_user_group_membership:
-      user_id: "{{user_id}}"
-      group_id: "{{group_id}}"
+### Temporary disabled, as test login user doenst have the right privlieges
+  # - name: Create user_group_membership
+  #   oci_identity_user_group_membership:
+  #     user_id: "{{user_id}}"
+  #     group_id: "{{group_id}}"
+  #     compartment_id: "{{tenancy_id}}"
+  #     state: present
+  #   tags:
+  #     - identity
+## Tempoary Disabled end
+
+  - name: Create dynamic group
+    oci_identity_dynamic_group:
+      # required
       compartment_id: "{{tenancy_id}}"
-      tenancy: "{{tenancy_id}}"
-      state: present
+      name: sunbirded-dg
+      description: Dynamic Group for Sunbird BB
+      matching_rule: "instance.compartment.id = \'{{compartment_id}}\'"
     tags:
       - identity
