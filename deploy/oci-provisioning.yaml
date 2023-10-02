@@ -717,6 +717,6 @@
       compartment_id: "{{tenancy_id}}"
       name: sunbirded-dg
       description: Dynamic Group for Sunbird BB
-      matching_rule: "instance.compartment.id = \'{{compartment_id}}\'"
+      matching_rule: "instance.compartment.id = '{{compartment_id}}'"
     tags:
       - identity
