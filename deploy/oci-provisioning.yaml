@@ -720,3 +720,24 @@
       matching_rule: "instance.compartment.id = '{{compartment_id}}'"
     tags:
       - identity
+
+  - name: Create auth_token
+    oci_identity_auth_token:
+      # required
+      description: For sunbird ocir
+      user_id: "{{user_id}}"
+    register: result
+    tags:
+      - identity
+  - set_fact:
+      auth_token: "{{ result.auth_token.token }}"
+      cacheable: yes
+    tags:
+      - identity
+
+  - name: Showing resources info
+    debug:
+      msg:
+        - OCIR auth token: "{{ auth_token }}"
+    tags:
+      - identity
