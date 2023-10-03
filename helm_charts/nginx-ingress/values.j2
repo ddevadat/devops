@@ -82,6 +82,7 @@ proxyconfig: |-
     ignore_invalid_headers off;  #pass through headers from Jenkins which are considered invalid by Nginx server.
     resolver {{ kube_dns_ip }} valid=30s;
     location /auth/ {
+          proxy_http_version 1.1;
           proxy_pass          http://keycloak:8080/auth/;
           proxy_set_header    Host               $host;
           proxy_set_header    X-Real-IP          $remote_addr;
@@ -92,19 +93,24 @@ proxyconfig: |-
           proxy_set_header    X-Forwarded-Proto  $scheme;
     }
     location /claim-ms/ {
+          proxy_http_version 1.1;
           proxy_pass          http://claim-ms:8082/;
     }
     location /registry/ {
+          proxy_http_version 1.1;
           proxy_pass http://registry:8081/;
     }
     location /bucket/ {
+          proxy_http_version 1.1;
           proxy_pass http://filestorage:9000/;
     }
     location /longhorn/ {
+          proxy_http_version 1.1;
           proxy_pass http://longhorn-frontend.longhorn-system:80/;
     }
     location /grafana {
       proxy_set_header Host $host;
+      proxy_http_version 1.1;
       proxy_pass http://prometheus-community-grafana.monitoring.svc.cluster.local;
     }
     {# Including custom configuration #}
