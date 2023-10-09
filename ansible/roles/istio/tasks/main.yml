@@ -1,0 +1,27 @@
+- name: tempating istio-install scripts
+  template:
+    src: "{{ item }}.j2"
+    dest: "/tmp/{{item}}.sh"
+  with_items:
+    - install_istio
+  tags:
+    - install
+
+- name: tempating istio-uninstall scripts
+  template:
+    src: "{{ item }}.j2"
+    dest: "/tmp/{{item}}.sh"
+  with_items:
+    - uninstall_istio
+  tags:
+    - uninstall
+
+- name: install istio
+  shell: sh /tmp/install_istio.sh
+  tags:
+    - install
+  
+- name: uninstall istio
+  shell: sh /tmp/uninstall_istio.sh
+  tags:
+    - uninstall

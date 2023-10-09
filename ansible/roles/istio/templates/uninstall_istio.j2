@@ -1,0 +1,10 @@
+
+
+export PATH="{{istio_install_location}}/istio-{{istio_version}}/bin:$PATH"
+
+
+istioctl uninstall -y --purge
+
+kubectl delete -f {{istio_install_location}}/istio-{{istio_version}}/samples/addons/
+
+kubectl delete namespace istio-system

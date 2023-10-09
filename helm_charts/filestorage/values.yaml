@@ -1,0 +1,38 @@
+namespace: dev
+imagepullsecrets: 
+dockerhub: dockerhub
+
+replicaCount: 1
+repository: minio
+image_name: quay.io/minio/minio
+image_tag: latest
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+network:
+  http_port: 9000
+  http_targetport: 9000
+  console_port: 9001
+  console_targetport: 9001
+strategy:
+  type: RollingUpdate
+  maxsurge: 50%
+  maxunavailable: 50%
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 60
+  targetMemoryUtilizationPercentage: 
+
+filestorageenv:
+  MINIO_ROOT_USER: admin
+  MINIO_ROOT_PASSWORD: admin1234
+  
+storage_size: 1Gi
+storage_class_name: longhorn

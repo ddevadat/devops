@@ -1,0 +1,21 @@
+
+
+create_istio_namespace() {
+    if kubectl get namespace {{istio_namespace}} &> /dev/null; then
+    echo "Namespace {{istio_namespace}} exists."
+    else
+    echo "Namespace {{istio_namespace}} does not exist. Creating namespace {{istio_namespace}}"
+    kubectl create namespace {{istio_namespace}}
+    fi    
+}
+
+mkdir -p {{istio_install_location}}
+cd {{istio_install_location}}
+curl -L https://git.io/getLatestIstio | ISTIO_VERSION={{istio_version}} sh -
+export PATH="{{istio_install_location}}/istio-{{istio_version}}/bin:$PATH"
+
+
+istioctl install --set profile=minimal -y
+
+
+kubectl apply -f {{istio_install_location}}/istio-{{istio_version}}/samples/addons/

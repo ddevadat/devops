@@ -1,0 +1,93 @@
+- name: Creating tmp file
+  tempfile:
+    state: file
+    suffix: helm
+  register: helm_file
+
+- name: Creating helm_charts vars file
+  copy:
+    content: "{{ helm_vars|to_yaml }}"
+    dest: "{{ helm_file.path }}"
+
+- name: Creating namespace
+  shell: "kubectl create namespace {{ item }} "
+  with_items:
+    - "{{ bootstrap_namespace.split(',') }}"
+    - monitoring
+    - logging
+    - longhorn-system
+    - cnpg
+  ignore_errors: yes
+
+- name: Creating docker secrets
+  shell: "kubectl create secret docker-registry {{ imagepullsecrets }} --namespace {{ item }} --docker-server {{ vault_docker_registry_url }} --docker-username {{ vault_docker_registry_user }} --docker-password {{ vault_docker_registry_password }} --dry-run=client -o=yaml | kubectl apply -f -"
+  when: imagepullsecrets|length > 0
+  with_items:
+    - "{{ bootstrap_namespace.split(',') }}"
+
+- name: Creating domain ssl
+  shell: 
+    cmd: |
+      cat <<EOF | kubectl apply -f -
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: ingress-cert
+        namespace: "{{ bootstrap_namespace.split(',')[0] }}"
+      data:
+        ca.crt: ""
+        site.crt: "{{ ssl_site_crt | b64encode }}"
+        site.key: "{{ ssl_site_key | b64encode }}"
+      EOF
+
+- name: Installing reloader for configmaps reload
+  shell: helm upgrade --install --atomic reloader "{{ playbook_dir }}"/../helm_charts/reloader --namespace "{{ item }}" -f "{{ helm_file.path }}"
+  with_items:
+    - "{{ bootstrap_namespace.split(',') }}"
+
+- name: tempating variables
+  template:
+    src: "{{ item }}.j2"
+    dest: "/tmp/{{item}}.yaml"
+  with_items:
+    - longhorn
+    - prometheus
+    - postgres
+
+- name: copy files
+  copy:
+    src: "{{ item }}.yaml"
+    dest: "/tmp/{{item}}.yaml"
+  with_items:
+    - grafana_dashboard
+    - prom_rules
+
+- name: add longhorn helm repo
+  shell: helm repo add longhorn {{longhorn_chart_repo}}
+
+- name: add cloudnative postgres helm repo
+  shell: helm repo add cnpg {{cloud_native_pg_chart_repo}}
+
+- name: add prometheus helm repo
+  shell: helm repo add prometheus-community {{prometheus_chart_repo}}
+
+- name: update repo
+  shell: helm repo update
+
+- name: helm install longhorn
+  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} longhorn longhorn/longhorn -n longhorn-system  --version {{longhorn_version}} --values /tmp/longhorn.yaml --wait
+
+- name: helm install cloudnative_pg
+  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} cnpg cnpg/cloudnative-pg --namespace cnpg-system --create-namespace  --wait
+
+- name: helm install prometheus
+  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} prometheus-community prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace  --values /tmp/prometheus.yaml --wait
+
+- name: Define alerts
+  shell: kubectl apply -f /tmp/prom_rules.yaml
+
+- name: Sample Grafana Dashboard
+  shell: kubectl apply -f /tmp/grafana_dashboard.yaml
+
+- name: Create Postgres Cluster
+  shell: kubectl apply -f /tmp/postgres.yaml -n cnpg

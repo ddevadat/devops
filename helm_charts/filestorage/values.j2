@@ -1,0 +1,38 @@
+namespace: {{ namespace }}
+imagepullsecrets: {{ imagepullsecrets | default('')}}
+dockerhub: {{ dockerhub| default('dockerhub') }}
+
+replicaCount: {{filestorage_replicacount|default(1)}}
+repository: {{filestorage_repository|default('minio')}}
+image_name: {{image_name | default('quay.io/minio/minio')}}
+image_tag: {{image_tag | default('latest')}}
+resources:
+  requests:
+    cpu: {{filestorage_cpu_req|default('100m')}}
+    memory: {{filestorage_mem_req|default('100Mi')}}
+  limits:
+    cpu: {{filestorage_cpu_limit|default('1000m')}}
+    memory: {{filestorage_memory_limit|default('1024Mi')}}
+network:
+  http_port: 9000
+  http_targetport: 9000
+  console_port: 9001
+  console_targetport: 9001
+strategy:
+  type: RollingUpdate
+  maxsurge: {{ filestorage_maxsurge|default('50%') }}
+  maxunavailable: {{ filestorage_maxunavailable|default('50%') }}
+
+autoscaling:
+  enabled: {{ filestorage_autoscaling_enabled | default('false') }}
+  minReplicas: {{ filestorage_autoscaling_minReplicas|default(1) }}
+  maxReplicas: {{ filestorage_autoscaling_maxReplicas|default(3) }}
+  targetCPUUtilizationPercentage: {{ filestorage_autoscaling_targetCPUUtilizationPercentage|default(60) }}
+  targetMemoryUtilizationPercentage: {{ filestorage_autoscaling_targetMemoryUtilizationPercentage|default('') }}
+
+filestorageenv:
+  MINIO_ROOT_USER: {{ MINIO_ROOT_USER|default('admin') }}
+  MINIO_ROOT_PASSWORD: {{ MINIO_ROOT_PASSWORD|default('admin1234') }}
+  
+storage_size: {{ MINIO_STORAGE_SIZE_GB|default('1Gi') }}
+storage_class_name: {{ MINIO_STORAGE_CLASS|default('longhorn') }}

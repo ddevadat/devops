@@ -1,0 +1,174 @@
+
+namespace: dev
+service:
+  annotations: {"service.beta.kubernetes.io/oci-load-balancer-shape": "flexible", "service.beta.kubernetes.io/oci-load-balancer-internal": "false", "service.beta.kubernetes.io/oci-load-balancer-shape-flex-min": "10Mbps", "service.beta.kubernetes.io/oci-load-balancer-shape-flex-max": "100Mbps", "service.beta.kubernetes.io/oci-load-balancer-subnet1": "ocid1.subnet.oc1.ap-osaka-1.aaaaaaaac64iyizw2gzbsoiirglbic6rdl3zvuiibvvmyyo4gd3vitosjyla"}
+  type: LoadBalancer
+  ports:
+  - port: 80
+    name: http
+    targetPort: 80
+    nodePort: 31380
+  - port: 443
+    name: https
+    targetPort: 443
+    nodePort: 31390
+
+
+imagepullsecrets: 
+dockerhub: dockerhub
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 1
+    memory: 1024Mi
+
+repository: sunbird-rc-nginx
+image_tag: latest
+
+proxyconfig: |-
+  server {
+    listen 80;
+    listen [::]:80;
+    server_name istio.sunbirdrc.app.oci;
+    # Limitting open connection per ip
+    limit_conn limitbyaddr 400;
+    return 301 https://istio.sunbirdrc.app.oci$request_uri;
+  }
+  server {
+    listen                443 ssl;
+    ssl_certificate       /etc/secrets/site.crt;
+    ssl_certificate_key   /etc/secrets/site.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA HIGH !RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS";
+    server_name *.istio.sunbirdrc.app.oci istio.sunbirdrc.app.oci;
+    # Limitting open connection per ip
+    limit_conn limitbyaddr 400;
+    proxy_set_header    Host              $host;
+    proxy_set_header    X-Real-IP         $remote_addr;
+    proxy_set_header    X-Forwarded-SSL   on;
+    proxy_set_header    X-Forwarded-Proto $scheme;
+    ignore_invalid_headers off;  #pass through headers from Jenkins which are considered invalid by Nginx server.
+    resolver 10.96.5.5 valid=30s;
+    location /auth/ {
+          proxy_http_version 1.1;
+          proxy_pass          http://keycloak:8080/auth/;
+          proxy_set_header    Host               $host;
+          proxy_set_header    X-Real-IP          $remote_addr;
+          proxy_set_header    X-Forwarded-For    $proxy_add_x_forwarded_for;
+          proxy_set_header    X-Forwarded-Host   $host;
+          proxy_set_header    X-Forwarded-Server $host;
+          proxy_set_header    X-Forwarded-Port   $server_port;
+          proxy_set_header    X-Forwarded-Proto  $scheme;
+    }
+    location /claim-ms/ {
+          proxy_http_version 1.1;
+          proxy_pass          http://claim-ms:8082/;
+    }
+    location /registry/ {
+          proxy_http_version 1.1;
+          proxy_pass http://registry:8081/;
+    }
+    location /bucket/ {
+          proxy_http_version 1.1;
+          proxy_pass http://filestorage:9000/;
+    }
+    location /longhorn/ {
+          proxy_http_version 1.1;
+          proxy_pass http://longhorn-frontend.longhorn-system:80/;
+    }
+    location /grafana {
+      proxy_set_header Host $host;
+      proxy_http_version 1.1;
+      proxy_pass http://prometheus-community-grafana.monitoring.svc.cluster.local;
+    }
+    }
+
+nginxconfig: |
+  user  nginx;
+  worker_processes  auto;
+  error_log  /var/log/nginx/error.log warn;
+  pid        /var/run/nginx.pid;
+  events {
+      worker_connections  10000;
+  }
+  http {
+      include       /etc/nginx/mime.types;
+      default_type  application/octet-stream;
+      resolver 10.96.5.5 valid=30s;
+      log_format  main  '$remote_addr - $remote_user [$time_local] '
+                        '"$request" $status $request_length $body_bytes_sent'
+                        ' $request_time $upstream_response_time $pipe'
+                        ' "$http_referer" "$http_user_agent"'
+                        ' "$http_x_device_id" "$http_x_channel_id" "$http_x_app_id"'
+                        ' "$http_x_app_ver" "$http_x_session_id" ';
+      access_log  /var/log/nginx/access.log  main;
+
+
+
+
+      sendfile        on;
+      #tcp_nopush     on;
+      client_max_body_size 60M;
+      keepalive_timeout  65s;
+      keepalive_requests 200;
+      # Nginx connection limit per ip
+      limit_conn_zone $binary_remote_addr zone=limitbyaddr:10m;
+      limit_conn_status 429;
+
+      include /etc/nginx/defaults.d/*.conf;
+      # include /etc/nginx/conf.d/*.conf;
+      #################
+      # Caching Block #
+      #################
+      #
+      # Keywords
+      #
+      # proxy_cache_path: path to store the cache content
+      # level: how many directories we need, 1:2 means 1 parent directory, and another child directory before the cache content.
+      # keys_zone: name of the cache and size of the keys store in RAM; 1‑MB zone can store data for about 8,000 keys
+      # max_size: size of the cache content in disk
+      # inactive: specifies how long an item can remain in the cache without being accessed. This doesn't value expiry time of cache. So keep it more than the expiry.
+      # use_temp_path: do we have to write the cache to a temp path first? This will reduce the performance.
+      #
+      # caching for images and files
+      proxy_cache_path /tmp/large_cache levels=1:2 keys_zone=large_cache:3m max_size=100m inactive=10m use_temp_path=off;
+      proxy_cache_path /tmp/medium_cache levels=1:2 keys_zone=medium_cache:2m max_size=50m inactive=10m use_temp_path=off;
+      proxy_cache_path /tmp/small_cache levels=1:2 keys_zone=small_cache:1m max_size=10m inactive=10m use_temp_path=off;
+
+
+  }
+
+
+compressionConfig: |-
+  # Compression
+  gzip on;
+  gzip_comp_level    5;
+  gzip_min_length    256; # 256Bytes
+  gzip_proxied       any;
+  gzip_vary          on;
+  # Content types for compression
+  gzip_types
+  application/atom+xml
+  application/javascript
+  application/json
+  application/ld+json
+  application/manifest+json
+  application/rss+xml
+  application/vnd.geo+json
+  application/vnd.ms-fontobject
+  application/x-font-ttf
+  application/x-web-app-manifest+json
+  application/xhtml+xml
+  application/xml
+  font/opentype
+  image/bmp
+  image/svg+xml
+  image/x-icon
+  text/cache-manifest
+  text/css
+  text/plain
+  ;
+

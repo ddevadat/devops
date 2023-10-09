@@ -1,0 +1,66 @@
+
+certificateapi:
+  enabled: {{sunbird_rc.certificateapi_enabled}}
+  CERTIFICATE_DOMAIN_URL: "https://example.com"
+  CERTIFICATE_PUBLIC_KEY: |- 
+    {{ CERTIFICATE_PUBLIC_KEY | default("''") | indent(width=4) }}
+  CERTIFICATE_PRIVATE_KEY: |-
+    {{ CERTIFICATE_PRIVATE_KEY | default("''") | indent(width=4) }}
+  
+certificatesign:
+  enabled: {{sunbird_rc.certificatesign_enabled}}
+  CERTIFICATE_DOMAIN_URL: "https://example.com"
+  CERTIFICATE_PUBLIC_KEY: |- 
+    {{ CERTIFICATE_PUBLIC_KEY | default("''") | indent(width=4) }}
+  CERTIFICATE_PRIVATE_KEY: |-
+    {{ CERTIFICATE_PRIVATE_KEY | default("''") | indent(width=4) }}
+
+
+claim-ms:
+  enabled: {{sunbird_rc.claim_ms_enabled}}
+  claim_msenv:
+    connectionInfo_uri: {{postgres_connectionInfo_uri}}
+    connectionInfo_username: {{postgres_connectionInfo_username}}
+    connectionInfo_password: {{postgres_connectionInfo_password}}
+    sunbirdrc_url: http://registry:8081
+
+elasticsearch:
+  enabled: {{sunbird_rc.elasticsearch_enabled}} 
+
+filestorage:
+  enabled: {{sunbird_rc.filestorage_enabled}}
+  filestorageenv:
+    MINIO_ROOT_USER: {{filestorage.minio_root_user}}
+    MINIO_ROOT_PASSWORD: {{filestorage.minio_root_password}}
+
+keycloak:
+  enabled: {{sunbird_rc.keycloak_enabled}}
+  keycloakenv:
+    DB_PASSWORD: {{postgres_connectionInfo_password}}
+    KEYCLOAK_PASSWORD: {{keycloak.admin_password}}
+    KEYCLOAK_LOGO: {{keycloak.keycloak_logo_url}}
+    DB_VENDOR: 'postgres'
+    DB_ADDR: {{postgress_db_host}}
+    DB_PORT: '5432'
+    DB_DATABASE: 'registry'
+    DB_USER: {{postgres_connectionInfo_username}}
+    KEYCLOAK_USER: {{keycloak.admin_user}}
+    PROXY_ADDRESS_FORWARDING: 'true'
+    KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+    DOMAIN_NAME: "{{domain_name}}"
+    ADMIN_API_SECRET: {{keycloak.admin_api_secret}}
+
+registry:
+  enabled: {{sunbird_rc.registry_enabled}}
+  rccoreenv:
+    connectionInfo_uri: {{postgres_connectionInfo_uri}}
+    connectionInfo_username: {{postgres_connectionInfo_username}}
+    connectionInfo_password: {{postgres_connectionInfo_password}}
+    elastic_search_enabled: {{sunbird_rc.elasticsearch_enabled}}
+    elastic_search_connection_url: {{elastic_search_connection_url}}
+    sunbird_sso_admin_client_secret: {{keycloak.admin_api_secret}}
+    sunbird_sso_url: {{sunbird_sso_url}}
+    filestorage_access_key: {{filestorage.minio_root_user}}
+    filestorage_secret_key: {{filestorage.minio_root_password}}
+
+
