@@ -37,7 +37,7 @@ if [ $cluster1_rpc_status != "PEERED" ];then
 fi
 
 if [ $cluster2_rpc_status != "PEERED" ];then   
-    oci --profile $cluster2_oci_profile_name network remote-peering-connection connect --peer-id $cluster1_rpc_id --peer-region-name $cluster1_region  --remote-peering-connection-id $cluster2_rpc_idfi
+    oci --profile $cluster2_oci_profile_name network remote-peering-connection connect --peer-id $cluster1_rpc_id --peer-region-name $cluster1_region  --remote-peering-connection-id $cluster2_rpc_id
 fi
 
 
