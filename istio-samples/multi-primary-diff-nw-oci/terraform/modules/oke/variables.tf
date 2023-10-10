@@ -67,7 +67,7 @@ variable "node_pool_name" {
 }
 
 variable "node_pool_size" {
-  default     = "1"
+  default     = "3"
   description = "Pool Size"
 }
 
