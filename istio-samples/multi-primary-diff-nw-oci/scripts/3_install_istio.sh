@@ -23,6 +23,13 @@ cat <<EOF > ${script_path}/generated/${cluster_name}.yaml
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 spec:
+  meshConfig:
+    defaultConfig:
+      proxyMetadata:
+        # Enable basic DNS proxying
+        ISTIO_META_DNS_CAPTURE: "true"
+        # Enable automatic address allocation, optional
+        ISTIO_META_DNS_AUTO_ALLOCATE: "true"
   values:
     global:
       meshID: mesh1
