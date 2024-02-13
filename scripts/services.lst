@@ -1,2 +1,7 @@
+  certificateapi
+  certificatesign
+  claim-ms
+  elasticsearch
+  filestorage
   keycloak
   registry
