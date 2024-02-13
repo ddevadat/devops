@@ -161,7 +161,7 @@ Hello version: v1, instance: helloworld-v1-86f77cd7bd-cpxhv
 
 ## Optional
 
-[Deploy Sunbird-RC in a service mesh in active active mode](../sunbird-rc-deployment/)
+[Deploy Sunbird-RC in a service mesh in active active mode](../../sunbird-rc-deployment/)
 
 
 ## Cleanup
