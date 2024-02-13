@@ -1,0 +1,38 @@
+create_istio_namespace() {
+    if kubectl get namespace {{istio_namespace}} &> /dev/null; then
+    echo "Namespace {{istio_namespace}} exists."
+    else
+    echo "Namespace {{istio_namespace}} does not exist. Creating namespace {{istio_namespace}}"
+    kubectl create namespace {{istio_namespace}}
+    fi    
+}
+
+mkdir -p {{istio_install_location}}
+cd {{istio_install_location}}
+export PATH={{istio_install_location}}/istio-{{istio_version}}/bin:$PATH
+
+cat <<EOF | istioctl install -y  -f -
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: ingress
+spec:
+  profile: empty
+  components:
+    ingressGateways:
+    - name: istio-ingressgateway
+      namespace: {{istio_namespace}}
+      enabled: true
+      label:
+        istio: ingressgateway
+      k8s:
+        serviceAnnotations:
+          service.beta.kubernetes.io/oci-load-balancer-internal: "false"
+          service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+          service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10Mbps"
+          service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "100Mbps"
+  values:
+    gateways:
+      istio-ingressgateway:
+        injectionTemplate: gateway
+EOF

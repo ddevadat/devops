@@ -71,7 +71,9 @@ metadata:
 {{ toYaml .Values.service.annotations | indent 4 }}
 {{- end }}
 spec:
+{{- if eq .Values.service.type  "LoadBalancer" }}
   externalTrafficPolicy: Local
+{{- end }}
   selector:
     app: {{ .Chart.Name }}
   type: {{ .Values.service.type }}

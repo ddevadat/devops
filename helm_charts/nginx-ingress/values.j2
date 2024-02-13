@@ -7,6 +7,7 @@ service:
   {% if nginx_public_ingress_ip is defined %}
   nginx_public_ingress_ip: {{ nginx_public_ingress_ip }}
   {% endif %}
+{% if nginx_public_ingress_type=='LoadBalancer' %}
   ports:
   - port: 80
     name: http
@@ -16,7 +17,15 @@ service:
     name: https
     targetPort: 443
     nodePort: 31390
-
+{% else %}
+  ports:
+  - port: 80
+    name: http
+    targetPort: 80
+  - port: 443
+    name: https
+    targetPort: 443
+{% endif  %}    
 {% if nginx_volumes is defined and nginx_volumes %}
 volumes: {{ nginx_volumes.volumes | to_json }}
 volumeMounts: {{ nginx_volumes.volumeMounts | to_json }}
@@ -80,11 +89,17 @@ proxyconfig: |-
     proxy_set_header    X-Forwarded-SSL   on;
     proxy_set_header    X-Forwarded-Proto $scheme;
     ignore_invalid_headers off;  #pass through headers from Jenkins which are considered invalid by Nginx server.
-    resolver {{ kube_dns_ip }} valid=30s;
+    #resolver {{ kube_dns_ip }} valid=30s;
+    resolver kube-dns.kube-system.svc.cluster.local valid=30s;
+    set $keycloak_proxy_pass_url http://keycloak.{{ namespace }}.svc.cluster.local:8080/auth/;
+    set $claims_proxy_pass_url http://claim-ms.{{ namespace }}.svc.cluster.local:8082/;
+    set $registry_proxy_pass_url http://registry.{{ namespace }}.svc.cluster.local:8081/;
+    set $fs_proxy_pass_url http://filestorage.{{ namespace }}.svc.cluster.local:9000/;
     location /auth/ {
           proxy_http_version 1.1;
-          proxy_pass          http://keycloak:8080/auth/;
-          proxy_set_header    Host               $host;
+          proxy_pass          http://keycloak.{{ namespace }}.svc.cluster.local:8080/auth/;
+          #proxy_set_header    Host               $host;
+          proxy_set_header    Host               keycloak.{{ namespace }}.svc.cluster.local;
           proxy_set_header    X-Real-IP          $remote_addr;
           proxy_set_header    X-Forwarded-For    $proxy_add_x_forwarded_for;
           proxy_set_header    X-Forwarded-Host   $host;
@@ -94,15 +109,25 @@ proxyconfig: |-
     }
     location /claim-ms/ {
           proxy_http_version 1.1;
-          proxy_pass          http://claim-ms:8082/;
+          proxy_pass          http://claim-ms.{{ namespace }}.svc.cluster.local:8082/;
     }
+    # location /registry/ {
+    #       proxy_http_version 1.1;
+    #       proxy_set_header    Host               registry.{{ namespace }}.svc.cluster.local;
+    #       set $registry_proxy_pass "registry.{{ namespace }}.svc.cluster.local";
+    #       rewrite /registry/(.*) /$1 break;
+    #       proxy_pass http://$registry_proxy_pass:8081/$1$is_args$args;
+    #       resolver {{ kube_dns_ip }} valid=1s;
+
+    # }
     location /registry/ {
           proxy_http_version 1.1;
-          proxy_pass http://registry:8081/;
+          proxy_set_header    Host    registry.{{ namespace }}.svc.cluster.local;
+          proxy_pass http://registry.{{namespace}}.svc.cluster.local:8081/;
     }
     location /bucket/ {
           proxy_http_version 1.1;
-          proxy_pass http://filestorage:9000/;
+          proxy_pass http://filestorage.{{ namespace }}.svc.cluster.local:9000/;
     }
     location /longhorn/ {
           proxy_http_version 1.1;
