@@ -90,4 +90,4 @@
   shell: kubectl apply -f /tmp/grafana_dashboard.yaml
 
 - name: Create Postgres Cluster
-  shell: kubectl apply -f /tmp/postgres.yaml -n cnpg
+  shell: kubectl apply -f /tmp/postgres.yaml -n {{namespace}}

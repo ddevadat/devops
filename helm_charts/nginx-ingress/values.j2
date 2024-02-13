@@ -98,8 +98,7 @@ proxyconfig: |-
     location /auth/ {
           proxy_http_version 1.1;
           proxy_pass          http://keycloak.{{ namespace }}.svc.cluster.local:8080/auth/;
-          #proxy_set_header    Host               $host;
-          proxy_set_header    Host               keycloak.{{ namespace }}.svc.cluster.local;
+          proxy_set_header    Host               $host;
           proxy_set_header    X-Real-IP          $remote_addr;
           proxy_set_header    X-Forwarded-For    $proxy_add_x_forwarded_for;
           proxy_set_header    X-Forwarded-Host   $host;
@@ -111,15 +110,6 @@ proxyconfig: |-
           proxy_http_version 1.1;
           proxy_pass          http://claim-ms.{{ namespace }}.svc.cluster.local:8082/;
     }
-    # location /registry/ {
-    #       proxy_http_version 1.1;
-    #       proxy_set_header    Host               registry.{{ namespace }}.svc.cluster.local;
-    #       set $registry_proxy_pass "registry.{{ namespace }}.svc.cluster.local";
-    #       rewrite /registry/(.*) /$1 break;
-    #       proxy_pass http://$registry_proxy_pass:8081/$1$is_args$args;
-    #       resolver {{ kube_dns_ip }} valid=1s;
-
-    # }
     location /registry/ {
           proxy_http_version 1.1;
           proxy_set_header    Host    registry.{{ namespace }}.svc.cluster.local;
