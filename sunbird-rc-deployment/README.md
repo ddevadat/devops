@@ -1,8 +1,8 @@
-# Demo: Install Multi-Primary on different networks
+# Demo: Install Sunbird-RC in active-active deployment across different regions
 
 Steps to orchestrate service mesh with [Istio](https://istio.io/) across two different OKE clusters.
 
-![dual-screenshot](images/multicluster-diff-network.png)
+![architecture](images/multicluster-2.jpg)
 
 ## Prerequisites
 
@@ -158,11 +158,6 @@ Hello version: v1, instance: helloworld-v1-86f77cd7bd-cpxhv
 ...
 
 ```
-
-## Optional
-
-[Deploy Sunbird-RC in a service mesh in active active mode](../sunbird-rc-deployment/)
-
 
 ## Cleanup
 
