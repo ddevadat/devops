@@ -1,16 +1,12 @@
 # Demo: Install Sunbird-RC in active-active deployment across different regions
 
-Steps to orchestrate service mesh with [Istio](https://istio.io/) across two different OKE clusters.
+Steps to orchestrate service mesh with [Sunbird-RC](https://rc.sunbird.org/learn/readme) across two different OKE clusters.
 
 ![architecture](images/multicluster-2.jpg)
 
 ## Prerequisites
 
-- `oci` CLI
-- `kubectl`
-- `terraform`
-- `make`
-- `helm` CLI
+- [Install Multi-Primary on different networks](../istio-samples/multi-primary-diff-nw-oci/)
 
 ### Add section for creating terraform variables
 ```
