@@ -42,71 +42,9 @@
             protocol: HTTPS
           tls:
             mode: PASSTHROUGH
-            #mode: SIMPLE
-            #credentialName: httpbin-credential-1
           hosts:
           - "{{domain_name}}"
       EOF
-
-# - name: Creating virtual service object
-#   shell: 
-#     cmd: |
-#       cat <<EOF | kubectl apply -f -
-#       apiVersion: networking.istio.io/v1alpha3
-#       kind: VirtualService
-#       metadata:
-#         name: vsnginxingress
-#         namespace: "{{ namespace}}"
-#       spec:
-#         hosts:
-#         - "{{domain_name}}"
-#         gateways:
-#         - "{{ istio_namespace}}/sbrc-gateway"
-#         http:
-#         - match:
-#           - uri:
-#               prefix: "/registry/"
-#           rewrite:
-#             uri: "/"
-#           route:
-#           - destination:
-#               port:
-#                 number: 8081
-#               host: registry.{{ namespace }}.svc.cluster.local
-#         - match:
-#           - uri:
-#               prefix: "/auth"
-#           headers:
-#             request:
-#               set:
-#                 X-Forwarded-Proto: "https"
-#                 X-Forwarded-Port: "443"
-#                 X-Forwarded-Server: {{ domain_name }}
-#                 X-Forwarded-Host: {{ domain_name }}
-#                 Host: {{ domain_name }}
-#           route:
-#           - destination:
-#               port:
-#                 number: 8080
-#               host: keycloak.{{ namespace }}.svc.cluster.local
-#         - match:
-#           - uri:
-#               prefix: "/claim-ms"
-#           route:
-#           - destination:
-#               port:
-#                 number: 8082
-#               host: claim-ms.{{ namespace }}.svc.cluster.local
-#         - match:
-#           - uri:
-#               prefix: "/bucket"
-#           route:
-#           - destination:
-#               port:
-#                 number: 9000
-#               host: filestorage.{{ namespace }}.svc.cluster.local
-#       EOF
-
 
 
 - name: Creating virtual service object
@@ -135,26 +73,3 @@
               host: nginx-ingress.{{ namespace }}.svc.cluster.local
       EOF
 
-# - name: Creating virtual service object for registry
-#   shell: 
-#     cmd: |
-#       cat <<EOF | kubectl apply -f -
-#       apiVersion: networking.istio.io/v1alpha3
-#       kind: VirtualService
-#       metadata:
-#         name: vsregistry
-#       spec:
-#         hosts:
-#         - registry.{{ namespace }}.svc.cluster.local
-#         http:
-#         - match:
-#           - headers:
-#               Host:
-#                 exact: "{{domain_name}}"
-#             uri:
-#               prefix: "/registry"
-#             ignoreUriCase: true
-#           route:
-#           - destination:
-#               host: registry.{{ namespace }}.svc.cluster.local
-#       EOF
