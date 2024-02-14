@@ -30,7 +30,7 @@ cp istio-multicluster-setup/devops/private_repo/ansible/inv/dev/Core/* ~/invento
 ```
 update the inventory variables as per the requirement in secrets.yaml
 
-### Deployment
+## Deployment
 
 Execute the below scripts.
 
@@ -49,3 +49,42 @@ cd istio-multicluster-setup/devops/sunbird-rc-deployment
 ./4_deploy_sunbird-rc_cluster2.sh
 
 ```
+
+## Post deployment
+
+Update DNS configuration
+
+Find the external ip of the load balancer of the istio ingress gateway from cluster1
+
+```
+kubectl get svc istio-ingressgateway -n istio-system
+NAME                   TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)                                      AGE
+istio-ingressgateway   LoadBalancer   YYYYYY          XXXXXXXX      15021:31283/TCP,80:30393/TCP,443:30301/TCP   14d
+
+```
+
+Update your domain name with A record.
+
+If you dont have dns domain, you can update the domain name in your local /etc/hosts file
+
+## Verfication
+
+Run the below health check api on the registry service.
+
+```
+for i in {1..100}; do  curl -k https://<domain_name>/registry/health && sleep 1 && echo "**************"; done
+
+sample output
+
+{"id":"sunbird-rc.registry.health","ver":"1.0","ets":1707875456458,"params":{"resmsgid":"","msgid":"d2687014-2942-41e0-9f58-ee28af888e74","err":"","status":"SUCCESSFUL","errmsg":""},"responseCode":"OK","result":{"name":"sunbirdrc-registry-api","healthy":true,"checks":[{"name":"sunbird.certificate-api.service","healthy":true,"err":"SIGNATURE_ENABLED","errmsg":"false"},{"name":"sunbird.encryption.service","healthy":true,"err":"ENCRYPTION_ENABLED","errmsg":"false"},{"name":"sunbird.file-storage.service","healthy":true,"err":"","errmsg":""},{"name":"sunbird.notification.service","healthy":true,"err":"NOTIFICATION_ENABLED","errmsg":"false"},{"name":"sunbird.elastic.service","healthy":true,"err":"","errmsg":""},{"name":"sunbird.signature.service","healthy":true,"err":"SIGNATURE_ENABLED","errmsg":"false"},{"name":"sunbird.keycloak.service","healthy":true,"err":"","errmsg":""}]}}
+
+```
+
+Scale the replica to 0 for registry in any cluster.
+
+```
+kubectl -n dev edit deployment.apps/registry
+
+```
+
+The previously executed health check curl should display the results.
