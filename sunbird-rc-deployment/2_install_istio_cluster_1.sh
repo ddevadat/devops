@@ -1,5 +1,5 @@
 set -euo pipefail
-source ./env.sh
+source ./cluster_1_env.sh
 bold=$(tput bold)
 normal=$(tput sgr0)
 script_path=$(pwd)

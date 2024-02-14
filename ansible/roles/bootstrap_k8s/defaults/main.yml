@@ -8,6 +8,9 @@ longhorn_storage_class_yaml: https://raw.githubusercontent.com/longhorn/longhorn
 cloud_native_pg_chart_repo: https://cloudnative-pg.github.io/charts
 prometheus_chart_repo: https://prometheus-community.github.io/helm-charts
 prometheus_chart_version: 51.2.0
+create_postgres_db: false
+postgres_connectionInfo_username: registry
+postgres_connectionInfo_password: admin134
 postgres_replica: 3
 postgres_storage_class: longhorn
 postgres_data_size: 1Gi

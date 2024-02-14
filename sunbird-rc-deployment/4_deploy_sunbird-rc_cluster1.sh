@@ -1,9 +1,9 @@
 set -euo pipefail
-source ./env.sh
+source ./cluster_1_env.sh
 bold=$(tput bold)
 normal=$(tput sgr0)
 script_path=$(pwd)
-file_path="services.lst"
+file_path="cluster_1_services.lst"
 
 for jobName in `cat $file_path`
 do
