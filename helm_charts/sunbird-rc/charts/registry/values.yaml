@@ -1,9 +1,9 @@
 imagepullsecrets: ''
-dockerhub: dockerhub 
+dockerhub: ghcr.io/sunbird-rc 
 
 replicaCount: 1
 repository: sunbird-rc-core
-image_tag: v0.0.13
+image_tag: v2.0.0-rc1
 resources:
   requests:
     cpu: '100m'
