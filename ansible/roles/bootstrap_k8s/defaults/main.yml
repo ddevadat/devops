@@ -13,3 +13,5 @@ postgres_data_size: 1Gi
 oci_tenancy_ocid: ""
 region: ""
 prometheus_server: http://prometheus-community-kube-prometheus.monitoring.svc.cluster.local
+hashicorp_chart_repo: https://helm.releases.hashicorp.com
+vault_namespace: vault

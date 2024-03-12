@@ -17,6 +17,7 @@
     - logging
     - longhorn-system
     - cnpg
+    - "{{vault_namespace}}"
   ignore_errors: yes
 
 - name: Creating docker secrets
@@ -53,6 +54,7 @@
     - longhorn
     - prometheus
     - postgres
+    - vault
 
 - name: copy files
   copy:
@@ -71,23 +73,66 @@
 - name: add prometheus helm repo
   shell: helm repo add prometheus-community {{prometheus_chart_repo}}
 
+- name: add hashicorp helm repo
+  shell: helm repo add hashicorp {{hashicorp_chart_repo}}
+
 - name: update repo
   shell: helm repo update
 
-- name: helm install longhorn
-  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} longhorn longhorn/longhorn -n longhorn-system  --version {{longhorn_version}} --values /tmp/longhorn.yaml --wait
+# - name: helm install longhorn
+#   shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} longhorn longhorn/longhorn -n longhorn-system  --version {{longhorn_version}} --values /tmp/longhorn.yaml --wait
 
-- name: helm install cloudnative_pg
-  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} cnpg cnpg/cloudnative-pg --namespace cnpg-system --create-namespace  --wait
+# - name: helm install cloudnative_pg
+#   shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} cnpg cnpg/cloudnative-pg --namespace cnpg-system --create-namespace  --wait
 
-- name: helm install prometheus
-  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} prometheus-community prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace  --values /tmp/prometheus.yaml --wait
+# - name: helm install prometheus
+#   shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} prometheus-community prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace  --values /tmp/prometheus.yaml --wait
 
-- name: Define alerts
-  shell: kubectl apply -f /tmp/prom_rules.yaml
+# - name: Define alerts
+#   shell: kubectl apply -f /tmp/prom_rules.yaml
 
-- name: Sample Grafana Dashboard
-  shell: kubectl apply -f /tmp/grafana_dashboard.yaml
+# - name: Sample Grafana Dashboard
+#   shell: kubectl apply -f /tmp/grafana_dashboard.yaml
 
-- name: Create Postgres Cluster
-  shell: kubectl apply -f /tmp/postgres.yaml -n cnpg
+# - name: Create Postgres Cluster
+#   shell: kubectl apply -f /tmp/postgres.yaml -n cnpg
+
+- name: helm install vault
+  shell: helm upgrade --install --atomic --timeout {{helm_install_timeout | d("10m")}} {{vault_namespace}} hashicorp/vault -n vault --values /tmp/vault.yaml --wait
+
+
+- name: Initialize one Vault pod
+  shell: |
+    sleep 60
+    kubectl -n {{vault_namespace}} exec vault-0 -- vault operator init \
+    -key-shares=1 \
+    -key-threshold=1 \
+    -format=json > /tmp/cluster-keys.json
+
+- name: Get the unseal key
+  shell: cat /tmp/cluster-keys.json | jq -r ".unseal_keys_b64[]"
+  register: unseal_key
+
+- name: Get the root token
+  shell: cat /tmp/cluster-keys.json | jq -r ".root_token"
+  register: root_token
+
+- name: Set fact from a variable
+  set_fact:
+    vault_unseal_key: "{{ unseal_key.stdout }}"
+    vault_root_token: "{{ root_token.stdout }}"
+
+- name: Unseal and create kv 
+  shell: |
+    kubectl -n {{vault_namespace}} exec vault-0 -- vault operator unseal {{vault_unseal_key}}
+    kubectl -n {{vault_namespace}} exec vault-0 -- /bin/sh -c "vault login {{vault_root_token}} && vault secrets enable -path=kv kv-v2"
+
+- name: saving vault info as inventory variables
+  template:
+    src: "vault-secrets.j2"
+    dest: "{{inventory_dir}}/vault-secrets.yml"
+
+- name: Remove the temporary file
+  file:
+    path: /tmp/cluster-keys.json
+    state: absent

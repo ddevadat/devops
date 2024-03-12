@@ -61,7 +61,7 @@ rccoreenv:
   claims_url: http://claim-ms:8082
   did_enabled: {{ did_enabled | default("false")}}
   did_health_check_url: {{ did_health_check_url | default("http://identity:3332/health")}} 
-  did_generate_url: {{ did_health_check_url | default("http://identity:3332/did/generate")}}  
+  did_generate_url: {{ did_generate_url | default("http://identity:3332/did/generate")}}  
   did_resolve_url: {{ did_resolve_url | default("http://identity:3332/did/resolve")}}  
   signature_enabled: {{ signature_enabled | default("false")}}
   signature_provider: {{ signature_provider | default("dev.sunbirdrc.registry.service.impl.SignatureV2ServiceImpl")}}

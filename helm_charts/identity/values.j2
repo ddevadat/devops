@@ -1,0 +1,15 @@
+global:
+  host: "{{domain_name}}"
+  sunbird: 
+    enable_auth: false 
+    signing_algo: Ed25519
+    jwks_uri: ""
+  vault: 
+    address: http://vault.{{vault_namespace}}.svc.cluster.local:8200
+    base_url: http://vault.{{vault_namespace}}.svc.cluster.local:8200/v1
+    root_path: http://vault.{{vault_namespace}}.svc.cluster.local:8200/v1/kv
+    vault_timeout: 5000
+    vault_proxy: false
+  secrets:
+    VAULT_SECRET_TOKEN: {{vault_root_token |b64encode }}
+    DB_URL: {{db_url |b64encode}}

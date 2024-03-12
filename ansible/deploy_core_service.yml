@@ -3,6 +3,7 @@
   gather_facts: no
   vars_files:
     - "{{inventory_dir}}/secrets.yml"
+    - "{{inventory_dir}}/vault-secrets.yml"
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
     OCI_CLI_AUTH: instance_principal

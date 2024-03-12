@@ -1,0 +1,7 @@
+#!/bin/bash
+vault operator unseal {{vault_unseal_key}}
+vault login {{vault_root_token}}
+vault operator raft join http://vault-0.{{vault_namespace}}-internal:8200
+vault operator unseal {{vault_unseal_key}}
+
+
