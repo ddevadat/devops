@@ -819,7 +819,7 @@
       "secret":  "{{ .Values.keycloakenv.ADMIN_API_SECRET }}",
       "redirectUris": [
         "https://localhost:4202/*",
-        "http://{{ .Values.keycloakenv.DOMAIN_NAME }}/*",
+        "https://{{ .Values.keycloakenv.DOMAIN_NAME }}/*",
         "https://divoc.xiv.in",
         "https://divoc.xiv.in/keycloak/auth/realms/divoc/account/*",
         "https://localhost:4200/*",
@@ -1324,7 +1324,7 @@
       "redirectUris": [
         "https://localhost:4202/*",
         "https://ndear.xiv.in/*",
-        "http://{{ .Values.keycloakenv.DOMAIN_NAME }}/*",
+        "https://{{ .Values.keycloakenv.DOMAIN_NAME }}/*",
         "http://20.198.64.128/*",
         "http://localhost:4200/*",
         "http://localhost:4202/*",
@@ -1335,7 +1335,7 @@
         "http://localhost:4202",
         "https://localhost:4200",
         "https://ndear.xiv.in",
-        "http://{{ .Values.keycloakenv.DOMAIN_NAME }}",
+        "https://{{ .Values.keycloakenv.DOMAIN_NAME }}",
         "http://localhost:4200",
         "http://20.198.64.128"
       ],
