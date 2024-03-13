@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "VehicleV2": {
+      "$ref": "#/definitions/VehicleV2"
+    }
+  },
+  "required": [
+    "VehicleV2"
+  ],
+  "title": "VehicleV2",
+  "definitions": {
+    "VehicleV2": {
+      "$id": "#/properties/VehicleV2",
+      "type": "object",
+      "title": "VehicleV2 schema",
+      "required": [
+        "regnumber",
+        "mnfyear",
+        "vehicletype"
+      ],
+      "uniqueIndexFields": [
+        "regnumber"
+      ],
+      "properties": {
+        "regnumber": {
+          "$id": "#/properties/regnumber",
+          "type": "string",
+          "title": "Vehicle Registration Number"
+        },
+        "mnfyear": {
+          "$id": "#/properties/mnfyear",
+          "type": "string",
+          "title": "Year of Manufacturing"
+        },
+        "vehicletype": {
+          "$id": "#/properties/vehicletype",
+          "type": "string",
+          "enum": [
+            "Car",
+            "Motorbike",
+            "Truck",
+            "Others"
+          ],
+          "title": "Vehicle Type"
+        },
+        "owner": {
+          "$ref": "Common.json/#/definitions/OwnerDetails"
+        }
+      }
+    }
+  },
+  "_osConfig": {
+    "inviteRoles": [
+      "Official"
+    ],
+    "roles": [
+      "Official"
+    ],
+    "privateFields": [],
+    "indexFields": [],
+    "uniqueIndexFields": [
+      "regnumber"
+    ],
+    "systemFields": [
+      "osCreatedAt",
+      "osUpdatedAt",
+      "osCreatedBy",
+      "osUpdatedBy"
+    ]
+  }
+}
