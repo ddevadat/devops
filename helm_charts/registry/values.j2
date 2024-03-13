@@ -94,7 +94,7 @@ rccoreenv:
   logging.level.root: INFO
   enable_external_templates: true
   async_enabled: {{ async_enabled | default("false")}}
-  authentication_enabled: {{ authentication_enabled | default("false")}}
+  authentication_enabled: {{ authentication_enabled | default("true")}}
   kafka_bootstrap_address: kafka:9092
   webhook_enabled: false
   webhook_url: http://localhost:5001/api/v1/callback
