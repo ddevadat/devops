@@ -2,7 +2,7 @@ global:
   host: "{{domain_name}}"
   sunbird: 
     enable_auth: false 
-    signing_algo: Ed25519
+    signing_algo: Ed25519Signature2020
     jwks_uri: ""
   vault: 
     address: http://vault.{{vault_namespace}}.svc.cluster.local:8200
